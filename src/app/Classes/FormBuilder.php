@@ -14,8 +14,8 @@ class FormBuilder
         $this->model = $model;
 
         $this->setTemplate($template)
-        	->translateLabels()
-        	->setValues();
+            ->translateLabels()
+            ->setValues();
     }
 
     public function getData()
@@ -25,16 +25,16 @@ class FormBuilder
 
     public function setAction(string $action)
     {
-    	$this->template->action = strtolower($action);
+        $this->template->action = strtolower($action);
 
-    	return $this;
+        return $this;
     }
 
     public function setUrl(string $url)
     {
-    	$this->template->url = $url;
+        $this->template->url = $url;
 
-    	return $this;
+        return $this;
     }
 
     public function setSelectOptions(string $column, $value)
@@ -46,16 +46,16 @@ class FormBuilder
 
     public function setSelectSource(string $column, string $source)
     {
-    	$this->getAttribute($column)->config->source = $source;
+        $this->getAttribute($column)->config->source = $source;
 
-    	return $this;
+        return $this;
     }
 
     public function setSubmit(string $label)
     {
-    	$this->template->submit = __($label);
+        $this->template->submit = __($label);
 
-    	return $this;
+        return $this;
     }
 
     private function getAttribute(string $column)
@@ -67,9 +67,9 @@ class FormBuilder
 
     private function setValues()
     {
-    	if (is_null($this->model)) {
-    		return $this;
-    	}
+        if (is_null($this->model)) {
+            return $this;
+        }
 
         collect($this->template->attributes)->each(function ($attribute) {
             if (isset($this->model->{$attribute->column})) {
@@ -96,14 +96,14 @@ class FormBuilder
 
     private function translateLabels()
     {
-    	$this->template->title = __($this->template->title);
-    	$this->template->submit = __($this->template->submit);
+        $this->template->title = __($this->template->title);
+        $this->template->submit = __($this->template->submit);
 
-    	collect($this->template->attributes)->each(function($attribute) {
-    		$attribute->label = __($attribute->label);
-    	});
+        collect($this->template->attributes)->each(function ($attribute) {
+            $attribute->label = __($attribute->label);
+        });
 
-    	return $this;
+        return $this;
     }
 
     private function setTemplate(string $template)
