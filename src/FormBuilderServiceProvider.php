@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\ActionLogger;
+namespace LaravelEnso\FormBuilder;
 
 use Illuminate\Support\ServiceProvider;
 
