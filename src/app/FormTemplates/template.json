@@ -1,0 +1,69 @@
+{
+    "title": "Form Title",
+    "action": null,
+    "url": null,
+    "wrapperClass": "col-md-6",
+    "theme": "success",
+    "solid": true,
+    "submit": "Save",
+    "attributes": [{
+        "label": "LabelOne",
+        "column": "columnOne",
+        "value": null,
+        "config": {
+            "type": "input",
+            "content": "text"
+        }
+    }, {
+        "label": "LabelTwo",
+        "column": "columnTwo",
+        "value": null,
+        "config": {
+            "type": "input",
+            "content": "number",
+            "step": 2,
+            "min": -2,
+            "max": 20
+        }
+    }, {
+        "label": "LabelThree",
+        "column": "columnThree",
+        "value": null,
+        "config": {
+            "type": "select",
+            "multiple": true,
+            "options": null
+        }
+    }, {
+        "label": "LabelFour",
+        "column": "columnFour",
+        "value": null,
+        "config": {
+            "type": "select",
+            "multiple": false,
+            "source": null
+        }
+    }, {
+        "label": "LabelFive",
+        "column": "columnFive",
+        "value": null,
+        "config": {
+            "type": "datepicker"
+        }
+    }, {
+        "label": "LavelSix",
+        "column": "columnSix",
+        "value": null,
+        "config": {
+            "type": "timepicker"
+        }
+    }, {
+        "label": "LabelSeven",
+        "column": "columnSeven",
+        "value": false,
+        "config": {
+            "type": "input",
+            "content": "checkbox"
+        }
+    }]
+}
