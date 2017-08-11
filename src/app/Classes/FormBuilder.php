@@ -56,7 +56,7 @@ class FormBuilder
 
     public function setTitle(string $title)
     {
-    	$this->template->title = __($title);
+        $this->template->title = __($title);
 
         return $this;
     }
