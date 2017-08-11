@@ -3,6 +3,7 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelEnso\Select\app\Classes\SelectListBuilder;
 
 class FormBuilder
 {
@@ -14,7 +15,7 @@ class FormBuilder
         $this->model = $model;
 
         $this->setTemplate($template)
-            ->translateLabels()
+            ->setLabels()
             ->setValues();
     }
 
@@ -39,7 +40,9 @@ class FormBuilder
 
     public function setSelectOptions(string $column, $value)
     {
-        $this->getAttribute($column)->config->options = $this->buildSelectList($value);
+        $this->getAttribute($column)
+            ->config
+            ->options = SelectListBuilder::buildSelectList($value);
 
         return $this;
     }
@@ -51,18 +54,11 @@ class FormBuilder
         return $this;
     }
 
-    public function setSubmit(string $label)
+    public function setTitle(string $title)
     {
-        $this->template->submit = __($label);
+    	$this->template->title = __($title);
 
         return $this;
-    }
-
-    private function getAttribute(string $column)
-    {
-        return collect($this->template->attributes)->filter(function ($attribute) use ($column) {
-            return $attribute->column === $column;
-        })->first();
     }
 
     private function setValues()
@@ -80,24 +76,11 @@ class FormBuilder
         return $this;
     }
 
-    private function buildSelectList($data)
-    {
-        $response = collect();
-
-        foreach ($data as $key => $value) {
-            $response->push([
-                'key'   => $key,
-                'value' => $value,
-            ]);
-        }
-
-        return $response;
-    }
-
-    private function translateLabels()
+    private function setLabels()
     {
         $this->template->title = __($this->template->title);
-        $this->template->submit = __($this->template->submit);
+        $this->template->storeSubmit = __($this->template->storeSubmit);
+        $this->template->updateSubmit = __($this->template->updateSubmit);
 
         collect($this->template->attributes)->each(function ($attribute) {
             $attribute->label = __($attribute->label);
@@ -111,5 +94,12 @@ class FormBuilder
         $this->template = json_decode(\File::get($template));
 
         return $this;
+    }
+
+    private function getAttribute(string $column)
+    {
+        return collect($this->template->attributes)->filter(function ($attribute) use ($column) {
+            return $attribute->column === $column;
+        })->first();
     }
 }

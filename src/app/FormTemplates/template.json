@@ -4,13 +4,17 @@
     "url": null,
     "wrapperClass": "col-md-6",
     "theme": "success",
-    "solid": true,
-    "submit": "Save",
+    "solid": false,
+    "storeSubmit": "Create",
+    "updateSubmit": "Save",
+    "deleteSubmit": "Delete",
     "attributes": [{
         "label": "LabelOne",
         "column": "columnOne",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "input",
             "content": "text"
         }
@@ -19,6 +23,8 @@
         "column": "columnTwo",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "input",
             "content": "number",
             "step": 2,
@@ -30,6 +36,8 @@
         "column": "columnThree",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "select",
             "multiple": true,
             "options": null
@@ -39,6 +47,8 @@
         "column": "columnFour",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "select",
             "multiple": false,
             "source": null
@@ -48,6 +58,8 @@
         "column": "columnFive",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "datepicker"
         }
     }, {
@@ -55,6 +67,8 @@
         "column": "columnSix",
         "value": null,
         "config": {
+            "disabled": false,
+            "custom": false,
             "type": "timepicker"
         }
     }, {
@@ -62,6 +76,16 @@
         "column": "columnSeven",
         "value": false,
         "config": {
+            "type": "textarea",
+            "rows": 5
+        }
+    }, {
+        "label": "LabelEight",
+        "column": "columnEight",
+        "value": false,
+        "config": {
+            "disabled": false,
+            "custom": false,
             "type": "input",
             "content": "checkbox"
         }
