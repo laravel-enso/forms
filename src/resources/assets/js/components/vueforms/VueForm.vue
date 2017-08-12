@@ -1,18 +1,22 @@
 <template>
     <box :theme="this.errors.any() ? 'danger' : data.theme"
-        icon="fa fa-lightbulb-o"
+        :icon="data.icon"
         :title="data.title"
         open collapsible removable
         :border="!data.solid"
         :solid="data.solid"
         :overlay="loading">
         <span slot="btn-box-tool">
-            <i class="btn btn-sm fa fa-eraser"
+            <i class="btn btn-box-tool btn-sm fa fa-undo"
+                @click="setOriginal()"
+                v-if="hasChanges">
+            </i>
+            <i class="btn btn-box-tool btn-sm fa fa-eraser"
                 @click="clear()">
             </i>
         </span>
         <form :name="'form-' + _uid"
-            @submit.prevent="onSubmit">
+            @submit.prevent="submit()">
             <div class="row">
                 <div v-for="element in data.attributes"
                         :class="data.wrapperClass">
@@ -68,14 +72,24 @@
                 </div>
             </div>
             <center>
+                <button type="button"
+                    class="btn btn-danger"
+                    v-if="data.action === 'patch'"
+                    @click="showModal = true">
+                    <span>{{ data.submitDelete }}</span>
+                </button>
                 <button type="submit"
                     :disabled="errors.any()"
                     class="btn btn-primary">
-                    <span v-if="data.action === 'post'">{{ data.storeSubmit }}</span>
-                    <span v-else>{{ data.updateSubmit }}</span>
+                    <span v-if="data.action === 'post'">{{ data.submitStore }}</span>
+                    <span v-else>{{ data.submitUpdate }}</span>
                 </button>
             </center>
         </form>
+        <modal :show="showModal"
+            @cancel-action="showModal = false"
+            @commit-action="destroy()">
+        </modal>
     </box>
 </template>
 
@@ -89,6 +103,8 @@
     import VueFormInput from './VueFormInput.vue';
 
     export default {
+        components: { Box, VueSelect, Datepicker, Timepicker, VueFormInput },
+
         props: {
             data: {
                 type: Object,
@@ -96,17 +112,33 @@
             }
         },
 
-        components: { Box, VueSelect, Datepicker, Timepicker, VueFormInput },
+        computed: {
+            hasChanges() {
+                let self = this;
+
+                return this.data.attributes.filter((attribute, index) => {
+                    if (Array.isArray(attribute.value)) {
+                        return attribute.value.toString() === self.originalData[index].toString();
+                    }
+
+                    return !attribute.value && !self.originalData[index] ||
+                        (attribute.value && self.originalData[index]
+                        && attribute.value === self.originalData[index]);
+                }).length !== this.data.attributes.length;
+            }
+        },
 
         data() {
             return {
                 loading: false,
+                showModal: false,
                 errors: new Errors(),
-                test: ""
+                originalData: this.data.attributes.pluck('value')
             };
         },
+
         methods: {
-            onSubmit() {
+            submit() {
                 this.loading = true;
                 axios[this.data.action](this.data.url, this.formData()).then(response => {
                     if (response.data.redirect) {
@@ -131,14 +163,32 @@
                     return object;
                 }, {});
             },
+            setOriginal() {
+                let self = this;
+
+                this.data.attributes.forEach((attribute, index) => {
+                    attribute.value = self.originalData[index];
+                });
+
+                this.errors.empty();
+            },
             clear() {
                 this.data.attributes.forEach(element => {
                     element.value = Array.isArray(element.value) ? [] : null;
                 });
-            }
-        },
+            },
+            destroy() {
+                this.showModal = false;
+                this.loading = true;
 
-        mounted() {}
+                axios.delete(this.data.url).then(response => {
+                    window.location.href = response.data.redirect;
+                }).catch(error => {
+                    this.loading = false;
+                    this.reportEnsoException(error);
+                });
+            }
+        }
     };
 
 </script>

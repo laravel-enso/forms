@@ -28,14 +28,18 @@
             :min="element.config.min"
             :max="element.config.max"
             :disabled="element.config.disabled">
-        <input v-if="element.config.content === 'checkbox'"
-            :class="inputClass"
-            :readonly="element.config.readonly"
-            @click="$emit('update')"
-            v-model="element.value"
-            :name="element.column"
-            type="checkbox"
-            :disabled="element.config.disabled">
+        <span v-if="element.config.content === 'checkbox'">
+            <input :id="element.column"
+                class="toggle"
+                :class="inputClass"
+                :readonly="element.config.readonly"
+                @click="$emit('update')"
+                v-model="element.value"
+                :name="element.column"
+                type="checkbox"
+                :disabled="element.config.disabled">
+            <label :for="element.column"><i></i></label>
+        </span>
     </span>
 
 </template>

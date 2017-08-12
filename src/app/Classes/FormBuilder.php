@@ -79,8 +79,9 @@ class FormBuilder
     private function setLabels()
     {
         $this->template->title = __($this->template->title);
-        $this->template->storeSubmit = __($this->template->storeSubmit);
-        $this->template->updateSubmit = __($this->template->updateSubmit);
+        $this->template->submitStore = __($this->template->submitStore);
+        $this->template->submitUpdate = __($this->template->submitUpdate);
+        $this->template->submitDelete = __($this->template->submitDelete);
 
         collect($this->template->attributes)->each(function ($attribute) {
             $attribute->label = __($attribute->label);
