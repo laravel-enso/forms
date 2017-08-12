@@ -41,8 +41,7 @@ class FormBuilder
     public function setSelectOptions(string $column, $value)
     {
         $this->getAttribute($column)
-            ->config
-            ->options = SelectListBuilder::buildSelectList($value);
+            ->config->options = SelectListBuilder::buildSelectList($value);
 
         return $this;
     }
@@ -50,6 +49,13 @@ class FormBuilder
     public function setSelectSource(string $column, string $source)
     {
         $this->getAttribute($column)->config->source = $source;
+
+        return $this;
+    }
+
+    public function setValue(string $column, $value)
+    {
+        $this->getAttribute($column)->value = $value;
 
         return $this;
     }
