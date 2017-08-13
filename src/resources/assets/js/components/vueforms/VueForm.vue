@@ -103,7 +103,6 @@
     import Box from '../vueadminlte/Box.vue';
     import VueSelect from '../select/VueSelect.vue';
     import Datepicker from '../enso/Datepicker.vue';
-    import Timepicker from '../enso/Timepicker.vue';
     import VueFormInput from './VueFormInput.vue';
 
     export default {
