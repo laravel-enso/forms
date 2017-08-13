@@ -1,0 +1,89 @@
+{
+    "title": "Form Title",
+    "action": null,
+    "url": null,
+    "icon": null,
+    "wrapperClass": "col-md-6",
+    "theme": "success",
+    "solid": false,
+    "submitStore": "Create",
+    "submitUpdate": "Save",
+    "submitDelete": "Delete",
+    "attributes": [{
+        "label": "Name",
+        "column": "name",
+        "value": null,
+        "config": {
+            "custom": false,
+            "type": "input",
+            "content": "text",
+            "disabled": false
+        }
+    }, {
+        "label": "Age",
+        "column": "age",
+        "value": null,
+        "config": {
+            "custom": false,
+            "type": "input",
+            "content": "number",
+            "step": 1,
+            "min": 18,
+            "max": 100,
+            "disabled": false
+        }
+    }, {
+        "label": "Preferences",
+        "column": "preferences",
+        "value": null,
+        "config": {
+            "custom": false,
+            "type": "select",
+            "multiple": true,
+            "source": null,
+            "options": null,
+            "disabled": false
+        }
+    }, {
+        "label": "Birthday",
+        "column": "birthday",
+        "value": null,
+        "config": {
+            "custom": false,
+            "type": "datepicker",
+            "format": "d-m-Y",
+            "time": false,
+            "disabled": false
+        }
+    }, {
+        "label": "Lunch Time",
+        "column": "lunch_time",
+        "value": null,
+        "config": {
+            "custom": false,
+            "type": "timepicker",
+            "format": "H:i",
+            "disabled": false
+        }
+    }, {
+        "label": "Story",
+        "column": "story",
+        "value": false,
+        "config": {
+            "custom": false,
+            "type": "textarea",
+            "rows": 5,
+            "disabled": false
+        }
+    }, {
+        "label": "Trump Fan",
+        "column": "trump_fan",
+        "value": false,
+        "config": {
+            "custom": false,
+            "type": "input",
+            "content": "checkbox",
+            "disabled": false
+        }
+    }]
+}

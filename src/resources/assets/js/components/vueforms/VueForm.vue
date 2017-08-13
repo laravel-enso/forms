@@ -9,7 +9,7 @@
         <span slot="btn-box-tool">
             <i class="btn btn-box-tool btn-sm fa fa-undo"
                 @click="setOriginal()"
-                v-if="hasChanges">
+                v-if="data.action === 'patch' && hasChanges">
             </i>
             <i class="btn btn-box-tool btn-sm fa fa-eraser"
                 @click="clear()">
@@ -53,13 +53,17 @@
                             <datepicker v-if="element.config.type === 'datepicker'"
                                 @input="errors.clear(element.column)"
                                 v-model="element.value"
+                                :format="element.config.format"
+                                :time="element.config.time"
                                 :disabled="element.config.disabled">
                             </datepicker>
-                            <timepicker v-if="element.config.type === 'timepicker'"
+                            <datepicker v-if="element.config.type === 'timepicker'"
                                 @input="errors.clear(element.column)"
                                 v-model="element.value"
+                                :format="element.config.format"
+                                time-only
                                 :disabled="element.config.disabled">
-                            </timepicker>
+                            </datepicker>
                             <textarea v-if="element.config.type === 'textarea'"
                                 @input="errors.clear(element.column)"
                                 class="form-control"
@@ -141,18 +145,16 @@
             submit() {
                 this.loading = true;
                 axios[this.data.action](this.data.url, this.formData()).then(response => {
+                    this.loading = false;
+                    toastr.success(response.data.message);
+                    this.$emit(this.data.action);
+
                     if (response.data.redirect) {
                         window.location.href = response.data.redirect;
                     }
-
-                    this.loading = false;
-                    toastr.success(response.data.message);
-                    this.$emit('submit');
                 }).catch(error => {
-                    if (error.response && error.response.data.level) {
-                        return toastr[error.response.data.level](error.response.data.message);
-                    }
-
+                    this.reportEnsoException(error);
+                }).catch(error=> {
                     this.errors.set(error.response.data);
                     this.loading = false;
                 });
@@ -182,7 +184,13 @@
                 this.loading = true;
 
                 axios.delete(this.data.url).then(response => {
-                    window.location.href = response.data.redirect;
+                    this.loading = false;
+                    toastr.success(response.data.message);
+                    this.$emit('delete');
+
+                    if (response.data.redirect) {
+                        window.location.href = response.data.redirect;
+                    }
                 }).catch(error => {
                     this.loading = false;
                     this.reportEnsoException(error);
