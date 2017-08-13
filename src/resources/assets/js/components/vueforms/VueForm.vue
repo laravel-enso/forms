@@ -106,7 +106,7 @@
     import VueFormInput from './VueFormInput.vue';
 
     export default {
-        components: { Box, VueSelect, Datepicker, Timepicker, VueFormInput },
+        components: { Box, VueSelect, Datepicker, VueFormInput },
 
         props: {
             data: {
