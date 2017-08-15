@@ -8,7 +8,7 @@
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/formbuilder/version)](https://packagist.org/packages/laravel-enso/formbuilder)
 <!--/h-->
 
-Form builder for Laravel Enso.
+Form builder for Laravel Enso Based on json template
 
 ### Features
 
