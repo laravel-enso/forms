@@ -3,7 +3,6 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelEnso\Select\app\Classes\SelectListBuilder;
 
 class FormBuilder
 {
