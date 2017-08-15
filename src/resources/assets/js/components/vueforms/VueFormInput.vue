@@ -6,7 +6,6 @@
             :readonly="element.config.readonly"
             @keydown="$emit('update')"
             v-model="element.value"
-            :name="element.column"
             type="text"
             :disabled="element.config.disabled">
         <input v-if="element.config.content === 'email'"
@@ -14,7 +13,6 @@
             :readonly="element.config.readonly"
             @keydown="$emit('update')"
             v-model="element.value"
-            :name="element.column"
             type="email"
             :disabled="element.config.disabled">
         <input v-if="element.config.content === 'number'"
@@ -22,7 +20,6 @@
             :readonly="element.config.readonly"
             @keydown="$emit('update')"
             v-model="element.value"
-            :name="element.column"
             type="number"
             :step="element.config.step"
             :min="element.config.min"
@@ -35,10 +32,9 @@
                 :readonly="element.config.readonly"
                 @click="$emit('update')"
                 v-model="element.value"
-                :name="element.column"
                 type="checkbox"
                 :disabled="element.config.disabled">
-            <label :for="element.column"><i></i></label>
+            <label :for="element.column" class="toggle-input"><i></i></label>
         </span>
     </span>
 

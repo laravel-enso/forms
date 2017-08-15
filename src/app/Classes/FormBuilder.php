@@ -40,8 +40,7 @@ class FormBuilder
 
     public function setSelectOptions(string $column, $value)
     {
-        $this->getAttribute($column)
-            ->config->options = SelectListBuilder::buildSelectList($value);
+        $this->getAttribute($column)->config->options = $value;
 
         return $this;
     }

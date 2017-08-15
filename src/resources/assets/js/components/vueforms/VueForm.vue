@@ -44,7 +44,6 @@
                             <vue-select v-if="element.config.type === 'select'"
                                 @input="errors.clear(element.column);"
                                 v-model="element.value"
-                                :name="element.config.multiple ? element.column + '[]' : element.column"
                                 :options="element.config.options"
                                 :source="element.config.source"
                                 :multiple="element.config.multiple"
@@ -172,6 +171,7 @@
                 });
 
                 this.errors.empty();
+                this.$bus.$emit('form-restored');
             },
             clear() {
                 this.data.attributes.forEach(element => {
