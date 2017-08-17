@@ -46,6 +46,7 @@
                                 v-model="element.value"
                                 :options="element.config.options"
                                 :source="element.config.source"
+                                :key-map="element.config.keyMap"
                                 :multiple="element.config.multiple"
                                 :disabled="element.config.disabled">
                             </vue-select>
