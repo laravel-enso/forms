@@ -58,6 +58,13 @@ class FormBuilder
         return $this;
     }
 
+    public function setConfigParams(string $column, string $param, $value)
+    {
+        $this->getAttribute($column)->config->{$param} = $value;
+
+        return $this;
+    }
+
     public function setTitle(string $title)
     {
         $this->template->title = __($title);
