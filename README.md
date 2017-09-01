@@ -10,6 +10,10 @@
 
 JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 
+[![Watch the demo](https://laravel-enso.github.io/formbuilder/screenshots/Selection_109_thumb.png)](https://laravel-enso.github.io/formbuilder/videos/demo_01.webm)
+
+<sup>click on the photo to view a short demo in compatible browsers</sup>
+
 ### Features
 - allows for quick creation of forms
 - uses a JSON template file for generating the form
