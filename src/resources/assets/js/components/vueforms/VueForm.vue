@@ -83,7 +83,6 @@
                     <span>{{ data.submitDelete }}</span>
                 </button>
                 <button type="submit"
-                    :disabled="errors.any()"
                     class="btn btn-primary">
                     <span v-if="data.action === 'post'">{{ data.submitStore }}</span>
                     <span v-else>{{ data.submitUpdate }}</span>
