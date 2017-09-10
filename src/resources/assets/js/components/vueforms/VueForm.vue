@@ -145,6 +145,7 @@
                 axios[this.data.action](this.data.url, this.formData()).then(response => {
                     this.loading = false;
                     toastr.success(response.data.message);
+                    this.errors.empty();
                     this.$emit(this.data.action);
 
                     if (response.data.redirect) {
