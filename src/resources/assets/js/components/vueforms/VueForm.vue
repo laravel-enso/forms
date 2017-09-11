@@ -152,10 +152,10 @@
                         window.location.href = response.data.redirect;
                     }
                 }).catch(error => {
+                    this.loading = false;
                     this.reportEnsoException(error);
                 }).catch(error=> {
                     this.errors.set(error.response.data);
-                    this.loading = false;
                 });
             },
             formData() {
