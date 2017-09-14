@@ -160,15 +160,16 @@
                 axios[this.data.method](this.getSubmitPath(), this.getFormData()).then(response => {
                     this.loading = false;
                     toastr.success(response.data.message);
+                    this.errors.empty();
 
                     if (this.data.method === 'post') {
                         this.$bus.$emit('redirect', response.data.redirect);
                     }
                 }).catch(error => {
+                    this.loading = false;
                     this.reportEnsoException(error);
                 }).catch(error=> {
                     this.errors.set(error.response.data);
-                    this.loading = false;
                 });
             },
             getSubmitPath() {
