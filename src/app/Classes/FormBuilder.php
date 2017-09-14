@@ -8,13 +8,13 @@ use LaravelEnso\Helpers\Classes\Object;
 class FormBuilder
 {
     const AllowedMethods = ['post', 'put', 'patch'];
-    const AllowedActions = ["create", "store", "update", "destroy"];
+    const AllowedActions = ['create', 'store', 'update', 'destroy'];
 
     private $buttonLabels = [
-        "create"  => "Add",
-        "store"   => "Create",
-        "update"  => "Save",
-        "destroy" => "Delete",
+        'create'  => 'Add',
+        'store'   => 'Create',
+        'update'  => 'Save',
+        'destroy' => 'Delete',
     ];
 
     private $actions;
@@ -49,7 +49,7 @@ class FormBuilder
 
     public function setActions(array $actions)
     {
-        collect($actions)->each(function($action) {
+        collect($actions)->each(function ($action) {
             $this->validateAction($action);
         });
 
@@ -85,7 +85,7 @@ class FormBuilder
 
         if ($this->hasRouteAccessCheck && !request()->user()->can('access-route', $route)) {
             return $this;
-        };
+        }
 
         $this->routes[$action] = $route;
 
@@ -140,7 +140,7 @@ class FormBuilder
         })->first();
 
         if (!$field) {
-            throw new \EnsoException(__("The following field is missing from the JSON template").': '.$column);
+            throw new \EnsoException(__('The following field is missing from the JSON template').': '.$column);
         }
 
         return $field;
@@ -164,11 +164,11 @@ class FormBuilder
 
     private function setRoutes()
     {
-        collect($this->actions)->each(function($action) {
+        collect($this->actions)->each(function ($action) {
             if (!isset($this->routes[$action])) {
                 $this->validatePrefix();
                 $this->routes[$action] = $this->template->prefix.'.'.$action;
-            };
+            }
         });
     }
 
@@ -180,7 +180,7 @@ class FormBuilder
             $this->template->actions->set(
                 $action, new Object([
                     'label' => $this->buttonLabels[$action],
-                    'path' => $this->getActionPath($action, $this->routes[$action])
+                    'path'  => $this->getActionPath($action, $this->routes[$action]),
                 ])
             );
         });
@@ -207,7 +207,7 @@ class FormBuilder
     private function validatePrefix()
     {
         if (!$this->template->prefix) {
-            throw new \EnsoException("Prefix is required in order to generate the routes");
+            throw new \EnsoException('Prefix is required in order to generate the routes');
         }
     }
 
