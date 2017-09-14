@@ -133,6 +133,32 @@ class FormBuilder
         $this->hasRouteAccessCheck = false;
     }
 
+    private function setTemplate(string $template)
+    {
+        $this->template = json_decode(\File::get($template));
+
+        if (!$this->template) {
+            throw new \EnsoException("Template is not readable");
+        }
+
+        return $this;
+    }
+
+    private function setValues()
+    {
+        if (is_null($this->model)) {
+            return $this;
+        }
+
+        collect($this->template->fields)->each(function ($field) {
+            if (isset($this->model->{$field->column})) {
+                $field->value = $this->model->{$field->column};
+            }
+        });
+
+        return $this;
+    }
+
     private function getField(string $column)
     {
         $field = collect($this->template->fields)->filter(function ($field) use ($column) {
