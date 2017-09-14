@@ -20,9 +20,9 @@
     "require": {
         "php": ">=7.1.0",
         "laravel/framework": "5.4.*",
-        "laravel-enso/select": "^1.2",
-        "laravel-enso/vuecomponents": "^1.0",
-        "laravel-enso/vueadminlte": "^1.0"
+        "laravel-enso/select": "^2.0",
+        "laravel-enso/vuecomponents": "^2.0",
+        "laravel-enso/helpers": "^1.0"
     },
     "autoload": {
         "psr-4": {

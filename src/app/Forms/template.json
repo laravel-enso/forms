@@ -1,19 +1,14 @@
 {
     "title": "Form Title",
-    "action": null,
-    "url": null,
-    "icon": null,
-    "wrapperClass": "col-md-6",
-    "theme": "success",
-    "solid": false,
-    "submitStore": "Create",
-    "submitUpdate": "Save",
-    "submitDelete": "Delete",
+    "icon": "fa fa-icon",
+    "columns": "1",
+    "method": null,
+    "prefix": null,
     "attributes": [{
         "label": "Name",
         "column": "name",
         "value": null,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "input",
             "content": "text",
@@ -23,7 +18,7 @@
         "label": "Age",
         "column": "age",
         "value": null,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "input",
             "content": "number",
@@ -36,7 +31,7 @@
         "label": "Preferences",
         "column": "preferences",
         "value": null,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "select",
             "multiple": true,
@@ -49,7 +44,7 @@
         "label": "Birthday",
         "column": "birthday",
         "value": null,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "datepicker",
             "format": "d-m-Y",
@@ -60,7 +55,7 @@
         "label": "Lunch Time",
         "column": "lunch_time",
         "value": null,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "timepicker",
             "format": "H:i",
@@ -70,7 +65,7 @@
         "label": "Story",
         "column": "story",
         "value": false,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "textarea",
             "rows": 5,
@@ -80,7 +75,7 @@
         "label": "Trump Fan",
         "column": "trump_fan",
         "value": false,
-        "config": {
+        "meta": {
             "custom": false,
             "type": "input",
             "content": "checkbox",

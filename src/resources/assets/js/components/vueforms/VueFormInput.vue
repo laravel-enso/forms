@@ -1,39 +1,59 @@
 <template>
 
     <span>
-        <input v-if="element.config.content === 'text'"
-            :class="inputClass"
-            :readonly="element.config.readonly"
-            @keydown="$emit('update')"
-            v-model="element.value"
-            type="text"
-            :disabled="element.config.disabled">
-        <input v-if="element.config.content === 'email'"
-            :class="inputClass"
-            :readonly="element.config.readonly"
-            @keydown="$emit('update')"
-            v-model="element.value"
-            type="email"
-            :disabled="element.config.disabled">
-        <input v-if="element.config.content === 'number'"
-            :class="inputClass"
-            :readonly="element.config.readonly"
-            @keydown="$emit('update')"
-            v-model="element.value"
-            type="number"
-            :step="element.config.step"
-            :min="element.config.min"
-            :max="element.config.max"
-            :disabled="element.config.disabled">
-        <span v-if="element.config.content === 'checkbox'">
+        <div class="control has-icons-right"
+            v-if="element.meta.content === 'text'">
+            <input class="input"
+                :class="{ 'is-danger': hasError }"
+                :readonly="element.meta.readonly"
+                @keydown="$emit('update')"
+                v-model="element.value"
+                type="text"
+                :disabled="element.meta.disabled">
+            <span class="icon is-small is-right"
+                v-if="hasError">
+                <i class="fa fa-warning"></i>
+            </span>
+        </div>
+        <div class="control has-icons-right"
+            v-if="element.meta.content === 'email'">
+            <input class="input"
+                :class="{ 'is-danger': hasError }"
+                :readonly="element.meta.readonly"
+                @keydown="$emit('update')"
+                v-model="element.value"
+                type="email"
+                :disabled="element.meta.disabled">
+            <span class="icon is-small is-right"
+                v-if="hasError">
+                <i class="fa fa-warning"></i>
+            </span>
+        </div>
+        <div class="control has-icons-right"
+            v-if="element.meta.content === 'number'">
+            <input class="input"
+                :class="{ 'is-danger': hasError }"
+                :readonly="element.meta.readonly"
+                @keydown="$emit('update')"
+                v-model="element.value"
+                type="number"
+                :step="element.meta.step"
+                :min="element.meta.min"
+                :max="element.meta.max"
+                :disabled="element.meta.disabled">
+            <span class="icon is-small is-right"
+                v-if="hasError">
+                <i class="fa fa-warning"></i>
+            </span>
+        </div>
+        <span v-if="element.meta.content === 'checkbox'">
             <input :id="element.column"
                 class="toggle"
-                :class="inputClass"
-                :readonly="element.config.readonly"
+                :readonly="element.meta.readonly"
                 @click="$emit('update')"
                 v-model="element.value"
                 type="checkbox"
-                :disabled="element.config.disabled">
+                :disabled="element.meta.disabled">
             <label :for="element.column" class="toggle-input"><i></i></label>
         </span>
     </span>
@@ -48,11 +68,20 @@
                 type: Object,
                 required: true
             },
-            inputClass: {
-                type: String,
-                default: 'form-control'
-            },
+            hasError: {
+                type: Boolean,
+                default: false
+            }
         }
     }
 
 </script>
+
+<style>
+
+    div.tile div.field label.switch {
+        display: block;
+        margin-top: 18px;
+    }
+
+</style>
