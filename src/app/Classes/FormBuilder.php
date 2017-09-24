@@ -13,7 +13,7 @@ class FormBuilder
     private $buttonLabels = [
         'create'  => 'Add',
         'store'   => 'Create',
-        'update'  => 'Save',
+        'update'  => 'Update',
         'destroy' => 'Delete',
     ];
 
