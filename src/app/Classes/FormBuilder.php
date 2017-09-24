@@ -138,7 +138,7 @@ class FormBuilder
         $this->template = json_decode(\File::get($template));
 
         if (!$this->template) {
-            throw new \EnsoException("Template is not readable");
+            throw new \EnsoException('Template is not readable');
         }
 
         return $this;
