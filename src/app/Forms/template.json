@@ -4,7 +4,7 @@
     "columns": "1",
     "method": null,
     "prefix": null,
-    "attributes": [{
+    "fields": [{
         "label": "Name",
         "column": "name",
         "value": null,
