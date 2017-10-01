@@ -206,19 +206,11 @@ class FormBuilder
             $this->template->actions->set(
                 $action, new Object([
                     'label' => $this->buttonLabels[$action],
-                    'path'  => $this->getActionPath($action, $this->routes[$action]),
+                    'route'  => $this->routes[$action],
+                    'id' => optional($this->model)->id
                 ])
             );
         });
-    }
-
-    private function getActionPath(string $action, string $route)
-    {
-        $params = collect(['update', 'destroy'])->contains($action)
-                ? $this->model->id
-                : [];
-
-        return route($route, $params, false);
     }
 
     private function translate()
