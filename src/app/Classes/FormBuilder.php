@@ -205,9 +205,9 @@ class FormBuilder
         collect($this->actions)->each(function ($action) {
             $this->template->actions->set(
                 $action, new Object([
-                    'label' => $this->buttonLabels[$action],
+                    'label'  => $this->buttonLabels[$action],
                     'route'  => $this->routes[$action],
-                    'id' => optional($this->model)->id
+                    'id'     => optional($this->model)->id,
                 ])
             );
         });
