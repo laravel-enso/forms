@@ -178,7 +178,6 @@ class FormBuilder
         $this->actions = $this->actions ?: $this->getDefaultActions();
         $this->setRoutes();
         $this->buildActions();
-        $this->translate();
     }
 
     private function getDefaultActions()
@@ -211,15 +210,6 @@ class FormBuilder
                 ])
             );
         });
-    }
-
-    private function translate()
-    {
-        $this->template->title = __($this->template->title);
-
-        foreach ($this->template->actions as $action) {
-            $action->label = __($action->label);
-        }
     }
 
     private function validatePrefix()
