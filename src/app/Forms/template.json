@@ -36,7 +36,7 @@
             "type": "select",
             "multiple": true,
             "source": null,
-            "options": null,
+            "options": {},
             "keyMap": "number",
             "disabled": false
         }
