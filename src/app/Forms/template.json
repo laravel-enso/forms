@@ -30,7 +30,7 @@
     }, {
         "label": "Preferences",
         "column": "preferences",
-        "value": null,
+        "value": [],
         "meta": {
             "custom": false,
             "type": "select",
