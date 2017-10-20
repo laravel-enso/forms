@@ -35,7 +35,7 @@
     }, {
         "label": "Preferences",
         "column": "preferences",
-        "value": null,
+        "value": [],
         "config": {
             "custom": false,
             "type": "select",
