@@ -69,7 +69,12 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
     ````
     <vue-form :data="userForm">
     </vue-form>
+    
+    <vue-form-card :data="userForm">
+    </vue-form-card>
     ````
+
+    Note: `VueForm` is a standalone form, while `VueFormCard` is a Card wrapper for the VueForm.
 
 ### Publishes
 
