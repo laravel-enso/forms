@@ -10,7 +10,7 @@
 
 JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 
-[![Watch the demo](https://laravel-enso.github.io/formbuilder/screenshots/Selection_109_thumb.png)](https://laravel-enso.github.io/formbuilder/videos/demo_01.webm)
+[![Watch the demo](https://laravel-enso.github.io/formbuilder/screenshots/bulma_109_thumb.png)](https://laravel-enso.github.io/formbuilder/videos/bulma_demo_01.webm)
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
