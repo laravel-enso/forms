@@ -2,8 +2,8 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes;
 
-use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\Classes\Obj;
+use Illuminate\Database\Eloquent\Model;
 
 class FormBuilder
 {
