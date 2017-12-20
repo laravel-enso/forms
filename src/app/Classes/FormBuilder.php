@@ -3,7 +3,7 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelEnso\Helpers\Classes\Object;
+use LaravelEnso\Helpers\Classes\Obj;
 
 class FormBuilder
 {
@@ -11,9 +11,9 @@ class FormBuilder
     const AllowedActions = ['create', 'store', 'update', 'destroy'];
 
     private $buttonLabels = [
-        'create'  => 'Add',
-        'store'   => 'Create',
-        'update'  => 'Update',
+        'create' => 'Add',
+        'store' => 'Create',
+        'update' => 'Update',
         'destroy' => 'Delete',
     ];
 
@@ -30,7 +30,7 @@ class FormBuilder
         $this->setTemplate($template)
             ->setValues();
 
-        $this->template->actions = new Object();
+        $this->template->actions = new Obj();
     }
 
     public function getData()
@@ -199,14 +199,15 @@ class FormBuilder
 
     private function buildActions()
     {
-        $this->template->actions = new Object();
+        $this->template->actions = new Obj();
 
         collect($this->actions)->each(function ($action) {
             $this->template->actions->set(
-                $action, new Object([
-                    'label'  => $this->buttonLabels[$action],
-                    'route'  => $this->routes[$action],
-                    'id'     => optional($this->model)->id,
+                $action,
+                new Obj([
+                    'label' => $this->buttonLabels[$action],
+                    'route' => $this->routes[$action],
+                    'id' => optional($this->model)->id,
                 ])
             );
         });
