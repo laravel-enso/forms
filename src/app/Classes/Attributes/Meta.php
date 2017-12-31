@@ -8,6 +8,6 @@ class Meta
 
     const Optional = [
         'options', 'multiple', 'custom', 'content', 'step', 'min', 'max', 'disabled', 'hidden',
-        'source', 'format', 'time', 'rows'
+        'source', 'format', 'time', 'rows',
     ];
 }

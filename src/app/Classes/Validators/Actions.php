@@ -2,8 +2,8 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
-use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions as Attributes;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
+use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions as Attributes;
 
 class Actions
 {

@@ -2,8 +2,8 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
-use LaravelEnso\FormBuilder\app\Classes\Attributes\Fields as Attributes;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
+use LaravelEnso\FormBuilder\app\Classes\Attributes\Fields as Attributes;
 
 class Fields
 {
