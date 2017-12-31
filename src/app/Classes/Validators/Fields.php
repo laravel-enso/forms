@@ -8,12 +8,10 @@ use LaravelEnso\FormBuilder\app\Classes\Attributes\Fields as Attributes;
 class Fields
 {
     private $template;
-    private $types;
 
     public function __construct($template)
     {
         $this->template = $template;
-        $this->types = collect(Attributes::Types);
     }
 
     public function validate()

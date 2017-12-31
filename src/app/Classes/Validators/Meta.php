@@ -96,7 +96,7 @@ class Meta
 
     private function checkType()
     {
-        if (!$this->types->contains($this->field->type)) {
+        if (!collect(Attributes::Types)->contains($this->field->meta->type)) {
             throw new TemplateException(__(sprintf(
                 'Unknown Field Type Found: "%s"',
                 $this->field->type

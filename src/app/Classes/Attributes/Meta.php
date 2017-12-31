@@ -10,4 +10,6 @@ class Meta
         'options', 'multiple', 'custom', 'content', 'step', 'min', 'max', 'disabled', 'hidden',
         'source', 'format', 'time', 'rows',
     ];
+
+    const Types = ['input', 'select', 'datepicker', 'timepicker', 'textarea'];
 }
