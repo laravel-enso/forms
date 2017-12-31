@@ -3,24 +3,25 @@
     "icon": "fa fa-icon",
     "columns": "1",
     "method": null,
-    "prefix": null,
+    "routePrefix": null,
+    "actions": ["create", "store", "update", "destroy"],
     "fields": [{
         "label": "Name",
-        "column": "name",
+        "name": "name",
         "value": null,
+        "type": "input",
         "meta": {
             "custom": false,
-            "type": "input",
             "content": "text",
             "disabled": false
         }
     }, {
         "label": "Age",
-        "column": "age",
+        "name": "age",
         "value": null,
+        "type": "input",
         "meta": {
             "custom": false,
-            "type": "input",
             "content": "number",
             "step": 1,
             "min": 18,
@@ -29,55 +30,54 @@
         }
     }, {
         "label": "Preferences",
-        "column": "preferences",
+        "name": "preferences",
         "value": [],
+        "type": "select",
         "meta": {
             "custom": false,
-            "type": "select",
             "multiple": true,
             "source": null,
             "options": {},
-            "keyMap": "number",
             "disabled": false
         }
     }, {
         "label": "Birthday",
-        "column": "birthday",
+        "name": "birthday",
         "value": null,
+        "type": "datepicker",
         "meta": {
             "custom": false,
-            "type": "datepicker",
             "format": "d-m-Y",
             "time": false,
             "disabled": false
         }
     }, {
         "label": "Lunch Time",
-        "column": "lunch_time",
+        "name": "lunch_time",
         "value": null,
+        "type": "timepicker",
         "meta": {
             "custom": false,
-            "type": "timepicker",
             "format": "H:i",
             "disabled": false
         }
     }, {
         "label": "Story",
-        "column": "story",
+        "name": "story",
         "value": false,
+        "type": "textarea",
         "meta": {
             "custom": false,
-            "type": "textarea",
             "rows": 5,
             "disabled": false
         }
     }, {
         "label": "Trump Fan",
-        "column": "trump_fan",
+        "name": "trump_fan",
         "value": false,
+        "type": "input",
         "meta": {
             "custom": false,
-            "type": "input",
             "content": "checkbox",
             "disabled": false
         }
