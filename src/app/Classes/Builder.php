@@ -44,24 +44,27 @@ class Builder
 
     private function computeActions()
     {
-        $this->template->actions = collect($this->template->actions)->reduce(function ($collector, $action) {
-            $route = $this->routes[$action] ?? $this->template->routePrefix.'.'.$action;
+        $this->template->actions = collect($this->template->actions)
+            ->reduce(function ($collector, $action) {
+                $route = $this->routes[$action] ?? $this->template->routePrefix.'.'.$action;
 
-            if ($this->isForbidden($route)) {
-                return;
-            }
+                if ($this->isForbidden($route)) {
+                    return;
+                }
 
-            $button = config('enso.forms.buttons.'.$action);
+                $button = config('enso.forms.buttons.'.$action);
 
-            if ($action === 'create') {
-                $collector[$action] = ['button' => $button, 'route' => $route];
-            } else {
+                if ($action === 'create') {
+                    $collector[$action] = ['button' => $button, 'route' => $route];
+
+                    return $collector;
+                }
+
                 $path = route($route, [optional($this->model)->id], false);
                 $collector[$action] = ['button' => $button, 'path' => $path];
-            }
 
-            return $collector;
-        }, []);
+                return $collector;
+            }, []);
     }
 
     private function isForbidden($route)

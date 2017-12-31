@@ -22,7 +22,8 @@ class Meta
 
         $this->checkMandatoryAttributes()
             ->checkOptionalAttributes()
-            ->checkFormat();
+            ->checkFormat()
+            ->checkType();
     }
 
     private function isCustom()
@@ -89,6 +90,8 @@ class Meta
                 $this->field->name
             )));
         }
+
+        return $this;
     }
 
     private function checkType()
