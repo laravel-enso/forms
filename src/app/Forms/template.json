@@ -9,8 +9,8 @@
         "label": "Name",
         "name": "name",
         "value": null,
-        "type": "input",
         "meta": {
+            "type": "input",
             "custom": false,
             "content": "text",
             "disabled": false
@@ -19,8 +19,8 @@
         "label": "Age",
         "name": "age",
         "value": null,
-        "type": "input",
         "meta": {
+            "type": "input",
             "custom": false,
             "content": "number",
             "step": 1,
@@ -32,8 +32,8 @@
         "label": "Preferences",
         "name": "preferences",
         "value": [],
-        "type": "select",
         "meta": {
+            "type": "select",
             "custom": false,
             "multiple": true,
             "source": null,
@@ -44,8 +44,8 @@
         "label": "Birthday",
         "name": "birthday",
         "value": null,
-        "type": "datepicker",
         "meta": {
+            "type": "datepicker",
             "custom": false,
             "format": "d-m-Y",
             "time": false,
@@ -55,8 +55,8 @@
         "label": "Lunch Time",
         "name": "lunch_time",
         "value": null,
-        "type": "timepicker",
         "meta": {
+            "type": "timepicker",
             "custom": false,
             "format": "H:i",
             "disabled": false
@@ -65,8 +65,8 @@
         "label": "Story",
         "name": "story",
         "value": false,
-        "type": "textarea",
         "meta": {
+            "type": "textarea",
             "custom": false,
             "rows": 5,
             "disabled": false
@@ -75,8 +75,8 @@
         "label": "Trump Fan",
         "name": "trump_fan",
         "value": false,
-        "type": "input",
         "meta": {
+            "type": "input",
             "custom": false,
             "content": "checkbox",
             "disabled": false
