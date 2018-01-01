@@ -7,8 +7,8 @@ class Meta
     const Mandatory = ['type'];
 
     const Optional = [
-        'options', 'multiple', 'custom', 'content', 'step', 'min', 'max', 'disabled', 'hidden',
-        'source', 'format', 'time', 'rows',
+        'options', 'multiple', 'custom', 'content', 'step', 'min', 'max',
+        'disabled', 'hidden', 'source', 'format', 'time', 'rows', 'keyMap'
     ];
 
     const Types = ['input', 'select', 'datepicker', 'timepicker', 'textarea'];
