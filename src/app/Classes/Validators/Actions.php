@@ -16,12 +16,6 @@ class Actions
 
     public function validate()
     {
-        if (!isset($this->template->actions)) {
-            $this->template->actions = $this->defaultActions();
-
-            return;
-        }
-
         $diff = collect($this->template->actions)->diff(collect(Attributes::List));
 
         if ($diff->isNotEmpty()) {
@@ -30,12 +24,5 @@ class Actions
                 $diff->explode(', ')
             )));
         }
-    }
-
-    private function defaultActions()
-    {
-        return $this->template->method === 'post'
-            ? ['store']
-            : ['create', 'update', 'destroy'];
     }
 }

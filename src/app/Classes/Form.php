@@ -121,7 +121,20 @@ class Form
     {
         $this->template->method = $method;
 
+        if (!isset($this->template->actions)) {
+            $this->template->actions = $this->defaultActions();
+
+            return;
+        }
+
         return $this;
+    }
+
+    private function defaultActions()
+    {
+        return $this->template->method === 'post'
+            ? ['store']
+            : ['create', 'update', 'destroy'];
     }
 
     private function getField(string $name)
