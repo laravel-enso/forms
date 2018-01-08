@@ -101,7 +101,7 @@ class Form
         return $this;
     }
 
-    public function autorize($authorize)
+    public function autorize(bool $authorize)
     {
         $this->template->authorize = $authorize;
     }
