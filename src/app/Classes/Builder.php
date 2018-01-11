@@ -46,22 +46,17 @@ class Builder
     {
         $this->template->actions = collect($this->template->actions)
             ->reduce(function ($collector, $action) {
+                $actionConfig = [];
+                $actionConfig['button'] = config('enso.forms.buttons.'.$action);
                 $route = $this->routes[$action] ?? $this->template->routePrefix.'.'.$action;
+                $actionConfig['forbidden'] = $this->isForbidden($route);
 
-                if ($this->isForbidden($route)) {
-                    return;
-                }
+                [$routeOrPath, $value] = $action === 'create'
+                    ? ['route', $route]
+                    : ['path', route($route, [optional($this->model)->id], false)];
 
-                $button = config('enso.forms.buttons.'.$action);
-
-                if ($action === 'create') {
-                    $collector[$action] = ['button' => $button, 'route' => $route];
-
-                    return $collector;
-                }
-
-                $path = route($route, [optional($this->model)->id], false);
-                $collector[$action] = ['button' => $button, 'path' => $path];
+                $actionConfig[$routeOrPath] = $value;
+                $collector[$action] = $actionConfig;
 
                 return $collector;
             }, []);
