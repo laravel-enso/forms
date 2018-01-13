@@ -18,6 +18,7 @@ const sizes = ['is-small', 'is-medium', 'is-large'];
 const types = ['is-primary', 'is-warning', 'is-danger', 'is-success', 'is-info'];
 
 export default {
+    name: 'VueSwitch',
 
     props: {
         disabled: {
@@ -152,4 +153,5 @@ export default {
         --height: $size-large;
     }
 }
+
 </style>
