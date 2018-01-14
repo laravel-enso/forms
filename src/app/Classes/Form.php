@@ -111,7 +111,7 @@ class Form
         $this->template = json_decode(\File::get($template));
 
         if (!is_object($this->template)) {
-            throw new TemplateException('Template is not readable');
+            throw new TemplateException(__('Template is not readable'));
         }
 
         return $this;
@@ -144,10 +144,10 @@ class Form
         })->first();
 
         if (!$field) {
-            throw new TemplateException(__(sprintf(
-                'The "%s" field is missing from the JSON template',
-                $name
-            )));
+            throw new TemplateException(__(
+                'The :field field is missing from the JSON template',
+                ['field' => $name]
+            ));
         }
 
         return $field;

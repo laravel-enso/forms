@@ -38,11 +38,10 @@ class Meta
             ->diff(collect($this->field->meta)->keys());
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateException(__(sprintf(
-                'Mandatory Meta Attribute(s) Missing: "%s" from field: "%s"',
-                $diff->implode('", "'),
-                $this->field->name
-            )));
+            throw new TemplateException(__(
+                'Mandatory Meta Attribute(s) Missing: :attr from field: :field',
+                ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
+            ));
         }
 
         return $this;
@@ -58,11 +57,10 @@ class Meta
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateException(__(sprintf(
-                'Unknown Attribute(s) Found: "%s" in field: "%s"',
-                $diff->implode('", "'),
-                $this->field->name
-            )));
+            throw new TemplateException(__(
+                'Unknown Attribute(s) Found: :attr in field: :field',
+                ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
+            ));
         }
 
         return $this;
@@ -71,24 +69,24 @@ class Meta
     private function checkFormat()
     {
         if ($this->field->meta->type === 'select' && self::selectMetaParameterMissing($this->field)) {
-            throw new TemplateException(__(sprint(
-                'Mandatory "source" or "option" meta parameter is missing for the "%s" select field',
-                $this->field->name
-            )));
+            throw new TemplateException(__(
+                'Mandatory "source" or "option" meta parameter is missing for the :field select field',
+                ['field' => $this->field->name]
+            ));
         }
 
         if ($this->field->meta->type === 'input' && self::inputMetaParameterMissing($this->field)) {
-            throw new TemplateException(__(sprintf(
-                'Mandatory "type" meta parameter is missing for the "%s" input field',
-                $this->field->name
-            )));
+            throw new TemplateException(__(
+                'Mandatory "type" meta parameter is missing for the :field input field',
+                ['field' => $this->field->name]
+            ));
         }
 
         if (property_exists($this->field->meta, 'options') && !is_object($this->field->meta->options)) {
-            throw new TemplateException(__(sprintf(
-                '"options" meta parameter for field %s is must be an object',
-                $this->field->name
-            )));
+            throw new TemplateException(__(
+                '"options" meta parameter for field :field is must be an object',
+                ['field' => $this->field->name]
+            ));
         }
 
         return $this;
@@ -97,10 +95,10 @@ class Meta
     private function checkType()
     {
         if (!collect(Attributes::Types)->contains($this->field->meta->type)) {
-            throw new TemplateException(__(sprintf(
-                'Unknown Field Type Found: "%s"',
-                $this->field->type
-            )));
+            throw new TemplateException(__(
+                'Unknown Field Type Found: :type',
+                ['type' => $this->field->type]
+            ));
         }
     }
 

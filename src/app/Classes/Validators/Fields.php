@@ -44,10 +44,10 @@ class Fields
             ->diff(collect($field)->keys());
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateException(__(sprintf(
-                'Mandatory Field Attribute(s) Missing: "%s"',
-                $diff->implode('", "')
-            )));
+            throw new TemplateException(__(
+                'Mandatory Field Attribute(s) Missing: :attr',
+                ['attr' => $diff->implode('", "')]
+            ));
         }
 
         return $this;

@@ -28,10 +28,10 @@ class Routes
 
         collect($this->template->actions)->each(function ($action) {
             if (!isset($this->template->routes[$action])) {
-                throw new TemplateException(__(sprintf(
-                    '"routePrefix" attribute is missing and no route for action %s was provided',
-                    $action
-                )));
+                throw new TemplateException(__(
+                    '"routePrefix" attribute is missing and no route for action :action was provided',
+                    ['action' => $action]
+                ));
             }
         });
     }
@@ -48,10 +48,10 @@ class Routes
     private function checkRoute($route)
     {
         if (!\Route::has($route)) {
-            throw new TemplateException(__(sprintf(
-                'Route does not exist: %s',
-                $route
-            )));
+            throw new TemplateException(__(
+                'Route does not exist: :route',
+                ['route' => $route]
+            ));
         }
     }
 }
