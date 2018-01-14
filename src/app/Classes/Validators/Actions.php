@@ -19,10 +19,10 @@ class Actions
         $diff = collect($this->template->actions)->diff(collect(Attributes::List));
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateException(__(sprintf(
-                'Incorrect action(s) provided "%s". Allowed actions are: "create", "store", "update" and "delete"',
-                $diff->explode(', ')
-            )));
+            throw new TemplateException(__(
+                'Incorrect action(s) provided: :actions. Allowed actions are: "create", "store", "update" and "delete"',
+                ['actions' => $diff->explode(', ')]
+            ));
         }
     }
 }
