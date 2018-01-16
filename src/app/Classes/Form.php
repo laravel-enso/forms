@@ -16,33 +16,24 @@ class Form
         $this->setTemplate($template);
     }
 
-    public function get()
-    {
-        if ($this->needsValidation()) {
-            (new Validator($this->template))->run();
-        }
-
-        (new Builder($this->template, $this->model))->run();
-
-        return $this->template;
-    }
-
     public function create(Model $model = null)
     {
         $this->model = $model;
 
-        $this->setMethod('post');
+        $this->setMethod('post')
+            ->build();
 
-        return $this;
+        return $this->template;
     }
 
     public function edit(Model $model)
     {
         $this->model = $model;
 
-        $this->setMethod('patch');
+        $this->setMethod('patch')
+            ->build();
 
-        return $this;
+        return $this->template;
     }
 
     public function actions(array $actions)
@@ -101,9 +92,20 @@ class Form
         return $this;
     }
 
-    public function autorize(bool $authorize)
+    public function authorize(bool $authorize)
     {
         $this->template->authorize = $authorize;
+
+        return $this;
+    }
+
+    public function build()
+    {
+        if ($this->needsValidation()) {
+            (new Validator($this->template))->run();
+        }
+
+        (new Builder($this->template, $this->model))->run();
     }
 
     private function setTemplate(string $template)
@@ -124,7 +126,7 @@ class Form
         if (!isset($this->template->actions)) {
             $this->template->actions = $this->defaultActions();
 
-            return;
+            return $this;
         }
 
         return $this;
