@@ -140,13 +140,15 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import Errors from '../../../classes/enso/Errors.js';
+import Errors from '../../../classes/enso/Errors';
 import Modal from './Modal.vue';
 import VueSelect from '../select/VueSelect.vue';
 import Datepicker from '../bulma/Datepicker.vue';
 import VueFormInput from './VueFormInput.vue';
 
 export default {
+    name: 'VueForm',
+
     components: {
         Modal, VueSelect, Datepicker, VueFormInput,
     },
