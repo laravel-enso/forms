@@ -54,7 +54,7 @@ class Builder
                 [$routeOrPath, $value] = $action === 'create'
                     ? ['route', $route]
                     : ['path', route($route, is_null($this->model) ? [] : [$this->model->id], false)];
-                \Log::info($route);
+
                 $actionConfig[$routeOrPath] = $value;
                 $collector[$action] = $actionConfig;
 
