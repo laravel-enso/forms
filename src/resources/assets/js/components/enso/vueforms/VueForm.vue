@@ -76,7 +76,7 @@
                                 </textarea>
                                 <span class="icon is-small is-right has-text-danger"
                                     v-if="errors.has(field.name)">
-                                    <i class="fa fa-warning"></i>
+                                    <i class="fas fa-exclamation-triangle"></i>
                                 </span>
                             </div>
                         </span>

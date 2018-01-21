@@ -1,6 +1,6 @@
 {
     "title": "Form Title",
-    "icon": "fa fa-icon",
+    "icon": "fas fa-icon",
     "columns": "1",
     "method": null,
     "routePrefix": null,
