@@ -19,6 +19,7 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 - uses a JSON template file for generating the form
 - uses it's own VueJS components, such as `vue-select` and `datepicker` for an improved experience
 - for most forms, the json template is all that it's needed
+- provides helpful error messages when the template is missing parameters or unexpected values ar found
 - when needed, allows the customization of form components in order to cover all scenarios
 - comes with a `template.json` file that can be used as an example when starting out
 - integrates with the Laravel Request Validation for seamless usage and reusability
@@ -26,7 +27,9 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 
 ### Under the Hood
 - a template file is needed in order to generate the form data structure object
-- the `FormBuilder` object has to be used in the back-end (controller) to parse the template, get additional parameters if needed, and build the structure
+- the `Form` object has to be used in the back-end (controller) to parse the template, get additional parameters if needed, and build the structure
+- although in most common scenarios you can give all the required configuration in the template file, 
+the `Form` class has fluent helper functions for setting/overriding most attributes
 - a `VueForm` object needs to be included in the view/page/parent component, taking the form-builder's resulting object as parameter 
 
 ### Installation Steps
@@ -92,6 +95,22 @@ The VueForm.vue components takes the following parameters:
 Note: when sending extra parameters, on the back-end they can be found in the request's `_params` attribute.  
 
 Note: when creating a resource and no redirect is given in the POST response, the form does not perform a redirect.
+
+### Advanced usage
+The `Form` class provided the following fluent helper functions:
+- `actions(array $actions)`, sets the actions available on the form. 
+Valid actions are `create`, `store`, `update` and `delete` 
+- `routePrefix(string $prefix)`, sets the route prefix that then is used with the various action default endpoints,
+- `title(string $title)`, the title for the form,
+- `icon(string $icon)`, the icon shown alongside the title
+- `route(string $action, string $route)`, permits setting a specific route for a given action
+- `options(string $name, $value)`, sets the available option list for a given select attribute
+Commonly used to override the form value.
+- `value(string $field, $value)`, sets the starting value for form element
+Commonly used to override the form value.
+- `meta(string $field, string $param, $value)`, sets a specific value, for a meta param, for the given field
+- `authorize(bool $authorize)`, set the authorize flag for the form.
+If this value is not given in the form, the global default value is taken from the config file 
 
 ### Publishes
 
