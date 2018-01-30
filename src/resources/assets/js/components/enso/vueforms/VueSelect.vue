@@ -283,6 +283,7 @@ export default {
                 }
 
                 .multiselect__tag {
+                    font-size: 16px;
                     border-radius: 3px;
                     margin-bottom: 4px;
                     padding: 5px 26px 5px 10px;
