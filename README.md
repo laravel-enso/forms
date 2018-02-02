@@ -34,32 +34,12 @@ the `Form` class has fluent helper functions for setting/overriding most attribu
 
 ### Installation Steps
 
-1. (optional) Publish the configuration file with 
-    ```
-    php artisan vendor:publish --tag=vue-components
-    ```
-
-2. (optional) Publish the template file with 
-    ```
-    php artisan vendor:publish --tag=forms
-    ```
-
-3. Based on your workflow, be sure to include/require the new components so that they're available to Vue. Compile with `gulp` / `npm run dev`
-
-Note that only the `vue-form` component is required for showing the form and all his functionality, but you may use the other components separately as required
-
-    ````js
-    import VueForm from '../../../components/vueforms/VueForm.vue';
-    import VueSelect from '../../../components/vueforms/VueSelect.vue';
-    import VueSwitch from '../../../components/vueforms/VueSwitch.vue';
-    import Datepicker from '../../../components/vueforms/Datepicker.vue';
-    import Modal from '../../../components/vueforms/Modal.vue';
-    ````
+No extra installation steps are required, as this package is already included in the base install of [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Usage
 
 1. Create a template file for the new form, using `template.json` as an example, and place it inside `app/Forms` (recommended)
-2. Create and setup in your controller method the `FormBuilder` object, and return the resulting data
+2. Create and setup in your controller method the `Form` object, and return the resulting data
 
     ````php
     $form = (new Form(app_path('Forms/owner.json')))
@@ -83,7 +63,7 @@ Note that only the `vue-form` component is required for showing the form and all
 6. Add inside your page/component
 
     ````
-    <vue-form :data="userForm">
+    <vue-form :data="form">
     </vue-form>
     ````
 
