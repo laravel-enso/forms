@@ -20,7 +20,7 @@ class Fields
 
         collect($this->template->fields)->each(function ($field) {
             $this->checkAttributes($field);
-
+            $this->checkValue($field);
             (new Meta($field))->validate();
         });
     }
@@ -51,5 +51,30 @@ class Fields
         }
 
         return $this;
+    }
+
+    private function checkValue($field)
+    {
+        if ($field->meta->type === 'input' && $field->meta->content === 'checkbox') {
+            if (!is_bool($field->value)) {
+                throw new TemplateException(__(
+                    'Chexboxes must have a boolean default value: ":field"',
+                    ['field' => $field->name]
+                ));
+            }
+
+            return;
+        }
+
+        if ($field->meta->type === 'select' && property_exists($field->meta, 'multiple') && $field->meta->multiple) {
+            if (!is_array($field->value)) {
+                throw new TemplateException(__(
+                    'Multiple selects must have an array default value: ":field"',
+                    ['field' => $field->name]
+                ));
+            }
+
+            return;
+        }
     }
 }
