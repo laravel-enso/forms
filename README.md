@@ -63,7 +63,8 @@ No extra installation steps are required, as this package is already included in
 6. Add inside your page/component
 
     ````
-    <vue-form :data="form">
+    <vue-form class="box"
+        :data="form">
     </vue-form>
     ````
 

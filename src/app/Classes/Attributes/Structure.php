@@ -6,5 +6,5 @@ class Structure
 {
     const Mandatory = ['columns', 'method', 'fields'];
 
-    const Optional = ['title', 'icon', 'routePrefix', 'actions', 'authorize'];
+    const Optional = ['title', 'icon', 'routePrefix', 'actions', 'authorize', 'params'];
 }

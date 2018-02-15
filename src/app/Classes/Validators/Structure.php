@@ -60,5 +60,9 @@ class Structure
         if (property_exists($this->template, 'actions') && !is_array($this->template->actions)) {
             throw new TemplateException(__('"actions" attribute must be an array'));
         }
+
+        if (property_exists($this->template, 'params') && !is_object($this->template->params)) {
+            throw new TemplateException(__('"params" attribute must be an object'));
+        }
     }
 }

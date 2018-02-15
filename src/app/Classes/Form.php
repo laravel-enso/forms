@@ -85,9 +85,41 @@ class Form
         return $this;
     }
 
+    public function hide(string $field)
+    {
+        $this->getField($field)->meta->hidden = true;
+
+        return $this;
+    }
+
+    public function disable(string $field)
+    {
+        $this->getField($field)->meta->disabled = true;
+
+        return $this;
+    }
+
+    public function readonly(string $field)
+    {
+        $this->getField($field)->meta->readonly = true;
+
+        return $this;
+    }
+
     public function meta(string $field, string $param, $value)
     {
         $this->getField($field)->meta->{$param} = $value;
+
+        return $this;
+    }
+
+    public function append($prop, $value)
+    {
+        if (!property_exists($this->template, 'params')) {
+            $this->template->params = new \stdClass();
+        }
+
+        $this->template->params->$prop = $value;
 
         return $this;
     }
