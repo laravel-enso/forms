@@ -18,19 +18,22 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 - allows for quick creation of forms
 - uses a JSON template file for generating the form
 - uses it's own VueJS components, such as `vue-select` and `datepicker` for an improved experience
+- `VueFormSs.vue` a server-side form wrapper is available that can be used to fetch the form configuration 
 - for most forms, the json template is all that it's needed
-- provides helpful error messages when the template is missing parameters or unexpected values ar found
+- provides helpful error messages when the template is missing parameters or unexpected values are found
 - when needed, allows the customization of form components in order to cover all scenarios
 - comes with a `template.json` file that can be used as an example when starting out
 - integrates with the Laravel Request Validation for seamless usage and reusability
-- uses the enso toast notifications for stylish feedback on the various actions
+- uses the Enso toast notifications for stylish feedback on the various actions
 
 ### Under the Hood
 - a template file is needed in order to generate the form data structure object
 - the `Form` object has to be used in the back-end (controller) to parse the template, get additional parameters if needed, and build the structure
 - although in most common scenarios you can give all the required configuration in the template file, 
 the `Form` class has fluent helper functions for setting/overriding most attributes
-- a `VueForm` object needs to be included in the view/page/parent component, taking the form-builder's resulting object as parameter 
+- a `VueForm` component needs to be included in the view/page/parent component, taking the form-builder's resulting object as parameter
+- a `VueFormSs` component should be included in the view/page/parent component, taking the route params needed to 
+make the ajax request and fetch the form configuration
 
 ### Installation Steps
 
@@ -60,22 +63,35 @@ No extra installation steps are required, as this package is already included in
     return compact('form');
     ````  
 
-6. Add inside your page/component
+3. Add inside your page/component
 
+    For the regular form
     ````
     <vue-form class="box"
         :data="form">
     </vue-form>
     ````
+    
+    For the server-side variant
+    ```
+    <vue-form-ss class="box animated fadeIn"
+        :params="[$route.name, $route.params.id, false]"        
+        ref="form">
+    </vue-form-ss>
+    ```
 
 ### VueJS Components
-The VueForm.vue components takes the following parameters:
+The main `VueForm.vue` component takes the following parameters:
 - `data`, object, represents the configuration used to render the form and its elements | required
 - `params`, object, can be used to send additionnal parameters with the form request | default `null` | (optional)
 
-Note: when sending extra parameters, on the back-end they can be found in the request's `_params` attribute.  
+Note: when sending extra parameters, on the back-end they can be accessed in the request's `_params` attribute.  
 
 Note: when creating a resource and no redirect is given in the POST response, the form does not perform a redirect.
+
+The `VueFormSs.vue` component takes the following parameter:
+- `params`, array, parameters that are used for Ziggy `route` helper function, in order to do an ajax get request 
+and fetch the form configuration | required 
 
 ### Advanced usage
 The `Form` class provided the following fluent helper functions:
@@ -92,6 +108,11 @@ Commonly used to override the form value.
 - `meta(string $field, string $param, $value)`, sets a specific value, for a meta param, for the given field
 - `authorize(bool $authorize)`, set the authorize flag for the form.
 If this value is not given in the form, the global default value is taken from the config file 
+- `hide(string $field)`, marks the field as hidden
+- `disable(string $field)`, marks the field as disabled
+- `readonly(string $field)`, marks the field as readonly
+- `append($prop, $value)`, adds a property and its value in the template root-level `params` object, 
+in order to make it available in the front-end  
 
 ### Publishes
 
