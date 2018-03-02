@@ -34,9 +34,7 @@ class Builder
         }
 
         collect($this->template->fields)->each(function ($field) {
-            if (isset($this->model->{$field->name})) {
-                $field->value = $this->model->{$field->name};
-            }
+            $field->value = $this->model->{$field->name};
         });
 
         return $this;
