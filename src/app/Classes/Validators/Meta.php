@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
+use Illuminate\Database\Eloquent\Collection;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 use LaravelEnso\FormBuilder\app\Classes\Attributes\Meta as Attributes;
 
@@ -81,10 +82,11 @@ class Meta
                 ['field' => $this->field->name]
             ));
         }
-
-        if (property_exists($this->field->meta, 'options') && !is_object($this->field->meta->options)) {
+        if (property_exists($this->field->meta, 'options')
+            && !is_array($this->field->meta->options)
+            && !method_exists($this->field->meta->options, 'toArray')) {
             throw new TemplateException(__(
-                '"options" meta parameter for field :field is must be an object',
+                '"options" meta parameter for field :field must be an array or an collection',
                 ['field' => $this->field->name]
             ));
         }

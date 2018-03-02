@@ -37,7 +37,7 @@
             "custom": false,
             "multiple": true,
             "source": null,
-            "options": {},
+            "options": [],
             "disabled": false
         }
     }, {
