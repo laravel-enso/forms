@@ -64,7 +64,7 @@
                                 @input="errors.clear(field.name);"
                                 v-model="field.value"
                                 :label="field.meta.label || 'name'"
-                                :track-by="field.meta.trackBy || 'name'"
+                                :track-by="field.meta.trackBy || 'id'"
                                 :options="field.meta.options"
                                 :source="field.meta.source"
                                 :multiple="field.meta.multiple"
