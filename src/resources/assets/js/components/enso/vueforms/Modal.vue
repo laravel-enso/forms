@@ -49,6 +49,17 @@ export default {
             required: true,
         },
     },
+    mounted() {
+        document.body.addEventListener('keyup', e => {
+            if(this.$parent.showModal)
+                if (e.keyCode === 27)
+                    this.$emit('cancel')
+                else
+                    if (e.keyCode === 13)
+                this.$emit('commit')
+
+        })
+    },
 };
 
 </script>
