@@ -126,6 +126,30 @@ class Structure
                         ]
                     ));
                 }
+
+                if ($section->columns === 'custom') {
+                    $this->checkCustomColumns($section);
+                }
+            });
+    }
+
+    private function checkCustomColumns($section)
+    {
+        collect($section->fields)
+            ->each(function ($field) {
+                if (!property_exists($field, 'column')) {
+                    throw new TemplateException(__(
+                        'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
+                        ['field' => $field->name]
+                    ));
+                }
+
+                if (!is_integer($field->column) || $field->column <= 0 || $field->column > 12) {
+                    throw new TemplateException(__(
+                        'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
+                        ['columns' => $field->name]
+                    ));
+                }
             });
     }
 }

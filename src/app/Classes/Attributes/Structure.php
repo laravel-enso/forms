@@ -10,7 +10,7 @@ class Structure
     ];
 
     const SectionMandatory = ['columns', 'fields'];
-    const SectionOptional = ['divider', 'title'];
+    const SectionOptional = ['divider', 'title', 'column'];
 
-    const Columns = [1, 2, 3, 4, 6, 12];
+    const Columns = [1, 2, 3, 4, 6, 12, 'custom'];
 }
