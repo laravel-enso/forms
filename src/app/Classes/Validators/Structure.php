@@ -122,7 +122,7 @@ class Structure
                         'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed',
                         [
                             'columns' => $section->columns,
-                            'allowed' => collect(Attributes::Columns)->implode(', ')
+                            'allowed' => collect(Attributes::Columns)->implode(', '),
                         ]
                     ));
                 }
