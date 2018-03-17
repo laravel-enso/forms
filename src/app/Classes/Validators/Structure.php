@@ -144,7 +144,7 @@ class Structure
                     ));
                 }
 
-                if (!is_integer($field->column) || $field->column <= 0 || $field->column > 12) {
+                if (!is_int($field->column) || $field->column <= 0 || $field->column > 12) {
                     throw new TemplateException(__(
                         'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
                         ['columns' => $field->name]
