@@ -16,13 +16,13 @@ class Structure
 
     public function validate()
     {
-        $this->checkMandatoryAttributes()
-            ->checkOptionalAttributes()
-            ->checkFormat()
+        $this->checkRootMandatoryAttributes()
+            ->checkRootOptionalAttributes()
+            ->checkRootAttributesFormat()
             ->checkSections();
     }
 
-    private function checkMandatoryAttributes()
+    private function checkRootMandatoryAttributes()
     {
         $diff = collect(Attributes::Mandatory)
             ->diff(collect($this->template)->keys());
@@ -37,7 +37,7 @@ class Structure
         return $this;
     }
 
-    private function checkOptionalAttributes()
+    private function checkRootOptionalAttributes()
     {
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
@@ -56,7 +56,7 @@ class Structure
         return $this;
     }
 
-    private function checkFormat()
+    private function checkRootAttributesFormat()
     {
         if (property_exists($this->template, 'actions') && !is_array($this->template->actions)) {
             throw new TemplateException(__('"actions" attribute must be an array'));
@@ -82,6 +82,7 @@ class Structure
 
         $this->checkSectionsMandatory($attributes);
         $this->checkSectionsOptional($attributes);
+        $this->checkColumnsFormat();
     }
 
     private function checkSectionsMandatory($attributes)
@@ -110,5 +111,21 @@ class Structure
                 ['attr' => $diff->implode('", "')]
             ));
         }
+    }
+
+    private function checkColumnsFormat()
+    {
+        collect($this->template->sections)
+            ->each(function ($section) {
+                if (!collect(Attributes::Columns)->contains($section->columns)) {
+                    throw new TemplateException(__(
+                        'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed',
+                        [
+                            'columns' => $section->columns,
+                            'allowed' => collect(Attributes::Columns)->implode(', ')
+                        ]
+                    ));
+                }
+            });
     }
 }
