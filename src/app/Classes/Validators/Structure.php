@@ -18,7 +18,8 @@ class Structure
     {
         $this->checkMandatoryAttributes()
             ->checkOptionalAttributes()
-            ->checkFormat();
+            ->checkFormat()
+            ->checkSections();
     }
 
     private function checkMandatoryAttributes()
@@ -28,7 +29,7 @@ class Structure
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Mandatory Attribute(s) Missing: :attr',
+                'Mandatory attribute(s) missing: ":attr"',
                 ['attr' => $diff->implode('", "')]
             ));
         }
@@ -47,7 +48,7 @@ class Structure
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Unknown Attribute(s) Found: :attr',
+                'Unknown attribute(s) found: ":attr"',
                 ['attr' => $diff->implode('", "')]
             ));
         }
@@ -63,6 +64,51 @@ class Structure
 
         if (property_exists($this->template, 'params') && !is_object($this->template->params)) {
             throw new TemplateException(__('"params" attribute must be an object'));
+        }
+
+        if (!is_array($this->template->sections)) {
+            throw new TemplateException(__('"section" attribute must be an array'));
+        }
+
+        return $this;
+    }
+
+    private function checkSections()
+    {
+        $attributes = collect($this->template->sections)
+            ->reduce(function ($attributes, $section) {
+                return $attributes->merge(collect($section)->keys());
+            }, collect())->unique()->values();
+
+        $this->checkSectionsMandatory($attributes);
+        $this->checkSectionsOptional($attributes);
+    }
+
+    private function checkSectionsMandatory($attributes)
+    {
+        $diff = collect(Attributes::SectionMandatory)
+            ->diff($attributes);
+
+        if ($diff->isNotEmpty()) {
+            throw new TemplateException(__(
+                'Mandatory attribute(s) missing from section object: ":attr"',
+                ['attr' => $diff->implode('", "')]
+            ));
+        }
+    }
+
+    private function checkSectionsOptional($attributes)
+    {
+        $diff = $attributes->diff(
+            collect(Attributes::SectionMandatory)
+                ->merge(Attributes::SectionOptional)
+        );
+
+        if ($diff->isNotEmpty()) {
+            throw new TemplateException(__(
+                'Unknown attribute(s) found in section object: ":attr"',
+                ['attr' => $diff->implode('", "')]
+            ));
         }
     }
 }

@@ -13,13 +13,12 @@ class Builder
     {
         $this->template = $template;
         $this->model = $model;
-        $this->template->authorize = isset($this->template->authorize)
-            ? $this->template->authorize
-            : config('enso.forms.authorize');
     }
 
     public function run()
     {
+        $this->appendConfigParams();
+
         $this->setValues();
 
         $this->computeActions();
@@ -33,8 +32,10 @@ class Builder
             return $this;
         }
 
-        collect($this->template->fields)->each(function ($field) {
-            $field->value = $this->model->{$field->name};
+        collect($this->template->sections)->each(function ($section) {
+            collect($section->fields)->each(function ($field) {
+                $field->value = $this->model->{$field->name};
+            });
         });
 
         return $this;
@@ -58,6 +59,17 @@ class Builder
 
                 return $collector;
             }, []);
+    }
+
+    private function appendConfigParams()
+    {
+        $this->template->authorize = isset($this->template->authorize)
+            ? $this->template->authorize
+            : config('enso.forms.authorize');
+
+        $this->template->dividerTitlePlacement = isset($this->template->dividerTitlePlacement)
+            ? $this->template->dividerTitlePlacement
+            : config('enso.forms.dividerTitlePlacement');
     }
 
     private function isForbidden($route)

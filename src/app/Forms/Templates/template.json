@@ -1,7 +1,6 @@
 {
     "title": "Form Title",
     "icon": "icon",
-    "columns": "1",
     "method": null,
     "routePrefix": null,
     "params": null,
@@ -11,89 +10,101 @@
         "update",
         "destroy"
     ],
-    "fields": [
+    "sections": [
         {
-            "label": "Name",
-            "name": "name",
-            "value": null,
-            "meta": {
-                "type": "input",
-                "custom": false,
-                "content": "text",
-                "disabled": false
-            }
+            "columns": "2",
+            "separator": true,
+            "title": "Section One",
+            "fields": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "value": null,
+                    "meta": {
+                        "type": "input",
+                        "custom": false,
+                        "content": "text",
+                        "disabled": false
+                    }
+                },
+                {
+                    "label": "Age",
+                    "name": "age",
+                    "value": null,
+                    "meta": {
+                        "type": "input",
+                        "custom": false,
+                        "content": "number",
+                        "step": 1,
+                        "min": 18,
+                        "max": 100,
+                        "disabled": false
+                    }
+                },
+                {
+                    "label": "Preferences",
+                    "name": "preferences",
+                    "value": [],
+                    "meta": {
+                        "type": "select",
+                        "custom": false,
+                        "multiple": true,
+                        "source": null,
+                        "options": [],
+                        "disabled": false
+                    }
+                },
+                {
+                    "label": "Birthday",
+                    "name": "birthday",
+                    "value": null,
+                    "meta": {
+                        "type": "datepicker",
+                        "custom": false,
+                        "format": "d-m-Y",
+                        "time": false,
+                        "disabled": false
+                    }
+                }
+            ]
         },
         {
-            "label": "Age",
-            "name": "age",
-            "value": null,
-            "meta": {
-                "type": "input",
-                "custom": false,
-                "content": "number",
-                "step": 1,
-                "min": 18,
-                "max": 100,
-                "disabled": false
-            }
-        },
-        {
-            "label": "Preferences",
-            "name": "preferences",
-            "value": [],
-            "meta": {
-                "type": "select",
-                "custom": false,
-                "multiple": true,
-                "source": null,
-                "options": [],
-                "disabled": false
-            }
-        },
-        {
-            "label": "Birthday",
-            "name": "birthday",
-            "value": null,
-            "meta": {
-                "type": "datepicker",
-                "custom": false,
-                "format": "d-m-Y",
-                "time": false,
-                "disabled": false
-            }
-        },
-        {
-            "label": "Lunch Time",
-            "name": "lunch_time",
-            "value": null,
-            "meta": {
-                "type": "timepicker",
-                "custom": false,
-                "format": "H:i",
-                "disabled": false
-            }
-        },
-        {
-            "label": "Story",
-            "name": "story",
-            "value": false,
-            "meta": {
-                "type": "textarea",
-                "custom": false,
-                "rows": 5,
-                "disabled": false
-            }
-        },
-        {
-            "label": "Trump Fan",
-            "name": "trump_fan",
-            "value": false,
-            "meta": {
-                "type": "input",
-                "custom": false,
-                "content": "checkbox",
-                "disabled": false
-            }
+            "columns": "3",
+            "separator": true,
+            "title": "Section One",
+            "fields": [{
+                    "label": "Lunch Time",
+                    "name": "lunch_time",
+                    "value": null,
+                    "meta": {
+                        "type": "timepicker",
+                        "custom": false,
+                        "format": "H:i",
+                        "disabled": false
+                    }
+                },
+                {
+                    "label": "Story",
+                    "name": "story",
+                    "value": false,
+                    "meta": {
+                        "type": "textarea",
+                        "custom": false,
+                        "rows": 5,
+                        "disabled": false
+                    }
+                },
+                {
+                    "label": "Trump Fan",
+                    "name": "trump_fan",
+                    "value": false,
+                    "meta": {
+                        "type": "input",
+                        "custom": false,
+                        "content": "checkbox",
+                        "disabled": false
+                    }
+                }]
         }
     ]
 }

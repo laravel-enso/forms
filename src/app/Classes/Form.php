@@ -173,9 +173,12 @@ class Form
 
     private function getField(string $name)
     {
-        $field = collect($this->template->fields)->filter(function ($field) use ($name) {
-            return $field->name === $name;
-        })->first();
+        $field = collect($this->template->sections)
+            ->reduce(function ($fields, $section) {
+                return $fields->merge($section->fields);
+            }, collect())->first(function ($field) use ($name) {
+                return $field->name === $name;
+            });
 
         if (!$field) {
             throw new TemplateException(__(

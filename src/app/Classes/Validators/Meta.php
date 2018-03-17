@@ -40,7 +40,7 @@ class Meta
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Mandatory Meta Attribute(s) Missing: :attr from field: :field',
+                'Mandatory Meta Attribute(s) Missing: ":attr" from field: :field',
                 ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
             ));
         }
@@ -59,7 +59,7 @@ class Meta
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Unknown Attribute(s) Found: :attr in field: :field',
+                'Unknown Attribute(s) Found: ":attr" in field: :field',
                 ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
             ));
         }

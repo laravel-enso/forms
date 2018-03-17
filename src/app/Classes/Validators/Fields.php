@@ -16,19 +16,22 @@ class Fields
 
     public function validate()
     {
-        $this->checkFormat();
+        collect($this->template->sections)
+            ->each(function ($section) {
+                $this->checkFormat($section);
 
-        collect($this->template->fields)->each(function ($field) {
-            $this->checkAttributes($field);
-            $this->checkValue($field);
-            (new Meta($field))->validate();
-        });
+                collect($section->fields)->each(function ($field) {
+                    $this->checkAttributes($field);
+                    $this->checkValue($field);
+                    (new Meta($field))->validate();
+                });
+            });
     }
 
-    private function checkFormat()
+    private function checkFormat($section)
     {
-        if (!is_array($this->template->fields) || empty($this->template->fields)
-            || collect($this->template->fields)->first(function ($field) {
+        if (!is_array($section->fields) || empty($section->fields)
+            || collect($section->fields)->first(function ($field) {
                 return !is_object($field);
             }) !== null
         ) {
@@ -45,7 +48,7 @@ class Fields
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Mandatory Field Attribute(s) Missing: :attr',
+                'Mandatory Field Attribute(s) Missing: ":attr"',
                 ['attr' => $diff->implode('", "')]
             ));
         }
