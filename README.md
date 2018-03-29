@@ -20,13 +20,15 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 - flexible form layout, that supports grouping inputs into logical sections and columns of different widths, 
 even on the same row 
 - uses it's own VueJS components, such as `vue-select` and `datepicker` for an improved experience
-- `VueFormSs.vue` a server-side form wrapper is available that can be used to fetch the form configuration 
+-`VueFormSs.vue` a server-side form wrapper is available that can be used to fetch the form configuration 
 - for most forms, the json template is all that it's needed
 - provides helpful error messages when the template is missing parameters or unexpected values are found
 - when needed, allows the customization of form components in order to cover all scenarios
 - comes with a `template.json` file that can be used as an example when starting out
 - integrates with the Laravel Request Validation for seamless usage and reusability
 - uses the Enso toast notifications for stylish feedback on the various actions
+- customizable placeholder for all elements
+- handles number, money and currency formatting, using the [accounting.js](http://openexchangerates.github.io/accounting.js/) library
 
 ### Under the Hood
 - a template file is needed in order to generate the form data structure object
@@ -69,7 +71,8 @@ Below is an example of such a template:
                         "type": "select",
                         "multiple": false,
                         "source": null,
-                        "options": []
+                        "options": [],
+                        "placeholder": "Type it in"
                     }
                 }, 
                     {
@@ -122,7 +125,8 @@ Below is an example of such a template:
                             "custom": false,
                             "type": "input",
                             "content": "text",
-                            "disabled": false
+                            "disabled": false,
+                            "placeholder": "Street is manadatory",
                         }
                     }, 
                     {
@@ -140,7 +144,7 @@ Below is an example of such a template:
                 ]
             },
             {
-                "columns": 1,
+                "columns": 2,
                 "fields": [
                     {
                         "label": "Observations",
@@ -150,8 +154,24 @@ Below is an example of such a template:
                             "custom": false,
                             "type": "input",
                             "content": "text",
-                            "disabled": false
+                            "disabled": false,
+                            "disabled": "Any comments go here",
                         }
+                    },
+                    {
+                         "label": "Price",
+                         "name": "price",
+                         "value": 12321.12,
+                         "meta": {
+                            "type": "input",
+                            "content": "money",
+                            "symbol": "GBP", 
+                            "precision": "3", 
+                            "thousand": " ", 
+                            "positive": "%s %v", 
+                            "negative": "%s (%v)", 
+                            "zero":"%s --"  
+                         }  
                     }
                 ]
             }
@@ -161,6 +181,10 @@ Below is an example of such a template:
 
     Note that when giving a number of columns, the fields will be evenly divided into columns, and will have equal width. 
     If a custom value is given, then you may specify on each field the desired width.
+
+    Note that when using the money input type, you should read the 
+    [accounting.js](http://openexchangerates.github.io/accounting.js/) documentation, as these details are 
+    outside of the scope of this documentation. 
 
 2. Create and setup in your controller method the `Form` object, and return the resulting data. 
 You may even use the available fluent methods to override (if necessary) default values provided in the template. 
@@ -306,7 +330,7 @@ The [Laravel Enso](https://github.com/laravel-enso/Enso) package comes with this
 
 Depends on:
 - [Helpers](https://github.com/laravel-enso/VueComponents) for utility objects
-
+- [accounting.js](http://openexchangerates.github.io/accounting.js/) for number, money and currency formatting
 
 <!--h-->
 ### Contributions
