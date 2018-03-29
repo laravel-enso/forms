@@ -59,10 +59,7 @@
                             ">
                         </vue-switch>
                         <div :class="['control', { 'has-icons-right': errors.has(field.name) }]"
-                            v-else-if="
-                                field.meta.type === 'input'
-                                && field.meta.content === 'money'
-                            ">
+                            v-else-if="field.meta.type === 'input'">
                             <money :class="['input', { 'is-danger': errors.has(field.name) }]"
                                 v-model="field.value"
                                 :readonly="field.meta.readonly"
@@ -75,15 +72,9 @@
                                 :negative="field.meta.negative"
                                 :zero="field.meta.zero"
                                 @keydown="$emit('update');"
-                                @input="errors.clear(field.name);">
+                                @input="errors.clear(field.name);"
+                                v-if="field.meta.content === 'money'">
                             </money>
-                            <span class="icon is-small is-right has-text-danger"
-                                v-if="errors.has(field.name)">
-                                <fa icon="exclamation-triangle"></fa>
-                            </span>
-                        </div>
-                        <div :class="['control', { 'has-icons-right': errors.has(field.name) }]"
-                            v-else-if="field.meta.type === 'input'">
                             <input :class="['input', { 'is-danger': errors.has(field.name) }]"
                                 v-model="field.value"
                                 :type="field.meta.content"
@@ -94,7 +85,8 @@
                                 :min="field.meta.min"
                                 :max="field.meta.max"
                                 @keydown="$emit('update');"
-                                @input="errors.clear(field.name);">
+                                @input="errors.clear(field.name);"
+                                v-else-if="field.meta.type === 'input'">
                             <span class="icon is-small is-right has-text-danger"
                                 v-if="errors.has(field.name)">
                                 <fa icon="exclamation-triangle"></fa>
