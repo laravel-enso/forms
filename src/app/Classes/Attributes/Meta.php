@@ -9,7 +9,8 @@ class Meta
     const Optional = [
         'options', 'multiple', 'custom', 'content', 'step', 'min', 'max',
         'disabled', 'readonly', 'hidden', 'source', 'format', 'time', 'rows',
-        'placeholder', 'trackBy', 'label', 'tooltip',
+        'placeholder', 'trackBy', 'label', 'tooltip', 'symbol', 'precision',
+        'thousand', 'positive', 'negative', 'zero',
     ];
 
     const Types = ['input', 'select', 'datepicker', 'timepicker', 'textarea'];
