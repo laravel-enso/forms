@@ -30,6 +30,7 @@ even on the same row
 - uses the Enso toast notifications for stylish feedback on the various actions
 - customizable placeholder for all elements
 - handles number, money and currency formatting, using the [accounting.js](http://openexchangerates.github.io/accounting.js/) library
+- provides beautiful date & time selection, based on the [flatpickr](https://github.com/flatpickr/flatpickr) library  
 
 ### Under the Hood
 
@@ -186,7 +187,7 @@ Below is an example of such a template:
     ```
 
     Note that when giving a number of columns, the fields will be evenly divided into columns, and will have equal width. 
-    If a custom value is given, then you may specify on each field the desired width.
+    If a custom value is given, then you may specify on each field the desired width. See below for more information.
 
     Note that when using the money input type, you should read the 
     [accounting.js](http://openexchangerates.github.io/accounting.js/) documentation, as these details are 
@@ -236,6 +237,9 @@ You may even use the available fluent methods to override (if necessary) default
 The main `VueForm.vue` component takes the following parameters:
 - `data`, object, represents the configuration used to render the form and its elements | required
 - `params`, object, can be used to send additionnal parameters with the form request | default `null` | (optional)
+- `i18n`, function, a translation/internationalization function, that can be used when if using the component outside 
+of the Enso ecosistem. By default, it attempts to use the Enso `__` translation function if available
+- `locale`, string, the locale to be used by the various sub-components  | default `en` | (optional)
 
 Note: when sending extra parameters, on the back-end they can be accessed in the request's `_params` attribute.  
 
@@ -244,6 +248,8 @@ Note: when creating a resource and no redirect is given in the POST response, th
 The `VueFormSs.vue` component takes the following parameter:
 - `params`, array, parameters that are used for Ziggy `route` helper function, in order to do an ajax get request 
 and fetch the form configuration | required 
+- `locale`, string, the locale to be used by the various sub-components. Within Enso, it attempts to read and use
+the user's language preferences from within the Vuex store
 
 ### Advanced usage
 
@@ -329,7 +335,7 @@ while 'production' will always perform the validation checks.
     if used and given within the template
 
 ### Form Configuration
-#### Main
+#### Root level parameters
 ```json
     "title": "Form Title",
     "icon": "icon",    
@@ -347,7 +353,9 @@ while 'production' will always perform the validation checks.
 - Type: string
 - Values: "post", "patch", "put" 
 
-If using the form normally, by calling `create($model)`, `edit($model)` methods, then the action is set automatically, as "post" for creation and "patch" for edit. If using the form by calling the 'build()' method, then you must make sure the method parameter is set.
+If using the form normally, by calling `create($model)`, `edit($model)` methods, 
+then the action is set automatically, as "post" for creation and "patch" for edit. 
+If using the form by calling the `build()` method, then you must make sure the method parameter is set.
  
 ##### sections
 - Is: required 
@@ -365,15 +373,15 @@ This is the title of the form.
 - Is: optional 
 - Type: string
 
-The Font Awesome 5 icon class, for example "book" for the "fa-book" css class.
+The Font Awesome 5 icon class, for example `"book"` for the `"fa-book"` CSS class.
 
 ##### routePrefix
 - Is: optional 
 - Type: string
 
 Represents the route prefix that is used when checking permissions and building the route/path for a certain button. 
-For example, for a user form's Save button, if the name of the store route is "administration.users.create", 
-then the prefix is "administration.users" and the action is "create".
+For example, for a user form's Save button, if the name of the store route is `"administration.users.create"`, 
+then the prefix is `"administration.users"` and the action is `"create"`.
  
 ##### authorize
 - Is: optional 
@@ -385,7 +393,7 @@ If not given in the form, the option is read from the global form configuration,
 ##### dividerTitlePlacement
 - Is: optional 
 - Type: string
-- Value: may be one of "left", "center", "right". 
+- Value: may be one of `"left"`, `"center"`, `"right"` 
 
 It specifies the relative position of the divider. 
 If not given, the option is read from the global form configuration, found at `config/enso/forms.php`
@@ -400,7 +408,7 @@ linking the form component/data to other components in the page, etc).
 ##### actions
 - Is: optional 
 - Type: array of strings, 
-- Values: "create", "store", "update", "destroy" 
+- Values: `"create"`, `"store"`, `"update"`, `"destroy"` 
 
 The actions are used to determine the available buttons in the form. 
 Note that if the `authorize` flag is set to true, the builder also checks if the user has acces to/for a certain action,
@@ -456,12 +464,12 @@ The section is the organizing block for form inputs.
 ##### columns
 - Is: required
 - Type: number/string
-- Values: one of the following 1, 2, 3, 4, 6, 12, 'custom'
+- Values: one of the following `1`, `2`, `3`, `4`, `6`, `12`, `"custom"`
 
 The attribute specifies how many columns will be used for the form elements in this section. If giving a number, then 
 the size of each element is calculated automatically. 
 
-If using `custom`, you need to specify for each filed the column size, by providing the `column` parameter (see below).
+If using `"custom"`, you need to specify for each filed the column size, by providing the `column` parameter (see below).
 
 ##### fields
 - Is: required
@@ -500,7 +508,7 @@ The label for the element.
 The name of the Model's attribute, that is to be mapped to this input 
 (for instance, the name is also used to fill the models's value when setting up an edit type of form).
  
-The name will be the request's 'key' for the value of the input given be the user, when an action is commited 
+The name will be the request's key for the value of the input given be the user, when an action is commited 
 (for instance the user clicks the Save button). 
 
 ##### value
@@ -522,11 +530,11 @@ Holds various mostly optional parameters that can be used to configure a form el
 - Is: required
 - Type: number
 
-The size of the column for that element **IF** using the `custom` value for section `columns` parameter. 
+The size of the column for that element **IF** using the `"custom"` value for section `columns` parameter. 
 The given number is used in combination with Bulma's `is-`x 12-columns-system. 
 See [here](https://bulma.io/documentation/columns/sizes/) for more information.
 
-Note that if `columns` parameter is not set to custom, the `column` parameter is not required and is ignored.
+Note that if `columns` parameter is not set to "custom", the `column` parameter is not required and is ignored.
 
 #### Meta
 Is a set of parameters used to configure the supported form elements.
@@ -534,15 +542,15 @@ Is a set of parameters used to configure the supported form elements.
 ##### type
 - Is: required
 - Type: string
-- Value: one of the following "input", "select", "datepicker", "timepicker", "textarea"
+- Value: one of the following `"input"`, `"select"`, `"datepicker"`, `"timepicker"`, `"textarea"`
 
 ##### content
 - Is: optional
 - Type: string
-- Applies to: "input"
+- Applies to: `"input"`
 
-Represents the type for an <input> HTML element, and therefore can take the expected types such as "text", "number", "date", "checkbox", etc.
-Can also take "money" (for monetary values inputs).  
+Represents the type for an <input> HTML element, and therefore can take the expected types such as `"text"`, `"number"`, `"date"`, `"checkbox"`, etc.
+Can also take `"money"` (for monetary values inputs).  
 
 ##### disabled
 - Is: optional
@@ -586,39 +594,39 @@ This allows you to build and insert custom elements in the form, for complex sce
 ##### options
 - Is: optional
 - Type: array of objects
-- Applies to: "select"
+- Applies to: `"select"`
 
 Is an array of options for that select element.
 
 ##### trackBy
 - Is: optional
 - Type: string
-- Applies to: "select"
-- Default: 'id'
+- Applies to: `"select"`
+- Default: `id`
 
 Is the attribute that is to be used as identifier for each of the select options i.e. the name of the attribute that is 
-to be used when setting the value for the 'value' attribute of an HTML <option> element. 
+to be used when setting the value for the 'value' attribute of an HTML `<option>` element. 
 
 ##### label
 - Is: optional
 - Type: string
-- Applies to: "select"
-- Default: 'name'
+- Applies to: `"select"`
+- Default: `name`
 
 Is the attribute that is to be used as label for each of the select options i.e. the name of the attribute that is 
-to be used when setting the value for the an HTML <option> element. 
+to be used when setting the value for the an HTML `<option>` element. 
 
 ##### multiple
 - Is: optional
 - Type: boolean
-- Applies to: "select"
+- Applies to: `"select"`
 
 Flag that determines the select element to accept multiple values (works as a multiselect).
 
 ##### source
 - Is: optional
 - Type: string
-- Applies to: "select"
+- Applies to: `"select"`
 
 Flag that determines the select element to work in serverside mode, meaning that it will use the source URI in order to
 fetch the list of options. When using the `source` parameter, the `options` parameter is not required. 
@@ -626,28 +634,28 @@ fetch the list of options. When using the `source` parameter, the `options` para
 ##### step
 - Is: optional
 - Type: numeric
-- Applies to: "input"
+- Applies to: `"input"`
 
 Parameter corresponds to the step parameter for an HTML <input> field.
 
 ##### min
 - Is: optional
 - Type: numeric
-- Applies to: "input"
+- Applies to: `"input"`
 
-Parameter corresponds to the min parameter for an HTML <input> field, where the browser does a client side validation.
+Parameter corresponds to the min parameter for an HTML `<input>` field, where the browser does a client side validation.
 
 ##### max
 - Is: optional
 - Type: numeric
-- Applies to: "input"
+- Applies to: `"input"`
 
-Parameter corresponds to the max parameter for an HTML <input> field, where the browser does a client side validation.
+Parameter corresponds to the max parameter for an HTML `<input>` field, where the browser does a client side validation.
 
 ##### format
 - Is: optional
 - Type: string
-- Applies to: "datepicker", "timepicker"
+- Applies to: `"datepicker"`, `"timepicker"`
 
 Represents the format of the date/time used for the component.
 
@@ -657,49 +665,49 @@ check the [documentation](https://flatpickr.js.org/formatting/).
 ##### time
 - Is: optional
 - Type: boolean
-- Applies to: "datepicker"
+- Applies to: `"datepicker"`
 
 Flag that enables the time picking functionality for the datepicker, in addition to the default date functionality
 
 ##### rows
 - Is: optional
 - Type: numeric
-- Applies to: "textarea"
+- Applies to: `"textarea"`
 
 Specifies the number of rows for the textarea.
 
 ##### symbol
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
-Is the currenct symbol to be used for a money input, for example '$'.
+Is the currenct symbol to be used for a money input, for example `"$"`.
 
 ##### precision
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
 Is the precision (decimal places) for the amount.
 
 ##### thousand
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a "money"-type `"input"`
 
 Is the thousands separator for the amount.
 
 ##### decimal
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
 Is the decimal separator for the amount.
 
 ##### positive
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
 The format for positive amounts, e.g. `"%s %v"`
 See the [accounting.js](http://openexchangerates.github.io/accounting.js/) library for more.
@@ -707,7 +715,7 @@ See the [accounting.js](http://openexchangerates.github.io/accounting.js/) libra
 ##### negative
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
 The format for negative amounts, e.g. `"%s (%v)"`
 See the [accounting.js](http://openexchangerates.github.io/accounting.js/) library for more.
@@ -715,7 +723,7 @@ See the [accounting.js](http://openexchangerates.github.io/accounting.js/) libra
 ##### zero
 - Is: optional
 - Type: string
-- Applies to: a "money"-type "input"
+- Applies to: a `"money"`-type `"input"`
 
 The format for zero amounts, e.g. `"%s  -- "`
 See the [accounting.js](http://openexchangerates.github.io/accounting.js/) library for more.
