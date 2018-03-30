@@ -168,6 +168,7 @@ Below is an example of such a template:
                             "symbol": "GBP", 
                             "precision": "3", 
                             "thousand": " ", 
+                            "decimal": ",", 
                             "positive": "%s %v", 
                             "negative": "%s (%v)", 
                             "zero":"%s --"  
