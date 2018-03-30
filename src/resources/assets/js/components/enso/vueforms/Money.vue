@@ -95,6 +95,7 @@ export default {
                 symbol: this.symbol,
                 precision: this.precision,
                 thousand: this.thousand,
+                decimal: this.decimal,
                 format: {
                     pos: this.positive,
                     neg: this.negative,
