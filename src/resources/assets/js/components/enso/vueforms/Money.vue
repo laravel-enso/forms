@@ -4,7 +4,7 @@
         ref="label">
         {{ money }}
     </span>
-    <input v-model.number="money"
+    <input v-model="money"
         :disabled="disabled"
         :readonly="readonly"
         :placeholder="placeholder"
@@ -103,9 +103,10 @@ export default {
             });
         },
         onInput(event) {
-            const value = this.isNumeric
-                ? this.round(event.target.value)
-                : this.round(event.target.value).toFixed(this.precision);
+            let value = event.target.value.split(',').join('.');
+            value = this.isNumeric
+                ? this.round(value)
+                : this.round(value).toFixed(this.precision);
 
             this.$emit('input', value);
         },
