@@ -63,13 +63,13 @@ class Builder
 
     private function appendConfigParams()
     {
-        $this->template->authorize = isset($this->template->authorize)
-            ? $this->template->authorize
-            : config('enso.forms.authorize');
+        if (!property_exists($this->template, 'authorize')) {
+            $this->template->authorize = config('enso.forms.authorize');
+        }
 
-        $this->template->dividerTitlePlacement = isset($this->template->dividerTitlePlacement)
-            ? $this->template->dividerTitlePlacement
-            : config('enso.forms.dividerTitlePlacement');
+        if (!property_exists($this->template, 'dividerTitlePlacement')) {
+            $this->template->dividerTitlePlacement = config('enso.forms.dividerTitlePlacement');
+        }
     }
 
     private function isForbidden($route)
