@@ -112,6 +112,7 @@
                             :disabled="field.meta.disabled"
                             :placeholder="i18n(field.meta.placeholder)"
                             :locale="locale"
+                            is-danger="errors.has(field.name)"
                             @input="errors.clear(field.name)"
                             @keydown="$emit('update');"
                             v-else-if="field.meta.type === 'datepicker'">
