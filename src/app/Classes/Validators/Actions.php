@@ -20,8 +20,8 @@ class Actions
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Incorrect action(s) provided: :actions. Allowed actions are: "create", "store", "update" and "delete"',
-                ['actions' => $diff->implode(', ')]
+                'Incorrect action(s) provided: :actions. Allowed actions are: :actionList',
+                ['actions' => $diff->implode(', '), 'actionList' => collect(Attributes::List)->implode(', ')]
             ));
         }
     }

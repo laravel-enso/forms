@@ -168,7 +168,7 @@ class Form
     {
         return $this->template->method === 'post'
             ? ['store']
-            : ['create', 'update', 'destroy'];
+            : ['create', 'show', 'update', 'destroy'];
     }
 
     private function getField(string $name)

@@ -50,11 +50,16 @@ class Builder
                 $route = $this->routes[$action] ?? $this->template->routePrefix.'.'.$action;
                 $actionConfig['forbidden'] = $this->isForbidden($route);
 
-                [$routeOrPath, $value] = $action === 'create'
+                [$routeOrPath, $value] = collect(['create', 'show'])->contains($action)
                     ? ['route', $route]
                     : ['path', route($route, is_null($this->model) ? [] : [$this->model->id], false)];
 
                 $actionConfig[$routeOrPath] = $value;
+
+                if ($action === 'show') {
+                    $actionConfig['id'] = $this->model->id;
+                }
+
                 $collector[$action] = $actionConfig;
 
                 return $collector;
