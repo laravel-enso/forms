@@ -14,7 +14,7 @@
             <fa icon="calendar-alt" v-else></fa>
         </span>
         <span class="icon is-small is-right clear-button"
-            v-if="value"
+            v-if="value && !disabled"
             @click="picker.clear()">
             <a class="delete is-small"></a>
         </span>
