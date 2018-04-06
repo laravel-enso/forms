@@ -910,7 +910,7 @@ The [Laravel Enso](https://github.com/laravel-enso/Enso) package comes with this
 Depends on:
 - [Helpers](https://github.com/laravel-enso/VueComponents) for utility objects
 - [flatpickr](https://github.com/flatpickr/flatpickr) for date/time selection
-- [accounting.js](http://openexchangerates.github.io/accounting.js/) for number, money and currency formatting
+- [accounting.js](http://openexchangerates.github.io/accounting.js/) for currency formatting
 
 <!--h-->
 ### Contributions
