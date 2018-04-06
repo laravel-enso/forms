@@ -166,9 +166,14 @@ class Form
 
     private function defaultActions()
     {
-        return $this->template->method === 'post'
+        $actions = $this->template->method === 'post'
             ? ['store']
             : ['create', 'show', 'update', 'destroy'];
+
+        return collect($actions)
+            ->filter(function ($action) {
+                return \Route::has($this->template->routePrefix.'.'.$action);
+            })->toArray();
     }
 
     private function getField(string $name)
