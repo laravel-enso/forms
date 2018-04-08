@@ -209,7 +209,7 @@
 
 import { VTooltip } from 'v-tooltip';
 import fontawesome from '@fortawesome/fontawesome';
-import { faTrashAlt, faPlus, faCheck, faExclamationTriangle, faUndo, faInfo }
+import { faTrashAlt, faEye, faPlus, faCheck, faExclamationTriangle, faUndo, faInfo }
     from '@fortawesome/fontawesome-free-solid/shakable.es';
 import Divider from './Divider.vue';
 import Errors from './classes/Errors';
@@ -219,7 +219,7 @@ import VueSelect from '../select/VueSelect.vue';
 import Datepicker from './Datepicker.vue';
 import Money from './Money.vue';
 
-fontawesome.library.add(faTrashAlt, faPlus, faCheck, faExclamationTriangle, faUndo, faInfo);
+fontawesome.library.add(faTrashAlt, faEye, faPlus, faCheck, faExclamationTriangle, faUndo, faInfo);
 
 export default {
     name: 'VueForm',
