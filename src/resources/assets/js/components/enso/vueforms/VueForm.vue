@@ -53,6 +53,7 @@
                             type="is-success"
                             :disabled="field.meta.disabled || field.meta.readonly"
                             @click="$emit('update')"
+                            @input="errors.clear(field.name)"
                             v-else-if="
                                 field.meta.type === 'input'
                                 && field.meta.content === 'checkbox'
@@ -73,7 +74,7 @@
                                 :negative="field.meta.negative"
                                 :zero="field.meta.zero"
                                 @keydown="$emit('update');"
-                                @input="errors.clear(field.name);"
+                                @input="errors.clear(field.name)"
                                 v-if="field.meta.content === 'money'">
                             </money>
                             <input :class="['input', { 'is-danger': errors.has(field.name) }]"
@@ -86,7 +87,7 @@
                                 :min="field.meta.min"
                                 :max="field.meta.max"
                                 @keydown="$emit('update');"
-                                @input="errors.clear(field.name);"
+                                @input="errors.clear(field.name)"
                                 v-else-if="field.meta.type === 'input'">
                             <span class="icon is-small is-right has-text-danger"
                                 v-if="errors.has(field.name)">
@@ -94,7 +95,7 @@
                             </span>
                         </div>
                         <vue-select v-model="field.value"
-                            @input="errors.clear(field.name);"
+                            @input="errors.clear(field.name)"
                             :i18n="i18n"
                             :has-error="errors.has(field.name)"
                             :label="field.meta.label || 'name'"
