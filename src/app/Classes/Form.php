@@ -85,23 +85,38 @@ class Form
         return $this;
     }
 
-    public function hide(string $field)
+    public function hide($fields)
     {
-        $this->getField($field)->meta->hidden = true;
+        collect($fields)->each(function ($field) {
+            $this->getField($field)->meta->hidden = true;
+        });
 
         return $this;
     }
 
-    public function disable(string $field)
+    public function show($fields)
     {
-        $this->getField($field)->meta->disabled = true;
+        collect($fields)->each(function ($field) {
+            $this->getField($field)->meta->hidden = false;
+        });
 
         return $this;
     }
 
-    public function readonly(string $field)
+    public function disable($fields)
     {
-        $this->getField($field)->meta->readonly = true;
+        collect($fields)->each(function ($field) {
+            $this->getField($field)->meta->disabled = true;
+        });
+
+        return $this;
+    }
+
+    public function readonly($fields)
+    {
+        collect($fields)->each(function ($field) {
+            $this->getField($field)->meta->readonly = true;
+        });
 
         return $this;
     }
