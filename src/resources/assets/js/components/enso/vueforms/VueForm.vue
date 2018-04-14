@@ -15,7 +15,8 @@
             @submit.prevent="submit()">
             <div class="columns is-multiline"
                 v-for="(section, index) in data.sections"
-                :key="index">
+                :key="index"
+                v-if="hasFields(section)">
                 <div class="column is-12"
                     v-if="section.divider">
                     <divider :title="i18n(section.title)"
@@ -360,6 +361,9 @@ export default {
             return this.data.sections
                 .reduce((fields, section) => fields.concat(section.fields), [])
                 .find(item => item.name === field);
+        },
+        hasFields(section) {
+            return section.fields.find(field => !field.meta.hidden) !== undefined;
         },
     },
 };
