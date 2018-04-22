@@ -89,6 +89,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        min: {
+            type: String,
+            default: null,
+        },
+        max: {
+            type: String,
+            default: null,
+        },
     },
 
     data() {
@@ -105,6 +113,8 @@ export default {
                 dateFormat: this.format,
                 allowInput: false,
                 clickOpens: true,
+                minDate: this.min,
+                maxDate: this.max,
                 noCalendar: this.timeOnly,
                 enableTime: this.time || this.timeOnly,
                 onChange(selectedDates, dateStr) {
