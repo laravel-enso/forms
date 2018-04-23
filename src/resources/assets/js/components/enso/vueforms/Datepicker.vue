@@ -13,14 +13,13 @@
             :disabled="disabled">
         <span class="icon is-small is-left">
             <fa icon="clock"
-                v-if="timeOnly">
-            </fa>
-            <fa icon="calendar-alt" v-else></fa>
+                v-if="timeOnly"/>
+            <fa icon="calendar-alt" v-else/>
         </span>
         <span class="icon is-small is-right clear-button"
             v-if="value && !disabled"
             @click="picker.clear()">
-            <a class="delete is-small"></a>
+            <a class="delete is-small"/>
         </span>
     </div>
 
@@ -133,6 +132,12 @@ export default {
             Flatpickr.localize(i18n[locale]);
             this.init();
         },
+        min() {
+            this.reset();
+        },
+        max() {
+            this.reset();
+        },
     },
 
     created() {
@@ -153,6 +158,10 @@ export default {
         },
         destroy() {
             this.picker.destroy();
+        },
+        reset() {
+            this.destroy();
+            this.init();
         },
     },
 };
