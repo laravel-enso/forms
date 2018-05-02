@@ -3,6 +3,7 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Builder
 {
@@ -34,7 +35,11 @@ class Builder
 
         collect($this->template->sections)->each(function ($section) {
             collect($section->fields)->each(function ($field) {
-                $field->value = $this->model->{$field->name};
+                if($this->model->{$field->name} instanceof Carbon){
+                    $field->value = $this->model->{$field->name}->format($field->meta->format);
+                }else{
+                    $field->value = $this->model->{$field->name};
+                }
             });
         });
 
