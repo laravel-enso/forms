@@ -227,7 +227,8 @@ You may even use the available fluent methods to override (if necessary) default
     For the server-side variant
     ```
     <vue-form-ss class="box animated fadeIn"
-        :params="[$route.name, $route.params.id, false]"        
+        :route-params="[$route.name, $route.params.id, false]"
+        :params="params"
         ref="form">
     </vue-form-ss>
     ```
