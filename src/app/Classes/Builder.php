@@ -79,6 +79,8 @@ class Builder
 
     private function isForbidden($route)
     {
-        return $this->template->authorize && !request()->user()->can('access-route', $route);
+        return $this->template->authorize
+            && request()->user()
+                ->cannot('access-route', $route);
     }
 }
