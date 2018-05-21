@@ -52,12 +52,12 @@ class Builder
 
                 [$routeOrPath, $value] = collect(['create', 'show'])->contains($action)
                     ? ['route', $route]
-                    : ['path', route($route, is_null($this->model) ? [] : [$this->model->id], false)];
+                    : ['path', route($route, is_null($this->model) ? [] : [$this->model->getKey()], false)];
 
                 $actionConfig[$routeOrPath] = $value;
 
                 if ($action === 'show') {
-                    $actionConfig['id'] = $this->model->id;
+                    $actionConfig['id'] = $this->model->getKey();
                 }
 
                 $collector[$action] = $actionConfig;
