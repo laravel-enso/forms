@@ -17,11 +17,9 @@ class Builder
 
     public function run()
     {
-        $this->appendConfigParams();
-
-        $this->setValues();
-
-        $this->computeActions();
+        $this->appendConfigParams()
+            ->setValues()
+            ->computeActions();
 
         unset($this->template->routes, $this->template->routePrefix, $this->template->authorize);
     }
@@ -75,6 +73,8 @@ class Builder
         if (!property_exists($this->template, 'dividerTitlePlacement')) {
             $this->template->dividerTitlePlacement = config('enso.forms.dividerTitlePlacement');
         }
+
+        return $this;
     }
 
     private function isForbidden($route)

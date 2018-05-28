@@ -13,14 +13,14 @@ class Form
 
     public function __construct(string $template)
     {
-        $this->setTemplate($template);
+        $this->template($template);
     }
 
     public function create(Model $model = null)
     {
         $this->model = $model;
 
-        $this->setMethod('post')
+        $this->method('post')
             ->build();
 
         return $this->template;
@@ -30,7 +30,7 @@ class Form
     {
         $this->model = $model;
 
-        $this->setMethod('patch')
+        $this->method('patch')
             ->build();
 
         return $this->template;
@@ -73,14 +73,14 @@ class Form
 
     public function options(string $name, $value)
     {
-        $this->getField($name)->meta->options = $value;
+        $this->field($name)->meta->options = $value;
 
         return $this;
     }
 
     public function value(string $field, $value)
     {
-        $this->getField($field)->value = $value;
+        $this->field($field)->value = $value;
 
         return $this;
     }
@@ -88,7 +88,7 @@ class Form
     public function hide($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->getField($field)->meta->hidden = true;
+            $this->field($field)->meta->hidden = true;
         });
 
         return $this;
@@ -97,7 +97,7 @@ class Form
     public function show($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->getField($field)->meta->hidden = false;
+            $this->field($field)->meta->hidden = false;
         });
 
         return $this;
@@ -106,7 +106,7 @@ class Form
     public function disable($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->getField($field)->meta->disabled = true;
+            $this->field($field)->meta->disabled = true;
         });
 
         return $this;
@@ -115,7 +115,7 @@ class Form
     public function readonly($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->getField($field)->meta->readonly = true;
+            $this->field($field)->meta->readonly = true;
         });
 
         return $this;
@@ -123,7 +123,7 @@ class Form
 
     public function meta(string $field, string $param, $value)
     {
-        $this->getField($field)->meta->{$param} = $value;
+        $this->field($field)->meta->{$param} = $value;
 
         return $this;
     }
@@ -155,7 +155,7 @@ class Form
         (new Builder($this->template, $this->model))->run();
     }
 
-    private function setTemplate(string $template)
+    private function template(string $template)
     {
         $this->template = json_decode(\File::get($template));
 
@@ -166,7 +166,7 @@ class Form
         return $this;
     }
 
-    private function setMethod(string $method)
+    private function method(string $method)
     {
         $this->template->method = $method;
 
@@ -191,7 +191,7 @@ class Form
             })->toArray();
     }
 
-    private function getField(string $name)
+    private function field(string $name)
     {
         $field = collect($this->template->sections)
             ->reduce(function ($fields, $section) {
