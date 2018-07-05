@@ -38,10 +38,6 @@
                                 v-if="field.meta.tooltip">
                                 <fa icon="info" size="xs"/>
                             </span>
-                            <p class="help is-danger is-pulled-right"
-                                v-if="errors.has(field.name)">
-                                {{ errors.get(field.name) }}
-                            </p>
                         </label>
                         <slot :name="field.name"
                             :field="field"
@@ -137,6 +133,10 @@
                                 <fa icon="exclamation-triangle"/>
                             </span>
                         </div>
+                        <p class="help is-danger"
+                            v-if="errors.has(field.name)">
+                            {{ errors.get(field.name) }}
+                        </p>
                     </div>
                 </div>
             </div>
