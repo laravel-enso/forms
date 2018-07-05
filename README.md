@@ -675,6 +675,11 @@ Flag that enables the time picking functionality for the datepicker, in addition
 - Type: numeric
 - Applies to: `"textarea"`
 
+##### resize
+- Is: optional
+- Type: boolean
+- Applies to: `"textarea"`
+
 Specifies the number of rows for the textarea.
 
 ##### symbol
@@ -781,7 +786,7 @@ A checkbox input, with a default value of true.
 ```
 
 #### Textarea
-A textarea with a placeholder and a 5 rows height. Note that the textarea is resizable.
+A textarea with a placeholder and a 5 rows height. Note that the textarea is resizable only if you add the `"resize": true` property.
 ```json
 {
     "label": "Story",
@@ -790,7 +795,8 @@ A textarea with a placeholder and a 5 rows height. Note that the textarea is res
     "meta": {
         "type": "textarea",
         "placeholder": "We'd love to hear your story",
-        "rows": 5
+        "rows": 5,
+        "resize": true
     }
 }
 ```

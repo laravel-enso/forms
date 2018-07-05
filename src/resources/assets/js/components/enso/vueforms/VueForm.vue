@@ -122,7 +122,11 @@
                             v-else-if="field.meta.type === 'timepicker'"/>
                         <div class="control has-icons-right"
                             v-else-if="field.meta.type === 'textarea'">
-                            <textarea :class="['textarea', { 'is-danger': errors.has(field.name) }]"
+                            <textarea :class="[
+                                    'textarea',
+                                    { 'is-danger': errors.has(field.name) },
+                                    { 'fixed': !field.meta.resize }
+                                ]"
                                 v-model="field.value"
                                 :placeholder="i18n(field.meta.placeholder)"
                                 :rows="field.meta.rows"
@@ -362,6 +366,10 @@ export default {
         .icon {
             vertical-align: text-bottom;
         }
+    }
+
+    .fixed {
+        resize: none;
     }
 
 </style>
