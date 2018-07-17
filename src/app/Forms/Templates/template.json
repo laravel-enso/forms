@@ -13,7 +13,7 @@
     "sections": [
         {
             "columns": "2",
-            "separator": true,
+            "divider": true,
             "title": "Section One",
             "fields": [
                 {
@@ -70,7 +70,7 @@
         },
         {
             "columns": "3",
-            "separator": true,
+            "divider": true,
             "title": "Section One",
             "fields": [{
                     "label": "Lunch Time",
