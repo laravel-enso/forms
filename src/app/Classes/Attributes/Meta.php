@@ -13,5 +13,7 @@ class Meta
         'thousand', 'decimal', 'positive', 'negative', 'zero', 'resize',
     ];
 
-    const Types = ['input', 'select', 'datepicker', 'timepicker', 'textarea'];
+    const Types = [
+        'input', 'select', 'datepicker', 'timepicker', 'textarea', 'password'
+    ];
 }
