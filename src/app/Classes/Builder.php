@@ -2,17 +2,20 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Builder
 {
     private $template;
     private $model;
+    private $dirty;
 
-    public function __construct($template, Model $model = null)
+    public function __construct($template, Collection $dirty, Model $model = null)
     {
         $this->template = $template;
         $this->model = $model;
+        $this->dirty = $dirty;
     }
 
     public function run()
@@ -32,7 +35,9 @@ class Builder
 
         collect($this->template->sections)->each(function ($section) {
             collect($section->fields)->each(function ($field) {
-                $field->value = $this->model->{$field->name};
+                if (!$this->dirty->contains($field->name)) {
+                    $field->value = $this->model->{$field->name};
+                }
             });
         });
 

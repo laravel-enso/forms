@@ -10,10 +10,12 @@ class Form
 {
     private $model;
     private $template;
+    private $dirty;
 
     public function __construct(string $template)
     {
         $this->template($template);
+        $this->dirty = collect();
     }
 
     public function create(Model $model = null)
@@ -81,6 +83,7 @@ class Form
     public function value(string $field, $value)
     {
         $this->field($field)->value = $value;
+        $this->dirty->push($field);
 
         return $this;
     }
@@ -146,13 +149,13 @@ class Form
         return $this;
     }
 
-    public function build()
+    private function build()
     {
         if ($this->needsValidation()) {
             (new Validator($this->template))->run();
         }
 
-        (new Builder($this->template, $this->model))->run();
+        (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
     private function template(string $template)
