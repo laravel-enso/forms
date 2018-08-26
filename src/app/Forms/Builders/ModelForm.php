@@ -22,6 +22,6 @@ class ModelForm
 
     public function edit(Model $model)
     {
-        return $this->form->edit($owner);
+        return $this->form->edit($model);
     }
 }

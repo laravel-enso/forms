@@ -215,6 +215,7 @@ class Form
 
     private function needsValidation()
     {
-        return config('app.env') === 'local' || config('enso.datatable.validations') === 'always';
+        return app()->environment() === 'local'
+            || config('enso.datatable.validations') === 'always';
     }
 }
