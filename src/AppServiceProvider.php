@@ -8,6 +8,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/forms.php', 'enso.forms');
+
         $this->publishes([
             __DIR__.'/config' => config_path('enso'),
         ], 'forms-config');
@@ -23,8 +25,6 @@ class AppServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/resources/assets/js' => resource_path('assets/js'),
         ], 'enso-assets');
-
-        $this->mergeConfigFrom(__DIR__.'/config/forms.php', 'enso.forms');
     }
 
     public function register()
