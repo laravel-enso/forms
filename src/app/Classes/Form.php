@@ -3,6 +3,7 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelEnso\Helpers\app\Classes\JsonParser;
 use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 
@@ -12,9 +13,9 @@ class Form
     private $template;
     private $dirty;
 
-    public function __construct(string $template)
+    public function __construct(string $filename)
     {
-        $this->template($template);
+        $this->readTemplate($filename);
         $this->dirty = collect();
     }
 
@@ -158,15 +159,9 @@ class Form
         (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
-    private function template(string $template)
+    private function readTemplate(string $filename)
     {
-        $this->template = json_decode(\File::get($template));
-
-        if (!is_object($this->template)) {
-            throw new TemplateException(__('Template is not readable'));
-        }
-
-        return $this;
+        $this->template = (new JsonParser($filename))->object();
     }
 
     private function method(string $method)
