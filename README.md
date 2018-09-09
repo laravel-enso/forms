@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/laravel-enso/formbuilder/downloads)](https://packagist.org/packages/laravel-enso/formbuilder)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/formbuilder/version)](https://packagist.org/packages/laravel-enso/formbuilder)
 
-JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
+JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso). [Read Docs](https://docs.laravel-enso.com/packages/form-builder.html#features)
 
 [![Watch the demo](https://laravel-enso.github.io/formbuilder/screenshots/bulma_109_thumb.png)](https://laravel-enso.github.io/formbuilder/videos/bulma_demo_01.mp4)
 
