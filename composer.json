@@ -22,7 +22,7 @@
         "laravel/framework": "5.7.*",
         "laravel-enso/helpers": "1.8.*",
         "laravel-enso/select": "2.6.*",
-        "laravel-enso/vuecomponents": "2.4.*"
+        "laravel-enso/vuecomponents": "2.5.*"
     },
     "autoload": {
         "psr-4": {
