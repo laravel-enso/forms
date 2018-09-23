@@ -47,11 +47,15 @@ class Builder
 
     private function value($field)
     {
-        return $field->meta->type === 'datepicker'
+        if ($field->meta->type === 'datepicker'
             && is_object($this->model->{$field->name})
-            && $this->model->{$field->name} instanceof Carbon
-            ? $this->model->{$field->name}->format('Y-m-d')
-            : $this->model->{$field->name};
+            && $this->model->{$field->name} instanceof Carbon) {
+            return property_exists($field->meta, 'format')
+                ? $this->model->{$field->name}->format($field->meta->format)
+                : $this->model->{$field->name}->format('Y-m-d');
+        }
+
+        return $this->model->{$field->name};
     }
 
     private function computeActions()
