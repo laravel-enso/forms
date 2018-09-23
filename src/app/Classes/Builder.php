@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,12 +37,21 @@ class Builder
         collect($this->template->sections)->each(function ($section) {
             collect($section->fields)->each(function ($field) {
                 if (!$this->dirty->contains($field->name)) {
-                    $field->value = $this->model->{$field->name};
+                    $field->value = $this->value($field);
                 }
             });
         });
 
         return $this;
+    }
+
+    private function value($field)
+    {
+        return $field->meta->type === 'datepicker'
+            && is_object($this->model->{$field->name})
+            && $this->model->{$field->name} instanceof Carbon
+            ? $this->model->{$field->name}->format('Y-m-d')
+            : $this->model->{$field->name};
     }
 
     private function computeActions()
