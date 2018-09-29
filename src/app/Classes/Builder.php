@@ -47,15 +47,12 @@ class Builder
 
     private function value($field)
     {
-        if ($field->meta->type === 'datepicker'
+        return $field->meta->type === 'datepicker'
             && is_object($this->model->{$field->name})
-            && $this->model->{$field->name} instanceof Carbon) {
-            return property_exists($field->meta, 'format')
-                ? $this->model->{$field->name}->format($field->meta->format)
-                : $this->model->{$field->name}->format('Y-m-d');
-        }
-
-        return $this->model->{$field->name};
+            && $this->model->{$field->name} instanceof Carbon
+            ? $this->model->{$field->name}
+                ->format($this->dateFormat($field))
+            : $this->model->{$field->name};
     }
 
     private function computeActions()
@@ -94,6 +91,15 @@ class Builder
         }
 
         return $this;
+    }
+
+    private function dateFormat($field)
+    {
+        if (!property_exists($field->meta, 'format')) {
+            $field->meta->format = config('enso.forms.dateFormat');
+        }
+
+        return $field->meta->format;
     }
 
     private function isForbidden($route)
