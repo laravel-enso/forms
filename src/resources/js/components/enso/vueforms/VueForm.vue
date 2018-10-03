@@ -45,7 +45,7 @@
                             v-if="field.meta.custom"/>
                         <vue-switch v-model="field.value"
                             size="is-large"
-                            type="is-success"
+                            type="is-info"
                             :disabled="field.meta.disabled || field.meta.readonly"
                             @click="$emit('update')"
                             @input="errors.clear(field.name)"
