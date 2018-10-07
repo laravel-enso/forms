@@ -23,7 +23,8 @@ class Builder
     {
         $this->appendConfigParams()
             ->setValues()
-            ->computeActions();
+            ->computeActions()
+            ->computeSelects();
 
         unset($this->template->routes, $this->template->routePrefix, $this->template->authorize);
     }
@@ -78,6 +79,21 @@ class Builder
 
                 return $collector;
             }, []);
+
+        return $this;
+    }
+
+    private function computeSelects()
+    {
+        collect($this->template->sections)->each(function ($section) {
+            collect($section->fields)->each(function ($field) {
+                if ($field->meta->type === 'select'
+                    && property_exists($field->meta, 'options')
+                    && is_string($field->meta->options)) {
+                    $field->meta->options = $field->meta->options::select();
+                }
+            });
+        });
     }
 
     private function appendConfigParams()

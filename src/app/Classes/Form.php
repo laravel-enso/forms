@@ -9,6 +9,9 @@ use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 
 class Form
 {
+    private const CreateActions = ['store'];
+    private const UpdateActions = ['create', 'show', 'update', 'destroy'];
+
     private $model;
     private $template;
     private $dirty;
@@ -180,8 +183,8 @@ class Form
     private function defaultActions()
     {
         $actions = $this->template->method === 'post'
-            ? ['store']
-            : ['create', 'show', 'update', 'destroy'];
+            ? self::CreateActions
+            : self::UpdateActions;
 
         return collect($actions)
             ->filter(function ($action) {

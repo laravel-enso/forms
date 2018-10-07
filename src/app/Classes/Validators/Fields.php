@@ -69,15 +69,15 @@ class Fields
             return;
         }
 
-        if ($field->meta->type === 'select' && property_exists($field->meta, 'multiple') && $field->meta->multiple) {
+        if ($field->meta->type === 'select'
+            && property_exists($field->meta, 'multiple')
+            && $field->meta->multiple) {
             if (!is_array($field->value) && !is_object($field->value)) {
                 throw new TemplateException(__(
-                    'Multiple selects must have an array default value: ":field"',
-                    ['field' => $field->name]
-                ));
+                        'Multiple selects must have an array default value: ":field"',
+                        ['field' => $field->name]
+                    ));
             }
-
-            return;
         }
     }
 }
