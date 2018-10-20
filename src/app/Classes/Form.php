@@ -9,8 +9,8 @@ use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 
 class Form
 {
-    private const CreateActions = ['store'];
-    private const UpdateActions = ['create', 'show', 'update', 'destroy'];
+    private const CreateActions = ['back', 'store'];
+    private const UpdateActions = ['back', 'create', 'show', 'update', 'destroy'];
 
     private $model;
     private $template;
@@ -137,7 +137,7 @@ class Form
 
     public function append($prop, $value)
     {
-        if (!property_exists($this->template, 'params')) {
+        if (! property_exists($this->template, 'params')) {
             $this->template->params = new \stdClass();
         }
 
@@ -171,7 +171,7 @@ class Form
     {
         $this->template->method = $method;
 
-        if (!isset($this->template->actions)) {
+        if (! isset($this->template->actions)) {
             $this->template->actions = $this->defaultActions();
 
             return $this;
@@ -188,7 +188,8 @@ class Form
 
         return collect($actions)
             ->filter(function ($action) {
-                return \Route::has($this->template->routePrefix.'.'.$action);
+                return \Route::has($this->template->routePrefix.'.'.$action)
+                    || $action === 'back';
             })->toArray();
     }
 
@@ -201,7 +202,7 @@ class Form
                 return $field->name === $name;
             });
 
-        if (!$field) {
+        if (! $field) {
             throw new TemplateException(__(
                 'The :field field is missing from the JSON template',
                 ['field' => $name]

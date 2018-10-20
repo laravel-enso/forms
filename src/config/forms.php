@@ -36,6 +36,13 @@ return [
             'action' => 'router',
             'label' => 'Show',
         ],
+        'back' => [
+            'icon' => 'arrow-left',
+            'class' => 'is-primary',
+            'event' => 'back',
+            'action' => 'router',
+            'label' => 'Back',
+        ],
         'store' => [
             'icon' => 'check',
             'class' => 'is-success',

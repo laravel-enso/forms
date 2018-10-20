@@ -16,12 +16,15 @@ class Actions
 
     public function validate()
     {
-        $diff = collect($this->template->actions)->diff(collect(Attributes::List));
+        $diff = collect($this->template->actions)
+            ->diff(collect(Attributes::List));
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
-                'Incorrect action(s) provided: :actions. Allowed actions are: :actionList',
-                ['actions' => $diff->implode(', '), 'actionList' => collect(Attributes::List)->implode(', ')]
+                'Incorrect action(s) provided: :actions. Allowed actions are: :actionList', [
+                    'actions' => $diff->implode(', '),
+                    'actionList' => collect(Attributes::List)->implode(', ')
+                ]
             ));
         }
     }
