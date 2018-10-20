@@ -21,13 +21,13 @@ class Routes
 
     private function checkActionRouteMapping()
     {
-        if (! is_null($this->template->routePrefix)) {
+        if (!is_null($this->template->routePrefix)) {
             return $this;
         }
 
         collect($this->template->actions)
             ->each(function ($action) {
-                if ($action !== 'back' && ! isset($this->template->routes[$action])) {
+                if ($action !== 'back' && !isset($this->template->routes[$action])) {
                     throw new TemplateException(__(
                         '"routePrefix" attribute is missing and no route for action :action was provided',
                         ['action' => $action]
@@ -51,7 +51,7 @@ class Routes
 
     private function checkRoute($route)
     {
-        if (! \Route::has($route)) {
+        if (!\Route::has($route)) {
             throw new TemplateException(__(
                 'Route does not exist: :route',
                 ['route' => $route]

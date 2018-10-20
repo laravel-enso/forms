@@ -23,7 +23,7 @@ class Actions
             throw new TemplateException(__(
                 'Incorrect action(s) provided: :actions. Allowed actions are: :actionList', [
                     'actions' => $diff->implode(', '),
-                    'actionList' => collect(Attributes::List)->implode(', ')
+                    'actionList' => collect(Attributes::List)->implode(', '),
                 ]
             ));
         }

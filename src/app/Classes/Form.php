@@ -137,7 +137,7 @@ class Form
 
     public function append($prop, $value)
     {
-        if (! property_exists($this->template, 'params')) {
+        if (!property_exists($this->template, 'params')) {
             $this->template->params = new \stdClass();
         }
 
@@ -171,7 +171,7 @@ class Form
     {
         $this->template->method = $method;
 
-        if (! isset($this->template->actions)) {
+        if (!isset($this->template->actions)) {
             $this->template->actions = $this->defaultActions();
 
             return $this;
@@ -202,7 +202,7 @@ class Form
                 return $field->name === $name;
             });
 
-        if (! $field) {
+        if (!$field) {
             throw new TemplateException(__(
                 'The :field field is missing from the JSON template',
                 ['field' => $name]
