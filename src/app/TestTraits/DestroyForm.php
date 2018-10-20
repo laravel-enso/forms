@@ -7,11 +7,11 @@ trait DestroyForm
     /** @test */
     public function can_destroy_model()
     {
-        if (!isset($this->testModel)) {
+        if (! isset($this->testModel)) {
             throw new \Exception('"testModel" property is missing from your test');
         }
 
-        if (!isset($this->permissionGroup)) {
+        if (! isset($this->permissionGroup)) {
             throw new \Exception('"permissionGroup" property is missing from your test');
         }
 

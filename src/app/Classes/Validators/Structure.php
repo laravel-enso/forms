@@ -58,15 +58,15 @@ class Structure
 
     private function checkRootAttributesFormat()
     {
-        if (property_exists($this->template, 'actions') && !is_array($this->template->actions)) {
+        if (property_exists($this->template, 'actions') && ! is_array($this->template->actions)) {
             throw new TemplateException(__('"actions" attribute must be an array'));
         }
 
-        if (property_exists($this->template, 'params') && !is_object($this->template->params)) {
+        if (property_exists($this->template, 'params') && ! is_object($this->template->params)) {
             throw new TemplateException(__('"params" attribute must be an object'));
         }
 
-        if (!is_array($this->template->sections)) {
+        if (! is_array($this->template->sections)) {
             throw new TemplateException(__('"section" attribute must be an array'));
         }
 
@@ -117,7 +117,7 @@ class Structure
     {
         collect($this->template->sections)
             ->each(function ($section) {
-                if (!collect(Attributes::Columns)->contains($section->columns)) {
+                if (! collect(Attributes::Columns)->contains($section->columns)) {
                     throw new TemplateException(__(
                         'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed',
                         [
@@ -137,14 +137,14 @@ class Structure
     {
         collect($section->fields)
             ->each(function ($field) {
-                if (!property_exists($field, 'column')) {
+                if (! property_exists($field, 'column')) {
                     throw new TemplateException(__(
                         'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
                         ['field' => $field->name]
                     ));
                 }
 
-                if (!is_int($field->column) || $field->column <= 0 || $field->column > 12) {
+                if (! is_int($field->column) || $field->column <= 0 || $field->column > 12) {
                     throw new TemplateException(__(
                         'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
                         ['columns' => $field->name]

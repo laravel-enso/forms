@@ -30,9 +30,9 @@ class Fields
 
     private function checkFormat($section)
     {
-        if (!is_array($section->fields) || empty($section->fields)
+        if (! is_array($section->fields) || empty($section->fields)
             || collect($section->fields)->first(function ($field) {
-                return !is_object($field);
+                return ! is_object($field);
             }) !== null
         ) {
             throw new TemplateException(__(
@@ -59,7 +59,7 @@ class Fields
     private function checkValue($field)
     {
         if ($field->meta->type === 'input' && $field->meta->content === 'checkbox') {
-            if (!is_bool($field->value)) {
+            if (! is_bool($field->value)) {
                 throw new TemplateException(__(
                     'Chexboxes must have a boolean default value: ":field"',
                     ['field' => $field->name]
@@ -72,7 +72,7 @@ class Fields
         if ($field->meta->type === 'select'
             && property_exists($field->meta, 'multiple')
             && $field->meta->multiple) {
-            if (!is_array($field->value) && !is_object($field->value)) {
+            if (! is_array($field->value) && ! is_object($field->value)) {
                 throw new TemplateException(__(
                         'Multiple selects must have an array default value: ":field"',
                         ['field' => $field->name]

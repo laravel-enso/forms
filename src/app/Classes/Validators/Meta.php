@@ -84,11 +84,11 @@ class Meta
         }
 
         if (property_exists($this->field->meta, 'options')
-            && !is_array($this->field->meta->options)
-            && !(is_string($this->field->meta->options)
+            && ! is_array($this->field->meta->options)
+            && ! (is_string($this->field->meta->options)
                 && class_exists($this->field->meta->options)
                 && new $this->field->meta->options instanceof Enum)
-            && !method_exists($this->field->meta->options, 'toArray')) {
+            && ! method_exists($this->field->meta->options, 'toArray')) {
             throw new TemplateException(__(
                 '"options" meta parameter for field ":field" must be an array a collection or an Enum',
                 ['field' => $this->field->name]
@@ -100,7 +100,7 @@ class Meta
 
     private function checkType()
     {
-        if (!collect(Attributes::Types)->contains($this->field->meta->type)) {
+        if (! collect(Attributes::Types)->contains($this->field->meta->type)) {
             throw new TemplateException(__(
                 'Unknown Field Type Found: :type',
                 ['type' => $this->field->meta->type]
@@ -110,12 +110,12 @@ class Meta
 
     private function selectMetaParameterMissing()
     {
-        return !property_exists($this->field, 'meta')
-            || (!property_exists($this->field->meta, 'options') && !property_exists($this->field->meta, 'source'));
+        return ! property_exists($this->field, 'meta')
+            || (! property_exists($this->field->meta, 'options') && ! property_exists($this->field->meta, 'source'));
     }
 
     private function inputMetaParameterMissing()
     {
-        return !property_exists($this->field, 'meta') || !property_exists($this->field->meta, 'content');
+        return ! property_exists($this->field, 'meta') || ! property_exists($this->field->meta, 'content');
     }
 }
