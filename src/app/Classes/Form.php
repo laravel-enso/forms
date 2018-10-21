@@ -42,9 +42,9 @@ class Form
         return $this->template;
     }
 
-    public function actions(array $actions)
+    public function actions($actions)
     {
-        $this->template->actions = $actions;
+        $this->template->actions = (array) $actions;
 
         return $this;
     }
