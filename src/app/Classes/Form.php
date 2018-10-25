@@ -19,6 +19,8 @@ class Form
     public function __construct(string $filename)
     {
         $this->readTemplate($filename);
+        $this->template->routeParams = [];
+
         $this->dirty = collect();
     }
 
@@ -37,7 +39,9 @@ class Form
         $this->model = $model;
 
         $this->method('patch')
-            ->build();
+            ->routeParams([
+                camel_case(class_basename($model)) => $model->id
+            ])->build();
 
         return $this->template;
     }
@@ -142,6 +146,15 @@ class Form
         }
 
         $this->template->params->$prop = $value;
+
+        return $this;
+    }
+
+    public function routeParams($params)
+    {
+        collect($params)->each(function ($value, $key) {
+            $this->template->routeParams[$key] = $value;
+        });
 
         return $this;
     }

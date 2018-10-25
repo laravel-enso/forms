@@ -26,7 +26,11 @@ class Builder
             ->computeActions()
             ->computeSelects();
 
-        unset($this->template->routes, $this->template->routePrefix, $this->template->authorize);
+        unset(
+            $this->template->routes,
+            $this->template->routePrefix,
+            $this->template->authorize
+        );
     }
 
     private function setValues()
@@ -60,28 +64,28 @@ class Builder
     {
         $this->template->actions = collect($this->template->actions)
             ->reduce(function ($collector, $action) {
-                $actionConfig = [];
-                $actionConfig['button'] = config('enso.forms.buttons.'.$action);
-                $route = $this->routes[$action]
-                    ?? $this->template->routePrefix.'.'.$action;
-                $actionConfig['forbidden'] = $this->isForbidden($route);
-
-                [$routeOrPath, $value] = collect(['create', 'show', 'back'])->contains($action)
-                    ? ['route', $route]
-                    : ['path', route($route, is_null($this->model) ? [] : [$this->model->getKey()], false)];
-
-                $actionConfig[$routeOrPath] = $value;
-
-                if ($action === 'show') {
-                    $actionConfig['id'] = $this->model->getKey();
-                }
-
-                $collector[$action] = $actionConfig;
+                $collector[$action] = $this->actionConfig($action);
 
                 return $collector;
             }, []);
 
         return $this;
+    }
+
+    private function actionConfig($action)
+    {
+        $route = $this->routes[$action]
+            ?? $this->template->routePrefix.'.'.$action;
+
+        [$routeOrPath, $value] = collect(['create', 'show', 'back'])->contains($action)
+            ? ['route', $route]
+            : ['path', route($route, $this->template->routeParams, false)];
+
+        return [
+            'button' => config('enso.forms.buttons.'.$action),
+            'forbidden' => $this->isForbidden($route),
+            $routeOrPath => $value,
+        ];
     }
 
     private function computeSelects()
