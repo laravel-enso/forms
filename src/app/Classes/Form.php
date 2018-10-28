@@ -227,7 +227,7 @@ class Form
 
     private function needsValidation()
     {
-        return app()->environment() === 'local'
+        return ! app()->environment('production')
             || config('enso.datatable.validations') === 'always';
     }
 }
