@@ -339,6 +339,10 @@ export default {
                 if (status === 422) {
                     this.errors.set(data.errors);
 
+                    this.$nextTick(() => this.$el
+                        .querySelector('.help.is-danger')
+                        .scrollIntoViewIfNeeded());
+
                     return;
                 }
 
@@ -374,10 +378,17 @@ export default {
                 this.handleError(error);
             });
         },
-        field(field) {
+        flatten() {
             return this.data.sections
-                .reduce((fields, section) => fields.concat(section.fields), [])
+                .reduce((fields, section) => fields.concat(section.fields), []);
+        },
+        field(field) {
+            return this.flatten()
                 .find(item => item.name === field);
+        },
+        firstError() {
+            return this.flatten()
+                .find(({ name }) => this.errors.has(name));
         },
         hasFields(section) {
             return section.fields.find(field => !field.meta.hidden) !== undefined;
