@@ -9,6 +9,7 @@
             :readonly="field.meta.readonly"
             :step="field.meta.step"
             :type="field.meta.content"
+            v-on="$listeners"
             @input="errors.clear(field.name)"
             @keydown="$emit('update');">
         <error-icon v-if="errors.has(field.name)"/>

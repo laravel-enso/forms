@@ -13,6 +13,7 @@
             :symbol="field.meta.symbol"
             :thousand="field.meta.thousand"
             :zero="field.meta.zero"
+            v-on="$listeners"
             @input="errors.clear(field.name)"
             @keydown="$emit('update');"/>
             <error-icon v-if="errors.has(field.name)"/>

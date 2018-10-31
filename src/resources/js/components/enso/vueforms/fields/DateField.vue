@@ -8,6 +8,7 @@
         :placeholder="i18n(field.meta.placeholder)"
         :time="field.meta.time"
         :time-only="timeOnly"
+        v-on="$listeners"
         @input="errors.clear(field.name)"
         @keydown="$emit('update');"/>
 

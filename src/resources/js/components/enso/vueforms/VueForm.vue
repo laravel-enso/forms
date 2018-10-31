@@ -22,11 +22,21 @@
                             : `is-${field.column}`
                     ]" :key="field.name"
                     v-if="!field.meta.hidden">
-                    <form-field :field="field"
-                        :errors="errors"
+                    <form-field :errors="errors"
+                        :field="field"
                         :i18n="i18n"
                         :locale="locale"
-                        v-on="$listeners"/>
+                        v-on="$listeners">
+                        <template :slot="field.name"
+                            v-if="field.meta.custom">
+                            <slot :name="field.name"
+                                :errors="errors"
+                                :field="field"
+                                :i18n="i18n"
+                                :locale="locale"
+                                v-if="field.meta.custom"/>
+                        </template>
+                    </form-field>
                 </div>
             </div>
             <form-actions :data="data"

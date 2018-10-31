@@ -2,15 +2,14 @@
     <div class="field">
         <field-label :field="field"
             :i18n="i18n"/>
-        <slot :errors="errors"
-            :field="field"
-            :name="field.name"
+        <slot :name="field.name"
             v-if="field.meta.custom"/>
         <component :is="fieldType"
             :errors="errors"
             :field="field"
             :i18n="i18n"
-            :locale="locale"/>
+            :locale="locale"
+            v-else/>
         <p class="help is-danger"
             v-if="errors.has(field.name)">
             {{ errors.get(field.name) }}
