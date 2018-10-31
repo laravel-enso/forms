@@ -10,8 +10,7 @@
             :errors="errors"
             :field="field"
             :i18n="i18n"
-            :locale="locale"
-            v-if="fieldType"/>
+            :locale="locale"/>
         <p class="help is-danger"
             v-if="errors.has(field.name)">
             {{ errors.get(field.name) }}
