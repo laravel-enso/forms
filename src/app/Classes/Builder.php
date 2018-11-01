@@ -74,7 +74,7 @@ class Builder
 
     private function actionConfig($action)
     {
-        $route = $this->routes[$action]
+        $route = $this->template->routes[$action]
             ?? $this->template->routePrefix.'.'.$action;
 
         [$routeOrPath, $value] = collect(['create', 'show', 'back'])->contains($action)
