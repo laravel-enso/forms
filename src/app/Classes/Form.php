@@ -40,7 +40,7 @@ class Form
 
         $this->method('patch')
             ->routeParams([
-                camel_case(class_basename($model)) => $model->id,
+                camel_case(class_basename($model)) => $model->getKey(),
             ])->build();
 
         return $this->template;
