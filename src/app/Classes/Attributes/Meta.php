@@ -14,6 +14,6 @@ class Meta
     ];
 
     const Types = [
-        'input', 'select', 'datepicker', 'timepicker', 'textarea', 'password', 'wysiwyg'
+        'input', 'select', 'datepicker', 'timepicker', 'textarea', 'password', 'wysiwyg',
     ];
 }
