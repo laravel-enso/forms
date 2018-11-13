@@ -52,12 +52,24 @@ class Builder
 
     private function value($field)
     {
-        return $field->meta->type === 'datepicker'
+        if ($field->meta->type === 'datepicker'
             && is_object($this->model->{$field->name})
-            && $this->model->{$field->name} instanceof Carbon
-            ? $this->model->{$field->name}
-                ->format($this->dateFormat($field))
-            : $this->model->{$field->name};
+            && $this->model->{$field->name} instanceof Carbon) {
+            return $this->model->{$field->name}
+                ->format($this->dateFormat($field));
+        }
+
+        if ($field->meta->type === 'select'
+            && isset($field->meta->multiple)
+            && $field->meta->multiple) {
+            if ($this->model->{$field->name} instanceof Collection) {
+                $trackBy = $field->meta->trackBy ?? 'id';
+
+                return $this->model->{$field->name}->pluck($trackBy);
+            }
+        }
+
+        return $this->model->{$field->name};
     }
 
     private function computeActions()
