@@ -5,6 +5,7 @@
         :readonly="field.meta.readonly"
         :has-error="errors.has(field.name)"
         :i18n="i18n"
+        :translate-fields="field.meta.translateFields"
         :label="field.meta.label || 'name'"
         :multiple="field.meta.multiple"
         :options="field.meta.options"
