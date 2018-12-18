@@ -42,6 +42,7 @@
             <form-actions :data="data"
                 :errors="errors"
                 :i18n="i18n"
+                :params="params"
                 v-on="$listeners"
                 @focus-error="focusError"
                 ref="actions">
