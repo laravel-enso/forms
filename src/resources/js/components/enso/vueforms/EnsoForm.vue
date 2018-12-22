@@ -31,20 +31,20 @@ export default {
     components: { VueForm },
 
     props: {
-        path: {
+        locale: {
             type: String,
             default() {
-                return route(this.$route.name, this.$route.params, false);
+                return this.$store.state.preferences.global.lang;
             },
         },
         params: {
             type: Object,
             default: null,
         },
-        locale: {
+        path: {
             type: String,
             default() {
-                return this.$store.state.preferences.global.lang;
+                return route(this.$route.name, this.$route.params, false);
             },
         },
     },
