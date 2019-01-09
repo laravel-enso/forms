@@ -82,6 +82,9 @@ export default {
                 ? this.$refs.form.routeParam(param)
                 : null;
         },
+        fetch() {
+            this.$refs.form.fetch();
+        },
     },
 
 };
