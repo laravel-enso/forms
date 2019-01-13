@@ -57,6 +57,7 @@
             </form-section>
             <form-actions class="has-margin-top-large"
                 :data="data"
+                :form-data="formData"
                 :errors="errors"
                 :i18n="i18n"
                 :params="params"
@@ -160,6 +161,15 @@ export default {
                 fields.push(...section.fields);
                 return fields;
             }, []).filter(({ name }) => this.errors.has(name)).length;
+        },
+        formData() {
+            return this.data.sections
+                .reduce((fields, section) => fields
+                    .concat(section.fields), [])
+                .reduce((object, field) => {
+                    object[field.name] = field.value;
+                    return object;
+                }, { _params: this.params });
         },
         field(field) {
             return this.flatten()
