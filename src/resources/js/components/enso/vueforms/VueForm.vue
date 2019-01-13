@@ -9,8 +9,8 @@
                 v-if="tabbed">
                 <span slot="label"
                     slot-scope="{ tab }"
-                    :class="{'badge is-badge-danger is-badge-small': errorCount(sections(tab))}"
-                    :data-badge="errorCount(sections(tab))">
+                    :class="{'badge is-badge-danger is-badge-small': errorCount(tab)}"
+                    :data-badge="errorCount(tab)">
                     {{ tab }}
                 </span>
                 <tab :id="i18n(tab)"
@@ -129,7 +129,10 @@ export default {
             return this.data && this.data.tabs
                 ? this.data.sections
                     .reduce((tabs, { tab }) => {
-                        tabs.push(tab);
+                        if (!tabs.includes(tab)) {
+                            tabs.push(tab);
+                        }
+
                         return tabs;
                     }, [])
                 : [];
@@ -156,8 +159,8 @@ export default {
         sections(tab) {
             return this.data.sections.filter(section => section.tab === tab);
         },
-        errorCount(sections) {
-            return sections.reduce((fields, section) => {
+        errorCount(tab) {
+            return this.sections(tab).reduce((fields, section) => {
                 fields.push(...section.fields);
                 return fields;
             }, []).filter(({ name }) => this.errors.has(name)).length;
