@@ -19,7 +19,8 @@ class Structure
         $this->checkRootMandatoryAttributes()
             ->checkRootOptionalAttributes()
             ->checkRootAttributesFormat()
-            ->checkSections();
+            ->checkSections()
+            ->checkTabs();
     }
 
     private function checkRootMandatoryAttributes()
@@ -80,9 +81,11 @@ class Structure
                 return $attributes->merge(collect($section)->keys());
             }, collect())->unique()->values();
 
-        $this->checkSectionsMandatory($attributes);
-        $this->checkSectionsOptional($attributes);
-        $this->checkColumnsFormat();
+        $this->checkSectionsMandatory($attributes)
+            ->checkSectionsOptional($attributes)
+            ->checkColumnsFormat();
+
+        return $this;
     }
 
     private function checkSectionsMandatory($attributes)
@@ -96,6 +99,8 @@ class Structure
                 ['attr' => $diff->implode('", "')]
             ));
         }
+
+        return $this;
     }
 
     private function checkSectionsOptional($attributes)
@@ -111,6 +116,8 @@ class Structure
                 ['attr' => $diff->implode('", "')]
             ));
         }
+
+        return $this;
     }
 
     private function checkColumnsFormat()
@@ -151,5 +158,24 @@ class Structure
                     ));
                 }
             });
+    }
+
+    private function checkTabs()
+    {
+        if (! property_exists($this->template, 'tabs') || ! $this->template->tabs) {
+            return;
+        }
+
+        $diff = collect($this->template->sections)
+            ->filter(function ($section) {
+                return ! property_exists($section, 'tab');
+            });
+
+        if ($diff->isNotEmpty()) {
+            throw new TemplateException(__(
+                '"tab" attribute is missing on the following columns :columns',
+                ['columns' => $diff->keys()->implode('", "')]
+            ));
+        }
     }
 }
