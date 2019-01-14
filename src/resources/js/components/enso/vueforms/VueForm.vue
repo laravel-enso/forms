@@ -5,7 +5,7 @@
             :i18n="i18n"/>
         <form class="is-marginless"
             @submit.prevent="$refs.actions.submit()">
-            <enso-tabs custom
+            <enso-tabs class="form-tabs"
                 v-if="tabbed">
                 <span slot="label"
                     slot-scope="{ tab }"
@@ -196,3 +196,12 @@ export default {
 };
 
 </script>
+
+<style lang="scss">
+
+    .form-tabs {
+        position: relative;
+        z-index: 1;
+    }
+
+</style>
