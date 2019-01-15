@@ -16,15 +16,16 @@ JSON-based Form builder for [Laravel Enso](https://github.com/laravel-enso/Enso)
 
 - allows for quick creation of forms
 - uses a JSON template file for generating the form
-- flexible form layout, that supports grouping inputs into logical sections and columns of different widths, 
-even on the same row 
+- flexible form layout, that supports directly from the template
+    * grouping inputs into logical sections and columns of different widths, even on the same row
+    * grouping sections into tabs 
 - uses it's own VueJS components, such as `vue-select` and `datepicker` for an improved experience
--`VueFormSs.vue` a server-side form wrapper is available that can be used to fetch the form configuration 
+-`EnsoForm.vue` a server-side form wrapper is available that can be used to fetch the form configuration 
 - for most forms, the json template is all that it's needed
 - provides helpful error messages when the template is missing parameters or unexpected values are found
 - when needed, allows the customization of form components in order to cover all scenarios
 - comes with a `template.json` file that can be used as an example when starting out
-- integrates with the [Laravel Request Validation](https://laravel.com/docs/5.6/validation#available-validation-rules) for seamless usage and reusability
+- integrates with the [Laravel Request Validation](https://laravel.com/docs/5.7/validation#available-validation-rules) for seamless usage and reusability
 - uses the Enso toast notifications for stylish feedback on the various actions
 - customizable placeholder for all elements
 - handles number, money and currency formatting, using the [accounting.js](http://openexchangerates.github.io/accounting.js/) library
