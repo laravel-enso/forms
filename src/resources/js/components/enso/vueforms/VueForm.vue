@@ -14,7 +14,7 @@
                     :data-badge="errorCount(tab)">
                     {{ i18n(tab) }}
                 </span>
-                <tab :id="i18n(tab)"
+                <tab :id="tab"
                     :key="tab"
                     keep-alive
                     v-for="tab in tabs">
