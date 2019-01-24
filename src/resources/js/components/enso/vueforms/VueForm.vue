@@ -1,5 +1,4 @@
 <template>
-
     <div v-if="data">
         <form-header :data="data"
             :i18n="i18n"/>
@@ -70,9 +69,7 @@
                 </template>
             </form-actions>
         </form>
-
-    </div>
-
+</div>
 </template>
 
 <script>
@@ -154,8 +151,7 @@ export default {
         },
         flatten() {
             return this.data.sections
-                .reduce((fields, section) =>
-                    fields.concat(section.fields), []);
+                .reduce((fields, section) => fields.concat(section.fields), []);
         },
         sections(tab) {
             return this.data.sections.filter(section => section.tab === tab);
