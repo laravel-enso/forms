@@ -41,9 +41,7 @@ class Builder
 
         collect($this->template->sections)->each(function ($section) {
             collect($section->fields)->each(function ($field) {
-                if (! $this->dirty->contains($field->name)) {
-                    $field->value = $this->value($field);
-                }
+                $field->value = $this->value($field);
             });
         });
 
@@ -52,24 +50,28 @@ class Builder
 
     private function value($field)
     {
+        $value = $this->dirty->contains($field->name)
+            ? $field->value
+            : $this->model->{$field->name};
+
         if ($field->meta->type === 'datepicker'
             && is_object($this->model->{$field->name})
-            && $this->model->{$field->name} instanceof Carbon) {
-            return $this->model->{$field->name}
+            && $value instanceof Carbon) {
+            return $value
                 ->format($this->dateFormat($field));
         }
 
         if ($field->meta->type === 'select'
             && isset($field->meta->multiple)
             && $field->meta->multiple) {
-            if ($this->model->{$field->name} instanceof Collection) {
+            if ($value instanceof Collection) {
                 $trackBy = $field->meta->trackBy ?? 'id';
 
-                return $this->model->{$field->name}->pluck($trackBy);
+                return $value->pluck($trackBy);
             }
         }
 
-        return $this->model->{$field->name};
+        return $value;
     }
 
     private function computeActions()
