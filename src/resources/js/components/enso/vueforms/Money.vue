@@ -9,6 +9,7 @@
         :placeholder="placeholder"
         type="tel"
         @blur="update"
+        @keydown="keydownHandler"
         @focus="money = value"
         ref="money"
         v-else>
@@ -112,6 +113,11 @@ export default {
 
             this.$emit('input', value);
             this.format();
+        },
+        keydownHandler(event) {
+            if(event.keyCode == 13) {
+                event.target.blur()
+            }
         },
         round(value) {
             const factor = 10 ** this.precision;
