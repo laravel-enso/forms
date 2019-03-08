@@ -17,14 +17,6 @@ class AppServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/app/Forms' => app_path('Forms'),
         ], 'forms');
-
-        $this->publishes([
-            __DIR__.'/resources/js' => resource_path('js'),
-        ], 'forms-assets');
-
-        $this->publishes([
-            __DIR__.'/resources/js' => resource_path('js'),
-        ], 'enso-assets');
     }
 
     public function register()

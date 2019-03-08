@@ -106,10 +106,27 @@ class Builder
     {
         collect($this->template->sections)->each(function ($section) {
             collect($section->fields)->each(function ($field) {
-                if ($field->meta->type === 'select'
-                    && property_exists($field->meta, 'options')
-                    && is_string($field->meta->options)) {
-                    $field->meta->options = $field->meta->options::select();
+                if ($field->meta->type === 'select') {
+                    if (property_exists($field->meta, 'options')
+                        && is_string($field->meta->options)) {
+                        $field->meta->options = $field->meta->options::select();
+                    }
+
+                    if (! property_exists($field->meta, 'placeholder')) {
+                        $field->meta->placeholder = config('enso.forms.selectPlaceholder');
+                    }
+
+                    if (! property_exists($field->meta, 'trackBy')) {
+                        $field->meta->trackBy = 'id'; //TODO refactor to config
+                    }
+
+                    if (! property_exists($field->meta, 'label')) {
+                        $field->meta->label = 'name'; //TODO refactor to config
+                    }
+
+                    if (property_exists($field->meta, 'source')) {
+                        $field->meta->source = route($field->meta->source);
+                    }
                 }
             });
         });
