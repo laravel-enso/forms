@@ -31,10 +31,10 @@ class Fields
     private function checkFormat($section)
     {
         $valid = is_array($section->fields)
-            && collect($section->fields)->isNotEmpty()
-            && collect($section->fields)->filter(function ($field) {
-                return !is_object($field);
-            })->isEmpty();
+            && (collect($section->fields)->isEmpty()
+                || collect($section->fields)->filter(function ($field) {
+                    return !is_object($field);
+                })->isEmpty());
 
         if (!$valid) {
             throw new TemplateException(__(
