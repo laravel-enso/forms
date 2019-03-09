@@ -30,13 +30,15 @@ class Fields
 
     private function checkFormat($section)
     {
-        if (! is_array($section->fields) || empty($section->fields)
-            || collect($section->fields)->first(function ($field) {
-                return ! is_object($field);
-            }) !== null
-        ) {
+        $valid = is_array($section->fields)
+            && collect($section->fields)->isNotEmpty()
+            && collect($section->fields)->filter(function ($field) {
+                return !is_object($field);
+            })->isEmpty();
+
+        if (!$valid) {
             throw new TemplateException(__(
-                'The fields attribute must be an array of objects with at least one element'
+                'The fields attribute must be an array (of objects)'
             ));
         }
     }
@@ -71,13 +73,13 @@ class Fields
 
         if ($field->meta->type === 'select'
             && property_exists($field->meta, 'multiple')
-            && $field->meta->multiple) {
-            if (! is_array($field->value) && ! is_object($field->value)) {
+            && $field->meta->multiple
+            && ! is_array($field->value)
+            &&! is_object($field->value)) {
                 throw new TemplateException(__(
-                        'Multiple selects must have an array default value: ":field"',
-                        ['field' => $field->name]
-                    ));
+                    'Multiple selects must have an array default value: ":field"',
+                    ['field' => $field->name]
+                ));
             }
-        }
     }
 }
