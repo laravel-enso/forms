@@ -3,6 +3,7 @@
 namespace LaravelEnso\FormBuilder\app\Classes;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Helpers\app\Classes\JsonParser;
 use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
@@ -177,7 +178,9 @@ class Form
 
     private function readTemplate(string $filename)
     {
-        $this->template = (new JsonParser($filename))->object();
+        $this->template = new Obj(
+            (new JsonParser($filename))->array()
+        );
     }
 
     private function method(string $method)

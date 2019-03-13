@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 use LaravelEnso\FormBuilder\app\Classes\Attributes\Structure as Attributes;
 
@@ -9,7 +10,7 @@ class Structure
 {
     private $template;
 
-    public function __construct($template)
+    public function __construct(Obj $template)
     {
         $this->template = $template;
     }
@@ -26,7 +27,7 @@ class Structure
     private function checkRootMandatoryAttributes()
     {
         $diff = collect(Attributes::Mandatory)
-            ->diff(collect($this->template)->keys());
+            ->diff($this->template->keys());
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
@@ -43,8 +44,7 @@ class Structure
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
-        $diff = collect($this->template)
-            ->keys()
+        $diff = collect($this->template->keys())
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
@@ -59,15 +59,17 @@ class Structure
 
     private function checkRootAttributesFormat()
     {
-        if (property_exists($this->template, 'actions') && ! is_array($this->template->actions)) {
+        if ($this->template->has('actions')
+            && ! is_array($this->template->get('actions'))) {
             throw new TemplateException(__('"actions" attribute must be an array'));
         }
 
-        if (property_exists($this->template, 'params') && ! is_object($this->template->params)) {
+        if ($this->template->has('params')
+            && ! is_object($this->template->get('params'))) {
             throw new TemplateException(__('"params" attribute must be an object'));
         }
 
-        if (! is_array($this->template->sections)) {
+        if (! is_array($this->template->get('sections'))) {
             throw new TemplateException(__('"section" attribute must be an array'));
         }
 
@@ -76,9 +78,9 @@ class Structure
 
     private function checkSections()
     {
-        $attributes = collect($this->template->sections)
+        $attributes = collect($this->template->get('sections'))
             ->reduce(function ($attributes, $section) {
-                return $attributes->merge(collect($section)->keys());
+                return $attributes->merge($section->keys());
             }, collect())->unique()->values();
 
         $this->checkSectionsMandatory($attributes)
@@ -122,19 +124,18 @@ class Structure
 
     private function checkColumnsFormat()
     {
-        collect($this->template->sections)
+        collect($this->template->get('sections'))
             ->each(function ($section) {
-                if (! collect(Attributes::Columns)->contains($section->columns)) {
+                if (! collect(Attributes::Columns)->contains($section->get('columns'))) {
                     throw new TemplateException(__(
-                        'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed',
-                        [
-                            'columns' => $section->columns,
+                        'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed', [
+                            'columns' => $section->get('columns'),
                             'allowed' => collect(Attributes::Columns)->implode(', '),
                         ]
                     ));
                 }
 
-                if ($section->columns === 'custom') {
+                if ($section->get('columns') === 'custom') {
                     $this->checkCustomColumns($section);
                 }
             });
@@ -142,19 +143,21 @@ class Structure
 
     private function checkCustomColumns($section)
     {
-        collect($section->fields)
+        collect($section->get('fields'))
             ->each(function ($field) {
-                if (! property_exists($field, 'column')) {
+                if (! $field->has('column')) {
                     throw new TemplateException(__(
                         'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
                         ['field' => $field->name]
                     ));
                 }
 
-                if (! is_int($field->column) || $field->column <= 0 || $field->column > 12) {
+                if (! is_int($field->get('column'))
+                    || $field->get('column') <= 0
+                    || $field->get('column') > 12) {
                     throw new TemplateException(__(
                         'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
-                        ['columns' => $field->name]
+                        ['columns' => $field->get('name')]
                     ));
                 }
             });
@@ -162,13 +165,13 @@ class Structure
 
     private function checkTabs()
     {
-        if (! property_exists($this->template, 'tabs') || ! $this->template->tabs) {
+        if (! $this->template->get('tabs')) {
             return;
         }
 
-        $diff = collect($this->template->sections)
+        $diff = collect($this->template->get('sections'))
             ->filter(function ($section) {
-                return ! property_exists($section, 'tab');
+                return ! $section->has('tab');
             });
 
         if ($diff->isNotEmpty()) {

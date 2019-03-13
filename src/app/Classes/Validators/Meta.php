@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Helpers\app\Classes\Enum;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 use LaravelEnso\FormBuilder\app\Classes\Attributes\Meta as Attributes;
@@ -9,15 +10,17 @@ use LaravelEnso\FormBuilder\app\Classes\Attributes\Meta as Attributes;
 class Meta
 {
     private $field;
+    private $meta;
 
-    public function __construct($field)
+    public function __construct(Obj $field)
     {
         $this->field = $field;
+        $this->meta = $field->get('meta');
     }
 
     public function validate()
     {
-        if ($this->isCustom()) {
+        if ($this->meta->get('custom')) {
             return;
         }
 
@@ -27,21 +30,15 @@ class Meta
             ->checkType();
     }
 
-    private function isCustom()
-    {
-        return property_exists($this->field->meta, 'custom')
-            && $this->field->meta->custom;
-    }
-
     private function checkMandatoryAttributes()
     {
         $diff = collect(Attributes::Mandatory)
-            ->diff(collect($this->field->meta)->keys());
+            ->diff($this->meta->keys());
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
                 'Mandatory Meta Attribute(s) Missing: ":attr" from field: :field',
-                ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
+                ['attr' => $diff->implode('", "'), 'field' => $this->field->get('name')]
             ));
         }
 
@@ -53,14 +50,13 @@ class Meta
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
-        $diff = collect($this->field->meta)
-            ->keys()
+        $diff = collect($this->meta->keys())
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
                 'Unknown Attribute(s) Found: ":attr" in field: :field',
-                ['attr' => $diff->implode('", "'), 'field' => $this->field->name]
+                ['attr' => $diff->implode('", "'), 'field' => $this->field->get('name')]
             ));
         }
 
@@ -69,29 +65,31 @@ class Meta
 
     private function checkFormat()
     {
-        if ($this->field->meta->type === 'select' && self::selectMetaParameterMissing($this->field)) {
+        if ($this->meta->get('type') === 'select'
+            && self::selectMetaParameterMissing($this->field)) {
             throw new TemplateException(__(
                 'Mandatory "source" or "option" meta parameter is missing for the :field select field',
-                ['field' => $this->field->name]
+                ['field' => $this->field->get('name')]
             ));
         }
 
-        if ($this->field->meta->type === 'input' && self::inputMetaParameterMissing($this->field)) {
+        if ($this->meta->get('type') === 'input'
+            && self::inputMetaParameterMissing($this->field)) {
             throw new TemplateException(__(
                 'Mandatory "type" meta parameter is missing for the :field input field',
-                ['field' => $this->field->name]
+                ['field' => $this->field->geT('name')]
             ));
         }
 
-        if (property_exists($this->field->meta, 'options')
-            && ! is_array($this->field->meta->options)
-            && ! (is_string($this->field->meta->options)
-                && class_exists($this->field->meta->options)
-                && new $this->field->meta->options instanceof Enum)
-            && ! method_exists($this->field->meta->options, 'toArray')) {
+        $options = $this->meta->get('options');
+        if ($options
+            && ! is_array($options)
+                && ! (is_string($options) && class_exists($options)
+                    && new $options instanceof Enum)
+                && ! method_exists($options, 'toArray')) {
             throw new TemplateException(__(
                 '"options" meta parameter for field ":field" must be an array a collection or an Enum',
-                ['field' => $this->field->name]
+                ['field' => $this->field->get('name')]
             ));
         }
 
@@ -100,10 +98,10 @@ class Meta
 
     private function checkType()
     {
-        if (! collect(Attributes::Types)->contains($this->field->meta->type)) {
+        if (! collect(Attributes::Types)->contains($this->meta->type)) {
             throw new TemplateException(__(
                 'Unknown Field Type Found: :type',
-                ['type' => $this->field->meta->type]
+                ['type' => $this->meta->type]
             ));
         }
     }
@@ -111,11 +109,11 @@ class Meta
     private function selectMetaParameterMissing()
     {
         return ! property_exists($this->field, 'meta')
-            || (! property_exists($this->field->meta, 'options') && ! property_exists($this->field->meta, 'source'));
+            || (! property_exists($this->meta, 'options') && ! property_exists($this->meta, 'source'));
     }
 
     private function inputMetaParameterMissing()
     {
-        return ! property_exists($this->field, 'meta') || ! property_exists($this->field->meta, 'content');
+        return ! property_exists($this->field, 'meta') || ! property_exists($this->meta, 'content');
     }
 }

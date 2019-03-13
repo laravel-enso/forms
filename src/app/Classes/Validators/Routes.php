@@ -2,13 +2,14 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes\Validators;
 
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
 
 class Routes
 {
     private $template;
 
-    public function __construct($template)
+    public function __construct(Obj $template)
     {
         $this->template = $template;
     }
@@ -21,13 +22,14 @@ class Routes
 
     private function checkActionRouteMapping()
     {
-        if (! is_null($this->template->routePrefix)) {
+        if ($this->template->filled('routePrefix')) {
             return $this;
         }
 
-        collect($this->template->actions)
+        collect($this->template->get('actions'))
             ->each(function ($action) {
-                if ($action !== 'back' && ! isset($this->template->routes[$action])) {
+                if ($action !== 'back' && (! $this->template->has('routes')
+                    || ! $this->template->get('routes')->has('action'))) {
                     throw new TemplateException(__(
                         '"routePrefix" attribute is missing and no route for action :action was provided',
                         ['action' => $action]
@@ -40,13 +42,17 @@ class Routes
 
     private function checkRoutes()
     {
-        collect($this->template->actions)->each(function ($action) {
-            if ($action !== 'back') {
-                $route = $this->template->routes[$action]
-                    ?? $this->template->routePrefix.'.'.$action;
-                $this->checkRoute($route);
-            }
-        });
+        collect($this->template->get('actions'))
+            ->each(function ($action) {
+                if ($action !== 'back') {
+                    $route = $this->template->has('routes')
+                        && $this->template->get('routes')->has($action)
+                            ? $this->template->get('routes')->get($action)
+                            : $this->template->get('routePrefix').'.'.$action;
+
+                    $this->checkRoute($route);
+                }
+            });
     }
 
     private function checkRoute($route)

@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\FormBuilder\app\Classes;
 
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\FormBuilder\app\Classes\Validators\Fields;
 use LaravelEnso\FormBuilder\app\Classes\Validators\Routes;
 use LaravelEnso\FormBuilder\app\Classes\Validators\Actions;
@@ -11,7 +12,7 @@ class Validator
 {
     private $template;
 
-    public function __construct($template)
+    public function __construct(Obj $template)
     {
         $this->template = $template;
     }
