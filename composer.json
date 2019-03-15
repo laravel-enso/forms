@@ -20,8 +20,7 @@
     "require": {
         "php": ">=7.1.0",
         "laravel/framework": "5.8.*",
-        "laravel-enso/helpers": "1.10.*",
-        "laravel-enso/select": "3.0.*"
+        "laravel-enso/helpers": "1.10.*"
     },
     "autoload": {
         "psr-4": {
