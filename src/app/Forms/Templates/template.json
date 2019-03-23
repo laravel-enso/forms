@@ -12,7 +12,7 @@
     ],
     "sections": [
         {
-            "columns": "2",
+            "columns": 2,
             "divider": true,
             "title": "Section One",
             "fields": [
@@ -69,7 +69,7 @@
             ]
         },
         {
-            "columns": "3",
+            "columns": 3,
             "divider": true,
             "title": "Section One",
             "fields": [{

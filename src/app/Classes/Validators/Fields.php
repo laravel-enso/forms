@@ -60,25 +60,30 @@ class Fields
 
     private function checkValue($field)
     {
-        if ($field->meta->type === 'input' && $field->meta->content === 'checkbox') {
-            if (! is_bool($field->value)) {
+        $meta = $field->get('meta');
+
+        if ($meta->get('custom')) {
+            return;
+        }
+
+        if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
+            if (! is_bool($field->get('value'))) {
                 throw new TemplateException(__(
                     'Chexboxes must have a boolean default value: ":field"',
-                    ['field' => $field->name]
+                    ['field' => $field->get('name')]
                 ));
             }
 
             return;
         }
 
-        if ($field->meta->type === 'select'
-            && property_exists($field->meta, 'multiple')
-            && $field->meta->multiple
-            && ! is_array($field->value)
-            && ! is_object($field->value)) {
+        if ($meta->get('type') === 'select'
+            && $meta->get('multiple')
+            && ! is_array($field->get('value'))
+            && ! is_object($field->get('value'))) {
             throw new TemplateException(__(
                     'Multiple selects must have an array default value: ":field"',
-                    ['field' => $field->name]
+                    ['field' => $field->get('name')]
                 ));
         }
     }
