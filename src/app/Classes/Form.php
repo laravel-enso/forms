@@ -49,7 +49,7 @@ class Form
 
     public function actions($actions)
     {
-        $this->template->set('actions', (array)$actions);
+        $this->template->set('actions', (array) $actions);
 
         return $this;
     }
