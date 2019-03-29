@@ -20,7 +20,7 @@ class Form
     public function __construct(string $filename)
     {
         $this->readTemplate($filename);
-        $this->template->routeParams = [];
+        $this->template->set('routeParams', []);
 
         $this->dirty = collect();
     }
@@ -49,49 +49,53 @@ class Form
 
     public function actions($actions)
     {
-        $this->template->actions = (array) $actions;
+        $this->template->set('actions', (array)$actions);
 
         return $this;
     }
 
     public function routePrefix(string $prefix)
     {
-        $this->template->routePrefix = $prefix;
+        $this->template->set('routePrefix', $prefix);
 
         return $this;
     }
 
     public function title(string $title)
     {
-        $this->template->title = $title;
+        $this->template->set('title', $title);
 
         return $this;
     }
 
     public function icon(string $icon)
     {
-        $this->template->icon = $icon;
+        $this->template->set('icon', $icon);
 
         return $this;
     }
 
     public function route(string $action, string $route)
     {
-        $this->template->routes[$action] = $route;
+        if (! $this->template->has('routes')) {
+            $this->template->set('routes', new Obj());
+        }
+
+        $this->template->get('routes')->set($action, $route);
 
         return $this;
     }
 
     public function options(string $name, $value)
     {
-        $this->field($name)->meta->options = $value;
+        $this->field($name)->get('meta')->set('options', $value);
 
         return $this;
     }
 
     public function value(string $field, $value)
     {
-        $this->field($field)->value = $value;
+        $this->field($field)->set('value', $value);
         $this->dirty->push($field);
 
         return $this;
@@ -100,7 +104,7 @@ class Form
     public function hide($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->field($field)->meta->hidden = true;
+            $this->field($field)->get('meta')->set('hidden', true);
         });
 
         return $this;
@@ -109,7 +113,7 @@ class Form
     public function show($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->field($field)->meta->hidden = false;
+            $this->field($field)->get('meta')->set('hidden', false);
         });
 
         return $this;
@@ -118,7 +122,7 @@ class Form
     public function disable($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->field($field)->meta->disabled = true;
+            $this->field($field)->get('meta')->set('disabled', true);
         });
 
         return $this;
@@ -127,7 +131,7 @@ class Form
     public function readonly($fields)
     {
         collect($fields)->each(function ($field) {
-            $this->field($field)->meta->readonly = true;
+            $this->field($field)->get('meta')->set('readonly', true);
         });
 
         return $this;
@@ -135,40 +139,39 @@ class Form
 
     public function meta(string $field, string $param, $value)
     {
-        $this->field($field)->meta->{$param} = $value;
+        $this->field($field)->get('meta')->set($param, $value);
 
         return $this;
     }
 
     public function append($prop, $value)
     {
-        if (! property_exists($this->template, 'params')) {
-            $this->template->params = new \stdClass();
+        if (! $this->template->has('params')) {
+            $this->template->set('params', new Obj());
         }
 
-        $this->template->params->$prop = $value;
+        $this->template->get('params')->set($prop, $value);
 
         return $this;
     }
 
-    public function routeParams($params)
+    public function routeParams(array $params)
     {
-        collect($params)->each(function ($value, $key) {
-            $this->template->routeParams[$key] = $value;
-        });
+        $this->template->set('routeParams', $params);
 
         return $this;
     }
 
     public function authorize(bool $authorize)
     {
-        $this->template->authorize = $authorize;
+        $this->template->set('authorize', $authorize);
 
         return $this;
     }
 
     private function build()
     {
+        \Log::info($this->template);
         if ($this->needsValidation()) {
             (new Validator($this->template))->run();
         }
@@ -185,10 +188,10 @@ class Form
 
     private function method(string $method)
     {
-        $this->template->method = $method;
+        $this->template->set('method', $method);
 
-        if (! isset($this->template->actions)) {
-            $this->template->actions = $this->defaultActions();
+        if (! $this->template->has('actions')) {
+            $this->template->set('actions', $this->defaultActions());
 
             return $this;
         }
@@ -211,11 +214,11 @@ class Form
 
     private function field(string $name)
     {
-        $field = collect($this->template->sections)
+        $field = collect($this->template->get('sections'))
             ->reduce(function ($fields, $section) {
-                return $fields->merge($section->fields);
+                return $fields->merge($section->get('fields'));
             }, collect())->first(function ($field) use ($name) {
-                return $field->name === $name;
+                return $field->get('name') === $name;
             });
 
         if (! $field) {
