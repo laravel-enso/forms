@@ -49,7 +49,7 @@ class Form
 
     public function actions($actions)
     {
-        $this->template->set('actions', (array)$actions);
+        $this->template->set('actions', (array) $actions);
 
         return $this;
     }
@@ -178,7 +178,6 @@ class Form
 
     private function build()
     {
-        \Log::info($this->template);
         if ($this->needsValidation()) {
             (new Validator($this->template))->run();
         }
