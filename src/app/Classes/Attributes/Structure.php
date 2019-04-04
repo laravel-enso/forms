@@ -8,7 +8,7 @@ class Structure
 
     const Optional = [
         'title', 'icon', 'routePrefix', 'routes', 'actions', 'autosave', 'debounce',
-        'authorize', 'params', 'dividerTitlePlacement', 'tabs', 'labels'
+        'authorize', 'params', 'dividerTitlePlacement', 'tabs', 'labels',
     ];
 
     const SectionMandatory = ['columns', 'fields'];
