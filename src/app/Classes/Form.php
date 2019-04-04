@@ -169,6 +169,13 @@ class Form
         return $this;
     }
 
+    public function labels(bool $labels)
+    {
+        $this->template->set('labels', $labels);
+
+        return $this;
+    }
+
     private function build()
     {
         \Log::info($this->template);

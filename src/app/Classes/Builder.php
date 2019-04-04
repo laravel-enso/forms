@@ -151,6 +151,10 @@ class Builder
             );
         }
 
+        if (! $this->template->has('labels')) {
+            $this->template->set('labels', config('enso.forms.labels'));
+        }
+
         return $this;
     }
 
