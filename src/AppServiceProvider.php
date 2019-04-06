@@ -18,9 +18,4 @@ class AppServiceProvider extends ServiceProvider
             __DIR__.'/app/Forms' => app_path('Forms'),
         ], 'forms');
     }
-
-    public function register()
-    {
-        //
-    }
 }
