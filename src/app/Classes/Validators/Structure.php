@@ -157,7 +157,7 @@ class Structure
                     || $field->get('column') > 12) {
                     throw new TemplateException(__(
                         'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
-                        ['columns' => $field->get('name')]
+                        ['field' => $field->get('name')]
                     ));
                 }
             });
