@@ -25,7 +25,7 @@ class Builder
         $this->appendConfigParams()
             ->setValues()
             ->computeActions()
-            ->computeSelects();
+            ->computeMetas();
 
         $this->template->forget(['routes', 'routePrefix', 'authorize']);
     }
@@ -105,7 +105,7 @@ class Builder
         ];
     }
 
-    private function computeSelects()
+    private function computeMetas()
     {
         collect($this->template->get('sections'))
             ->each(function ($section) {
@@ -114,29 +114,48 @@ class Builder
                         $meta = $field->get('meta');
 
                         if ($meta->get('type') === 'select') {
-                            if ($meta->has('options') && is_string($meta->get('options'))) {
-                                $enum = $meta->get('options');
-                                $meta->set('options', $enum::select());
-                            }
-
-                            if (! $meta->has('placeholder')) {
-                                $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
-                            }
-
-                            if (! $meta->has('trackBy')) {
-                                $meta->set('trackBy', 'id'); //TODO refactor to config
-                            }
-
-                            if (! $meta->has('label')) {
-                                $meta->set('label', 'name'); //TODO refactor to config
-                            }
-
-                            if ($meta->has('source')) {
-                                $meta->set('source', route($meta->get('source')));
-                            }
+                            $this->computeSelect($meta);
+                        }
+                        
+                        if ($meta->get('type') === 'datepicker') {
+                            $this->computeDate($meta);
                         }
                     });
             });
+    }
+
+    private function computeSelect($meta)
+    {
+        if ($meta->has('options') && is_string($meta->get('options'))) {
+            $enum = $meta->get('options');
+            $meta->set('options', $enum::select());
+        }
+
+        if (! $meta->has('placeholder')) {
+            $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
+        }
+
+        if (! $meta->has('trackBy')) {
+            $meta->set('trackBy', 'id'); //TODO refactor to config
+        }
+
+        if (! $meta->has('label')) {
+            $meta->set('label', 'name'); //TODO refactor to config
+        }
+
+        if ($meta->has('source')) {
+            $meta->set('source', route($meta->get('source')));
+        }
+    }
+
+    private function computeDate($meta)
+    {
+        $meta->set(
+            'format',
+            $meta->has('format')
+                ? $meta->get('format')
+                : config('enso.forms.dateFormat')
+        );
     }
 
     private function appendConfigParams()
