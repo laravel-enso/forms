@@ -116,7 +116,7 @@ class Builder
                         if ($meta->get('type') === 'select') {
                             $this->computeSelect($meta);
                         }
-                        
+
                         if ($meta->get('type') === 'datepicker') {
                             $this->computeDate($meta);
                         }
