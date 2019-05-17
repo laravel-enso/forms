@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes;
+namespace LaravelEnso\Forms\app\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;

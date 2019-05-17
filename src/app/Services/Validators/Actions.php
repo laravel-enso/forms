@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes\Validators;
+namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
-use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions as Attributes;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Attributes\Actions as Attributes;
 
 class Actions
 {
@@ -17,14 +17,19 @@ class Actions
 
     public function validate()
     {
+        $attributes = collect(Attributes::Create)
+            ->merge(Attributes::Update)
+            ->unique()
+            ->values();
+
         $diff = collect($this->template->get('actions'))
-            ->diff(collect(Attributes::List));
+            ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
             throw new TemplateException(__(
                 'Incorrect action(s) provided: :actions. Allowed actions are: :actionList', [
                     'actions' => $diff->implode(', '),
-                    'actionList' => collect(Attributes::List)->implode(', '),
+                    'actionList' => $attributes->implode(', '),
                 ]
             ));
         }

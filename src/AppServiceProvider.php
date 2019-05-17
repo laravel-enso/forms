@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\FormBuilder;
+namespace LaravelEnso\Forms;
 
 use Illuminate\Support\ServiceProvider;
 

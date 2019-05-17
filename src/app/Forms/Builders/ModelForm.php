@@ -2,7 +2,7 @@
 
 namespace App\Forms\Builders;
 
-use LaravelEnso\FormBuilder\app\Classes\Form;
+use LaravelEnso\Forms\app\Services\Form;
 
 class ModelForm
 {

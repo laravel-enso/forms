@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes\Attributes;
+namespace LaravelEnso\Forms\app\Attributes;
 
 class Meta
 {

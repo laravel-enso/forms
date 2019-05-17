@@ -1,18 +1,15 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes;
+namespace LaravelEnso\Forms\app\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Forms\app\Attributes\Actions;
 use LaravelEnso\Helpers\app\Classes\JsonParser;
-use LaravelEnso\FormBuilder\app\Classes\Attributes\Actions;
-use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 
 class Form
 {
-    private const CreateActions = ['back', 'store'];
-    private const UpdateActions = ['back', 'create', 'show', 'update', 'destroy'];
-
     private $model;
     private $template;
     private $dirty;
@@ -208,8 +205,8 @@ class Form
     private function defaultActions()
     {
         $actions = $this->template->method === 'post'
-            ? self::CreateActions
-            : self::UpdateActions;
+            ? Actions::Create
+            : Actions::Update;
 
         return collect($actions)
             ->filter(function ($action) {
@@ -240,6 +237,6 @@ class Form
     private function needsValidation()
     {
         return ! app()->environment('production')
-            || config('enso.datatable.validations') === 'always';
+            || config('enso.forms.validations') === 'always';
     }
 }

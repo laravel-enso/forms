@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes\Validators;
+namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\FormBuilder\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 
 class Routes
 {

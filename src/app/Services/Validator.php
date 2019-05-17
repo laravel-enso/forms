@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelEnso\FormBuilder\app\Classes;
+namespace LaravelEnso\Forms\app\Services;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\FormBuilder\app\Classes\Validators\Fields;
-use LaravelEnso\FormBuilder\app\Classes\Validators\Routes;
-use LaravelEnso\FormBuilder\app\Classes\Validators\Actions;
-use LaravelEnso\FormBuilder\app\Classes\Validators\Structure;
+use LaravelEnso\Forms\app\Services\Validators\Fields;
+use LaravelEnso\Forms\app\Services\Validators\Routes;
+use LaravelEnso\Forms\app\Services\Validators\Actions;
+use LaravelEnso\Forms\app\Services\Validators\Structure;
 
 class Validator
 {
