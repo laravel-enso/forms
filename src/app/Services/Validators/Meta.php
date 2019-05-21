@@ -50,7 +50,7 @@ class Meta
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
-        $diff = collect($this->meta->keys())
+        $diff = $this->meta->keys()
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
@@ -98,22 +98,22 @@ class Meta
 
     private function checkType()
     {
-        if (! collect(Attributes::Types)->contains($this->meta->type)) {
+        if (! collect(Attributes::Types)->contains($this->meta->get('type'))) {
             throw new TemplateException(__(
                 'Unknown Field Type Found: :type',
-                ['type' => $this->meta->type]
+                ['type' => $this->meta->get('type')]
             ));
         }
     }
 
     private function selectMetaParameterMissing()
     {
-        return ! property_exists($this->field, 'meta')
-            || (! property_exists($this->meta, 'options') && ! property_exists($this->meta, 'source'));
+        return $this->meta === null
+            || ! $this->meta->has('options') && ! $this->meta->has('source');
     }
 
     private function inputMetaParameterMissing()
     {
-        return ! property_exists($this->field, 'meta') || ! property_exists($this->meta, 'content');
+        return $this->meta === null || ! $this->meta->has('content');
     }
 }

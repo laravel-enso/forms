@@ -22,7 +22,7 @@ class Actions
             ->unique()
             ->values();
 
-        $diff = collect($this->template->get('actions'))
+        $diff = $this->template->get('actions')
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {

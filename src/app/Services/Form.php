@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms\app\Services;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Attributes\Actions;
@@ -17,8 +18,7 @@ class Form
     public function __construct(string $filename)
     {
         $this->readTemplate($filename);
-        $this->template->set('routeParams', []);
-
+        $this->template->set('routeParams', new Obj);
         $this->dirty = collect();
     }
 
@@ -46,7 +46,7 @@ class Form
 
     public function actions($actions)
     {
-        $this->template->set('actions', (array) $actions);
+        $this->template->set('actions', new Obj($actions));
 
         return $this;
     }
@@ -204,20 +204,20 @@ class Form
 
     private function defaultActions()
     {
-        $actions = $this->template->method === 'post'
+        $actions = $this->template->get('method') === 'post'
             ? Actions::Create
             : Actions::Update;
 
-        return collect($actions)
+        return (new Obj($actions))
             ->filter(function ($action) {
-                return \Route::has($this->template->routePrefix.'.'.$action)
+                return Route::has($this->template->get('routePrefix').'.'.$action)
                     || $action === 'back';
-            })->toArray();
+            });
     }
 
     private function field(string $name)
     {
-        $field = collect($this->template->get('sections'))
+        $field = $this->template->get('sections')
             ->reduce(function ($fields, $section) {
                 return $fields->merge($section->get('fields'));
             }, collect())->first(function ($field) use ($name) {

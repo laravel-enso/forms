@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms\app\Services\Validators;
 
+use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
 
@@ -16,11 +17,11 @@ class Fields
 
     public function validate()
     {
-        collect($this->template->sections)
+        $this->template->get('sections')
             ->each(function ($section) {
                 $this->checkFormat($section);
 
-                collect($section->fields)->each(function ($field) {
+                $section->get('fields')->each(function ($field) {
                     $this->checkAttributes($field);
                     $this->checkValue($field);
                     (new Meta($field))->validate();
@@ -30,11 +31,10 @@ class Fields
 
     private function checkFormat($section)
     {
-        $valid = is_array($section->fields)
-            && (collect($section->fields)->isEmpty()
-                || collect($section->fields)->filter(function ($field) {
-                    return ! is_object($field);
-                })->isEmpty());
+        $valid = $section->get('fields') instanceof Obj
+            && $section->get('fields')->filter(function ($field) {
+                return ! $field instanceof Obj;
+            })->isEmpty();
 
         if (! $valid) {
             throw new TemplateException(__(

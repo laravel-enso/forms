@@ -26,7 +26,7 @@ class Routes
             return $this;
         }
 
-        collect($this->template->get('actions'))
+        $this->template->get('actions')
             ->each(function ($action) {
                 if ($action !== 'back' && (! $this->template->has('routes')
                     || ! $this->template->get('routes')->has('action'))) {
@@ -42,7 +42,7 @@ class Routes
 
     private function checkRoutes()
     {
-        collect($this->template->get('actions'))
+        $this->template->get('actions')
             ->each(function ($action) {
                 if ($action !== 'back') {
                     $route = $this->template->has('routes')

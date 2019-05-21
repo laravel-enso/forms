@@ -36,9 +36,9 @@ class Builder
             return $this;
         }
 
-        collect($this->template->get('sections'))
+        $this->template->get('sections')
             ->each(function ($section) {
-                collect($section->get('fields'))
+                $section->get('fields')
                     ->each(function ($field) {
                         $field->set('value', $this->value($field));
                     });
@@ -56,10 +56,8 @@ class Builder
             : $this->model->{$field->get('name')};
 
         if ($meta->get('type') === 'datepicker'
-            && is_object($this->model->{$field->name})
             && $value instanceof Carbon) {
-            return $value
-                ->format($this->dateFormat($field));
+            return $value->format($this->dateFormat($field));
         }
 
         if ($meta->get('type') === 'select' && $meta->get('multiple')) {
@@ -75,12 +73,10 @@ class Builder
 
     private function computeActions()
     {
-        $actions = collect($this->template->get('actions'))
+        $actions = $this->template->get('actions')
             ->reduce(function ($collector, $action) {
-                $collector[$action] = $this->actionConfig($action);
-
-                return $collector;
-            }, []);
+                return $collector->set($action, $this->actionConfig($action));
+            }, new Obj);
 
         $this->template->set('actions', $actions);
 
@@ -107,9 +103,9 @@ class Builder
 
     private function computeMetas()
     {
-        collect($this->template->get('sections'))
+        $this->template->get('sections')
             ->each(function ($section) {
-                collect($section->get('fields'))
+                $section->get('fields')
                     ->each(function ($field) {
                         $meta = $field->get('meta');
 

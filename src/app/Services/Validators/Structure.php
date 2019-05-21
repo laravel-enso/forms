@@ -44,7 +44,7 @@ class Structure
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
-        $diff = collect($this->template->keys())
+        $diff = $this->template->keys()
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
@@ -60,16 +60,16 @@ class Structure
     private function checkRootAttributesFormat()
     {
         if ($this->template->has('actions')
-            && ! is_array($this->template->get('actions'))) {
+            && ! $this->template->get('actions') instanceof Obj) {
             throw new TemplateException(__('"actions" attribute must be an array'));
         }
 
         if ($this->template->has('params')
-            && ! is_object($this->template->get('params'))) {
+            && ! $this->template->get('params') instanceof Obj) {
             throw new TemplateException(__('"params" attribute must be an object'));
         }
 
-        if (! is_array($this->template->get('sections'))) {
+        if (! $this->template->get('sections') instanceof Obj) {
             throw new TemplateException(__('"section" attribute must be an array'));
         }
 
@@ -78,7 +78,7 @@ class Structure
 
     private function checkSections()
     {
-        $attributes = collect($this->template->get('sections'))
+        $attributes = $this->template->get('sections')
             ->reduce(function ($attributes, $section) {
                 return $attributes->merge($section->keys());
             }, collect())->unique()->values();
@@ -124,7 +124,7 @@ class Structure
 
     private function checkColumnsFormat()
     {
-        collect($this->template->get('sections'))
+        $this->template->get('sections')
             ->each(function ($section) {
                 if (! collect(Attributes::Columns)->contains($section->get('columns'))) {
                     throw new TemplateException(__(
@@ -143,7 +143,7 @@ class Structure
 
     private function checkCustomColumns($section)
     {
-        collect($section->get('fields'))
+        $section->get('fields')
             ->each(function ($field) {
                 if (! $field->has('column')) {
                     throw new TemplateException(__(
@@ -169,7 +169,7 @@ class Structure
             return;
         }
 
-        $diff = collect($this->template->get('sections'))
+        $diff = $this->template->get('sections')
             ->filter(function ($section) {
                 return ! $section->has('tab');
             });
