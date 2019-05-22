@@ -19,7 +19,7 @@
                 {
                     "label": "Name",
                     "name": "name",
-                    "value": null,
+                    "value": "",
                     "meta": {
                         "type": "input",
                         "custom": false,
