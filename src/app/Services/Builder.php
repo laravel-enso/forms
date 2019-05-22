@@ -55,17 +55,23 @@ class Builder
             ? $field->get('value')
             : $this->model->{$field->get('name')};
 
+        if ($meta->get('type') === 'input'
+            && $meta->get('content') === 'text'
+            && $value === null) {
+            return '';
+        }
+
         if ($meta->get('type') === 'datepicker'
             && $value instanceof Carbon) {
             return $value->format($this->dateFormat($field));
         }
 
-        if ($meta->get('type') === 'select' && $meta->get('multiple')) {
-            if ($value instanceof Collection) {
-                $trackBy = $meta->get('trackBy') ?? 'id';
-
-                return $value->pluck($trackBy);
-            }
+        if ($meta->get('type') === 'select'
+            && $meta->get('multiple')
+            && $value instanceof Collection) {
+            return $value->pluck(
+                $meta->get('trackBy') ?? 'id' //TODO refactor to config
+            );
         }
 
         return $value;
@@ -75,7 +81,9 @@ class Builder
     {
         $actions = $this->template->get('actions')
             ->reduce(function ($collector, $action) {
-                return $collector->set($action, $this->actionConfig($action));
+                return $collector->set(
+                    $action, $this->actionConfig($action)
+                );
             }, new Obj);
 
         $this->template->set('actions', $actions);
@@ -90,7 +98,8 @@ class Builder
             ? $this->template->get('routes')->get($action)
             : $this->template->get('routePrefix').'.'.$action;
 
-        [$routeOrPath, $value] = collect(['create', 'show', 'back'])->contains($action)
+        [$routeOrPath, $value] = collect(['create', 'show', 'back'])
+            ->contains($action)
             ? ['route', $route]
             : ['path', route($route, $this->template->get('routeParams'), false)];
 
@@ -122,13 +131,16 @@ class Builder
 
     private function computeSelect($meta)
     {
-        if ($meta->has('options') && is_string($meta->get('options'))) {
+        if ($meta->has('options')
+            && is_string($meta->get('options'))) {
             $enum = $meta->get('options');
             $meta->set('options', $enum::select());
         }
 
         if (! $meta->has('placeholder')) {
-            $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
+            $meta->set(
+                'placeholder', config('enso.forms.selectPlaceholder')
+            );
         }
 
         if (! $meta->has('trackBy')) {
@@ -157,17 +169,22 @@ class Builder
     private function appendConfigParams()
     {
         if (! $this->template->has('authorize')) {
-            $this->template->set('authorize', config('enso.forms.authorize'));
+            $this->template->set(
+                'authorize', config('enso.forms.authorize')
+            );
         }
 
         if (! $this->template->has('dividerTitlePlacement')) {
             $this->template->set(
-                'dividerTitlePlacement', config('enso.forms.dividerTitlePlacement')
+                'dividerTitlePlacement',
+                config('enso.forms.dividerTitlePlacement')
             );
         }
 
         if (! $this->template->has('labels')) {
-            $this->template->set('labels', config('enso.forms.labels'));
+            $this->template->set(
+                'labels', config('enso.forms.labels')
+            );
         }
 
         return $this;
