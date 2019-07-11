@@ -109,7 +109,7 @@ class Form
 
     public function hideSection($fields)
     {
-        collect($fields)->each(function($field) {
+        collect($fields)->each(function ($field) {
             $this->section($field)->get('fields')
                 ->each(function ($field) {
                     $field->get('meta')->set('hidden', true);
@@ -240,7 +240,7 @@ class Form
         if (! $section) {
             $this->throwMissingFieldException($field);
         }
-        
+
         return $section;
     }
 
