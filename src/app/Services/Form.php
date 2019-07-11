@@ -107,6 +107,18 @@ class Form
         return $this;
     }
 
+    public function hideSection($fields)
+    {
+        collect($fields)->each(function($field) {
+            $this->section($field)->get('fields')
+                ->each(function ($field) {
+                    $field->get('meta')->set('hidden', true);
+                });
+        });
+
+        return $this;
+    }
+
     public function show($fields)
     {
         collect($fields)->each(function ($field) {
@@ -215,20 +227,34 @@ class Form
             });
     }
 
-    private function field(string $name)
+    private function section($field)
+    {
+        $section = $this->template->get('sections')
+            ->first(function ($section) use ($field) {
+                return $section->get('fields')
+                    ->contains(function ($sectionField) use ($field) {
+                        return $sectionField->get('name') === $field;
+                    });
+            });
+
+        if (! $section) {
+            $this->throwMissingFieldException($field);
+        }
+        
+        return $section;
+    }
+
+    private function field(string $fieldName)
     {
         $field = $this->template->get('sections')
             ->reduce(function ($fields, $section) {
                 return $fields->merge($section->get('fields'));
-            }, collect())->first(function ($field) use ($name) {
-                return $field->get('name') === $name;
+            }, collect())->first(function ($field) use ($fieldName) {
+                return $field->get('name') === $fieldName;
             });
 
         if (! $field) {
-            throw new TemplateException(__(
-                'The :field field is missing from the JSON template',
-                ['field' => $name]
-            ));
+            $this->throwMissingFieldException($fieldName);
         }
 
         return $field;
@@ -238,5 +264,13 @@ class Form
     {
         return ! app()->environment('production')
             || config('enso.forms.validations') === 'always';
+    }
+
+    private function throwMissingFieldException($fieldName)
+    {
+        throw new TemplateException(__(
+            'The :field field is missing from the JSON template',
+            ['field' => $fieldName]
+        ));
     }
 }
