@@ -109,12 +109,28 @@ class Form
 
     public function hideSection($fields)
     {
-        collect($fields)->each(function ($field) {
-            $this->section($field)->get('fields')
-                ->each(function ($field) {
-                    $field->get('meta')->set('hidden', true);
-                });
-        });
+        $this->sectionVisibility($fields, $hidden = true);
+
+        return $this;
+    }
+
+    public function showSection($fields)
+    {
+        $this->sectionVisibility($fields, $hidden = false);
+
+        return $this;
+    }
+
+    public function hideTab($tabs)
+    {
+        $this->tabVisibility($tabs, $hidden = true);
+
+        return $this;
+    }
+
+    public function showTab($tabs)
+    {
+        $this->tabVisibility($tabs, $hidden = false);
 
         return $this;
     }
@@ -224,6 +240,28 @@ class Form
             ->filter(function ($action) {
                 return Route::has($this->template->get('routePrefix').'.'.$action)
                     || $action === 'back';
+            });
+    }
+
+    private function sectionVisibility($fields, bool $hidden)
+    {
+        collect($fields)->each(function ($field) use ($hidden) {
+            $this->section($field)->get('fields')
+                ->each(function ($field) use ($hidden) {
+                    $field->get('meta')->set('hidden', $hidden);
+                });
+        });
+    }
+
+    private function tabVisibility($tabs, $hidden)
+    {
+        $this->template->get('sections')
+            ->each(function ($section) use ($tabs, $hidden) {
+                if (collect($tabs)->contains($section->get('tab'))) {
+                    $section->get('fields')->each(function ($field) use ($hidden) {
+                        $field->get('meta')->set('hidden', $hidden);
+                    });
+                }
             });
     }
 
