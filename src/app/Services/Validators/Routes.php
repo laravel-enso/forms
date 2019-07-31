@@ -4,6 +4,8 @@ namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
+use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class Routes
 {
@@ -29,8 +31,8 @@ class Routes
         $this->template->get('actions')
             ->each(function ($action) {
                 if ($action !== 'back' && (! $this->template->has('routes')
-                    || ! $this->template->get('routes')->has('action'))) {
-                    throw new TemplateException(__(
+                    || ! $this->template->get('routes')->has($action))) {
+                    throw new TemplateAttributeException(__(
                         '"routePrefix" attribute is missing and no route for action :action was provided',
                         ['action' => $action]
                     ));
@@ -58,7 +60,7 @@ class Routes
     private function checkRoute($route)
     {
         if (! \Route::has($route)) {
-            throw new TemplateException(__(
+            throw new TemplateValueException(__(
                 'Route does not exist: :route',
                 ['route' => $route]
             ));
