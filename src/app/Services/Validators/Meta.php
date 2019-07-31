@@ -4,7 +4,6 @@ namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Helpers\app\Classes\Enum;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Meta as Attributes;
 use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
 use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
@@ -112,7 +111,7 @@ class Meta
     private function selectMetaParameterMissing()
     {
         return $this->meta === null
-            || (!$this->meta->has('options') && !$this->meta->has('source'));
+            || (! $this->meta->has('options') && ! $this->meta->has('source'));
     }
 
     private function inputMetaParameterMissing()
