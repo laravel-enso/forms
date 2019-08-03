@@ -205,7 +205,6 @@ class Builder
     {
         return $route !== 'back'
             && $this->template->get('authorize')
-            && request()->user()
-                ->cannot('access-route', $route);
+            && auth()->user()->cannot('access-route', $route);
     }
 }
