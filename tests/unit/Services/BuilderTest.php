@@ -47,42 +47,42 @@ class BuilderTest extends TestCase
 
         $this->runBuilder();
 
-        $this->assertEquals($this->testField()->get('value'), 'test_value');
+        $this->assertEquals($this->field()->get('value'), 'test_value');
     }
 
     /** @test */
     public function set_values_from_model()
     {
-        $this->testField()->set('value', 'test_value');
+        $this->field()->set('value', 'test_value');
         $this->testModel->test_field = 'value_from_model';
 
         $this->runBuilder();
 
-        $this->assertEquals($this->testField()->get('value'), 'value_from_model');
+        $this->assertEquals($this->field()->get('value'), 'value_from_model');
     }
 
     /** @test */
     public function set_values_for_datepicker()
     {
-        $this->testField()->get('meta')->set('type', 'datepicker');
-        $this->testField()->get('meta')->set('format', 'm-Y-d');
+        $this->field()->get('meta')->set('type', 'datepicker');
+        $this->field()->get('meta')->set('format', 'm-Y-d');
         $this->testModel->test_field = new Carbon('2012-12-24');
 
         $this->runBuilder();
 
-        $this->assertEquals($this->testField()->get('value'), '12-2012-24');
+        $this->assertEquals($this->field()->get('value'), '12-2012-24');
     }
 
     /** @test */
     public function set_values_for_multiple_select()
     {
-        $this->testField()->get('meta')->set('type', 'select');
-        $this->testField()->get('meta')->set('multiple', true);
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('multiple', true);
         $this->testModel->test_field = [1, 2];
 
         $this->runBuilder();
 
-        $this->assertEmpty(collect($this->testField()->get('value'))->diff([1, 2]));
+        $this->assertEmpty(collect($this->field()->get('value'))->diff([1, 2]));
     }
 
     /** @test */
@@ -126,18 +126,18 @@ class BuilderTest extends TestCase
     /** @test */
     public function set_meta()
     {
-        $this->testField()->get('meta')->set('type', 'select');
-        $this->testField()->get('meta')->set('options', FormTestEnum::class);
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('options', FormTestEnum::class);
 
         $this->runBuilder();
 
         $this->assertEquals(
-            $this->testField()->get('meta')->get('options'),
+            $this->field()->get('meta')->get('options'),
             FormTestEnum::select()
         );
     }
 
-    protected function testField()
+    protected function field()
     {
         return $this->template->get('sections')->first()->get('fields')->first();
     }

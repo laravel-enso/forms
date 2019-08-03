@@ -36,7 +36,7 @@ class FieldsTest extends TestCase
     /** @test */
     public function cannot_validate_without_mandatory_attribute()
     {
-        $this->testField()->forget('label');
+        $this->field()->forget('label');
 
         $fields = new Fields($this->template);
 
@@ -48,9 +48,9 @@ class FieldsTest extends TestCase
     /** @test */
     public function cannot_validate_with_wrong_checkbox_value()
     {
-        $this->testField()->set('value', 'NOT_BOOL');
-        $this->testField()->get('meta')->set('type', 'input');
-        $this->testField()->get('meta')->set('content', 'checkbox');
+        $this->field()->set('value', 'NOT_BOOL');
+        $this->field()->get('meta')->set('type', 'input');
+        $this->field()->get('meta')->set('content', 'checkbox');
 
         $fields = new Fields($this->template);
 
@@ -62,10 +62,10 @@ class FieldsTest extends TestCase
     /** @test */
     public function can_validate_custom_meta_and_wrong_values()
     {
-        $this->testField()->set('value', 'NOT_BOOL');
-        $this->testField()->get('meta')->set('type', 'input');
-        $this->testField()->get('meta')->set('content', 'checkbox');
-        $this->testField()->get('meta')->set('custom', true);
+        $this->field()->set('value', 'NOT_BOOL');
+        $this->field()->get('meta')->set('type', 'input');
+        $this->field()->get('meta')->set('content', 'checkbox');
+        $this->field()->get('meta')->set('custom', true);
 
         $fields = new Fields($this->template);
 
@@ -77,9 +77,9 @@ class FieldsTest extends TestCase
     /** @test */
     public function cannot_validate_with_wrong_multiple_select_value()
     {
-        $this->testField()->set('value', 'NOT_ARRAY');
-        $this->testField()->get('meta')->set('type', 'select');
-        $this->testField()->get('meta')->set('multiple', true);
+        $this->field()->set('value', 'NOT_ARRAY');
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('multiple', true);
 
         $fields = new Fields($this->template);
 
@@ -115,7 +115,7 @@ class FieldsTest extends TestCase
         ];
     }
 
-    protected function testField()
+    protected function field()
     {
         return $this->template->get('sections')->first()->get('fields')->first();
     }

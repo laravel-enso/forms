@@ -83,7 +83,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_without_mandatory_attributes()
     {
-        $this->testSection()->forget('columns');
+        $this->section()->forget('columns');
 
         $structure = new Structure($this->template);
 
@@ -95,7 +95,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_with_unknown_attribute()
     {
-        $this->testSection()->set('unknown_attr', 'unknown_value');
+        $this->section()->set('unknown_attr', 'unknown_value');
 
         $structure = new Structure($this->template);
 
@@ -107,7 +107,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_with_wrong_column_value()
     {
-        $this->testSection()->set('columns', -1);
+        $this->section()->set('columns', -1);
 
         $structure = new Structure($this->template);
 
@@ -119,8 +119,8 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_custom_column_sections_with_wrong_field_column_value()
     {
-        $this->testSection()->set('columns', 'custom');
-        $this->testSection()->get('fields')->push(new Obj(['column' => -1]));
+        $this->section()->set('columns', 'custom');
+        $this->section()->get('fields')->push(new Obj(['column' => -1]));
 
         $structure = new Structure($this->template);
 
@@ -132,8 +132,8 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_custom_column_sections_when_field_does_not_have_column()
     {
-        $this->testSection()->set('columns', 'custom');
-        $this->testSection()->get('fields')->push(new Obj(['name' => 'field_name']));
+        $this->section()->set('columns', 'custom');
+        $this->section()->get('fields')->push(new Obj(['name' => 'field_name']));
 
         $structure = new Structure($this->template);
 
@@ -178,7 +178,7 @@ class StructureTest extends TestCase
         ];
     }
 
-    protected function testSection()
+    protected function section()
     {
         return $this->template->get('sections')->first();
     }
