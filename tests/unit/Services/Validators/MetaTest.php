@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LaravelEnso\Forms\tests\Services\Validators;
-
 
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -94,7 +92,6 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-
     /** @test */
     public function can_validate_custom_meta_without_any_other_attributes()
     {
@@ -115,9 +112,6 @@ class MetaTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return array
-     */
     protected function mockedField(): array
     {
         return [
@@ -127,5 +121,4 @@ class MetaTest extends TestCase
             ]
         ];
     }
-
 }

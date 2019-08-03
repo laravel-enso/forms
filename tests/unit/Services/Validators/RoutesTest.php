@@ -1,10 +1,9 @@
 <?php
 
-
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
-
 use Tests\TestCase;
+use Illuminate\Support\Facades\Route;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Routes;
 use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
@@ -12,7 +11,6 @@ use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class RoutesTest extends TestCase
 {
-
     private $template;
 
     protected function setUp(): void
@@ -64,7 +62,6 @@ class RoutesTest extends TestCase
         $route->validate();
     }
 
-
     /** @test */
     public function can_validate_back_action_without_route()
     {
@@ -88,19 +85,14 @@ class RoutesTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return array
-     */
     protected function mockedRoute(): array
     {
-        \Route::post('route')->name('route.post');
-        \Route::getRoutes()->refreshNameLookups();
+        Route::post('route')->name('route.post');
+        Route::getRoutes()->refreshNameLookups();
 
         return [
             'actions' => ['post'],
             'routePrefix' => 'route',
         ];
     }
-
-
 }

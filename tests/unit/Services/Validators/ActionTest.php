@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Tests\TestCase;

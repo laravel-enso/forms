@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LaravelEnso\Forms\tests\Services\Validators;
-
 
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -46,7 +44,6 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-
     /** @test */
     public function cannot_validate_with_wrong_actions_format()
     {
@@ -58,7 +55,6 @@ class StructureTest extends TestCase
 
         $structure->validate();
     }
-
 
     /** @test */
     public function cannot_validate_with_wrong_params_format()
@@ -87,7 +83,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_without_mandatory_attributes()
     {
-        $this->firstSection()->forget('columns');
+        $this->testSection()->forget('columns');
 
         $structure = new Structure($this->template);
 
@@ -99,7 +95,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_with_unknown_attribute()
     {
-        $this->firstSection()->set('unknown_attr', 'unknown_value');
+        $this->testSection()->set('unknown_attr', 'unknown_value');
 
         $structure = new Structure($this->template);
 
@@ -111,7 +107,7 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_sections_with_wrong_column_value()
     {
-        $this->firstSection()->set('columns', -1);
+        $this->testSection()->set('columns', -1);
 
         $structure = new Structure($this->template);
 
@@ -123,8 +119,8 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_custom_column_sections_with_wrong_field_column_value()
     {
-        $this->firstSection()->set('columns', 'custom');
-        $this->firstSection()->get('fields')->push(new Obj(['column' => -1]));
+        $this->testSection()->set('columns', 'custom');
+        $this->testSection()->get('fields')->push(new Obj(['column' => -1]));
 
         $structure = new Structure($this->template);
 
@@ -136,8 +132,8 @@ class StructureTest extends TestCase
     /** @test */
     public function cannot_validate_custom_column_sections_when_field_does_not_have_column()
     {
-        $this->firstSection()->set('columns', 'custom');
-        $this->firstSection()->get('fields')->push(new Obj(['name' => 'field_name']));
+        $this->testSection()->set('columns', 'custom');
+        $this->testSection()->get('fields')->push(new Obj(['name' => 'field_name']));
 
         $structure = new Structure($this->template);
 
@@ -145,7 +141,6 @@ class StructureTest extends TestCase
 
         $structure->validate();
     }
-
 
     /** @test */
     public function when_form_has_tab_and_section_does_not_have_tab_then_should_not_validate()
@@ -169,7 +164,6 @@ class StructureTest extends TestCase
         $this->assertTrue(true);
     }
 
-
     protected function mockedForm()
     {
         return [
@@ -184,12 +178,8 @@ class StructureTest extends TestCase
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    protected function firstSection()
+    protected function testSection()
     {
         return $this->template->get('sections')->first();
     }
-
 }

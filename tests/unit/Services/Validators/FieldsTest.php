@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LaravelEnso\Forms\tests\Services\Validators;
-
 
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -38,7 +36,7 @@ class FieldsTest extends TestCase
     /** @test */
     public function cannot_validate_without_mandatory_attribute()
     {
-        $this->firstField()->forget('label');
+        $this->testField()->forget('label');
 
         $fields = new Fields($this->template);
 
@@ -47,13 +45,12 @@ class FieldsTest extends TestCase
         $fields->validate();
     }
 
-
     /** @test */
     public function cannot_validate_with_wrong_checkbox_value()
     {
-        $this->firstField()->set('value', 'NOT_BOOL');
-        $this->firstField()->get('meta')->set('type', 'input');
-        $this->firstField()->get('meta')->set('content', 'checkbox');
+        $this->testField()->set('value', 'NOT_BOOL');
+        $this->testField()->get('meta')->set('type', 'input');
+        $this->testField()->get('meta')->set('content', 'checkbox');
 
         $fields = new Fields($this->template);
 
@@ -65,10 +62,10 @@ class FieldsTest extends TestCase
     /** @test */
     public function can_validate_custom_meta_and_wrong_values()
     {
-        $this->firstField()->set('value', 'NOT_BOOL');
-        $this->firstField()->get('meta')->set('type', 'input');
-        $this->firstField()->get('meta')->set('content', 'checkbox');
-        $this->firstField()->get('meta')->set('custom', true);
+        $this->testField()->set('value', 'NOT_BOOL');
+        $this->testField()->get('meta')->set('type', 'input');
+        $this->testField()->get('meta')->set('content', 'checkbox');
+        $this->testField()->get('meta')->set('custom', true);
 
         $fields = new Fields($this->template);
 
@@ -80,9 +77,9 @@ class FieldsTest extends TestCase
     /** @test */
     public function cannot_validate_with_wrong_multiple_select_value()
     {
-        $this->firstField()->set('value', 'NOT_ARRAY');
-        $this->firstField()->get('meta')->set('type', 'select');
-        $this->firstField()->get('meta')->set('multiple', true);
+        $this->testField()->set('value', 'NOT_ARRAY');
+        $this->testField()->get('meta')->set('type', 'select');
+        $this->testField()->get('meta')->set('multiple', true);
 
         $fields = new Fields($this->template);
 
@@ -90,7 +87,6 @@ class FieldsTest extends TestCase
 
         $fields->validate();
     }
-
 
     /** @test */
     public function can_validate()
@@ -102,9 +98,6 @@ class FieldsTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return array
-     */
     protected function mockedForm(): array
     {
         $field = collect(Attributes::List)->reduce(function ($field, $attribute) {
@@ -122,13 +115,8 @@ class FieldsTest extends TestCase
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    protected function firstField()
+    protected function testField()
     {
         return $this->template->get('sections')->first()->get('fields')->first();
     }
-
-
 }
