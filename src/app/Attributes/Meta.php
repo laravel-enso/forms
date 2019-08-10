@@ -11,7 +11,7 @@ class Meta
         'disabled', 'readonly', 'hidden', 'source', 'format', 'time', 'rows',
         'placeholder', 'trackBy', 'label', 'tooltip', 'symbol', 'precision',
         'thousand', 'decimal', 'positive', 'negative', 'zero', 'resize',
-        'translated', 'time12hr', 'disable-clear',
+        'translated', 'time12hr', 'disable-clear', 'disable-filtering',
     ];
 
     const Types = [
