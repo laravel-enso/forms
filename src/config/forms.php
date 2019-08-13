@@ -6,7 +6,7 @@ return [
     | Validations
     |--------------------------------------------------------------------------
     | This flag sets whether validations are executed in production or local only.
-    | Values: 'always/local'
+    | Values: 'always/local/yourEnv...'
     |
     */
 
@@ -36,6 +36,13 @@ return [
             'action' => 'router',
             'label' => 'Show',
         ],
+        'back' => [
+            'icon' => 'arrow-left',
+            'class' => 'is-primary',
+            'event' => 'back',
+            'action' => 'router',
+            'label' => 'Back',
+        ],
         'store' => [
             'icon' => 'check',
             'class' => 'is-success',
@@ -64,6 +71,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Date format
+    |--------------------------------------------------------------------------
+    | Global date format for date columns. Will use Carbon to parse the columns
+    | marked as date to the desired format.
+    |
+    */
+
+    'dateFormat' => 'd-m-Y',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Select Placeholder
+    |--------------------------------------------------------------------------
+    | Default select placeholder. Can be overriden by setting a custom one
+    | in the json template.
+    |
+    */
+
+    'selectPlaceholder' => 'Choose',
+
+    /*
+    |--------------------------------------------------------------------------
     | Enso Authorization
     |--------------------------------------------------------------------------
     |
@@ -83,4 +112,15 @@ return [
     */
 
     'dividerTitlePlacement' => 'center',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Labels
+    |--------------------------------------------------------------------------
+    | By default all form fields will have a conventional label. If this flag
+    | is set to false the label will be used as placeholder. Can be
+    | overriden in each form template
+    */
+
+    'labels' => 'true',
 ];

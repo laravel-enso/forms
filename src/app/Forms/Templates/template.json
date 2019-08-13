@@ -12,14 +12,14 @@
     ],
     "sections": [
         {
-            "columns": "2",
-            "separator": true,
+            "columns": 2,
+            "divider": true,
             "title": "Section One",
             "fields": [
                 {
                     "label": "Name",
                     "name": "name",
-                    "value": null,
+                    "value": "",
                     "meta": {
                         "type": "input",
                         "custom": false,
@@ -69,8 +69,8 @@
             ]
         },
         {
-            "columns": "3",
-            "separator": true,
+            "columns": 3,
+            "divider": true,
             "title": "Section One",
             "fields": [{
                     "label": "Lunch Time",

@@ -2,7 +2,7 @@
 
 namespace App\Forms\Builders;
 
-use LaravelEnso\FormBuilder\app\Classes\Form;
+use LaravelEnso\Forms\app\Services\Form;
 
 class ModelForm
 {
@@ -22,6 +22,6 @@ class ModelForm
 
     public function edit(Model $model)
     {
-        return $this->form->edit($owner);
+        return $this->form->edit($model);
     }
 }
