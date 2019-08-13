@@ -5,6 +5,7 @@ namespace LaravelEnso\Forms\app\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Builder
