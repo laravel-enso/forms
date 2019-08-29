@@ -3,6 +3,7 @@
 namespace LaravelEnso\Forms\app\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -53,7 +54,7 @@ class Builder
 
         $value = $this->dirty->contains($field->get('name'))
             ? $field->get('value')
-            : $this->model->{$field->get('name')};
+            : $this->attributeValue($field);
 
         if ($meta->get('type') === 'input'
             && $meta->get('content') === 'text'
@@ -75,6 +76,13 @@ class Builder
         }
 
         return $value;
+    }
+
+    private function attributeValue($field)
+    {
+        return Str::contains($field->get('name'), '.')
+            ? data_get($this->model, $field->get('name'))
+            : $this->model->{$field->get('name')};
     }
 
     private function computeActions()
