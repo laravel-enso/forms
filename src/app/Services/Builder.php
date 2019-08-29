@@ -3,9 +3,9 @@
 namespace LaravelEnso\Forms\app\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Builder
@@ -47,7 +47,7 @@ class Builder
 
         return $this;
     }
-    
+
     private function value($field)
     {
         $meta = $field->get('meta');
@@ -77,8 +77,9 @@ class Builder
 
         return $value;
     }
-    
-    private function attributeValue($field){
+
+    private function attributeValue($field)
+    {
         return Str::contains($field->get('name'), '.')
             ? data_get($this->model, $field->get('name'))
             : $this->model->{$field->get('name')};
