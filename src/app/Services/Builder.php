@@ -47,12 +47,6 @@ class Builder
 
         return $this;
     }
-
-    private function getNestedValue($field){
-        return Str::contains($field->get('name'), '.')
-            ? data_get($this->model, $field->get('name'))
-            : $this->model->{$field->get('name')};
-    }
     
     private function value($field)
     {
@@ -60,7 +54,7 @@ class Builder
 
         $value = $this->dirty->contains($field->get('name'))
             ? $field->get('value')
-            : $this->getNestedValue($field);
+            : $this->attributeValue($field);
 
         if ($meta->get('type') === 'input'
             && $meta->get('content') === 'text'
@@ -82,6 +76,12 @@ class Builder
         }
 
         return $value;
+    }
+    
+    private function attributeValue($field){
+        return Str::contains($field->get('name'), '.')
+            ? data_get($this->model, $field->get('name'))
+            : $this->model->{$field->get('name')};
     }
 
     private function computeActions()
