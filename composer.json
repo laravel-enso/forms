@@ -18,8 +18,9 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "laravel-enso/helpers": "1.11.*"
+        "laravel/framework": "6.0.*",
+        "laravel-enso/enums": "1.0.*",
+        "laravel-enso/helpers": "1.12.*"
     },
     "autoload": {
         "psr-4": {

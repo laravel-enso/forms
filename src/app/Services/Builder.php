@@ -5,6 +5,7 @@ namespace LaravelEnso\Forms\app\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
@@ -213,6 +214,6 @@ class Builder
     {
         return $route !== 'back'
             && $this->template->get('authorize')
-            && auth()->user()->cannot('access-route', $route);
+            && Auth::user()->cannot('access-route', $route);
     }
 }

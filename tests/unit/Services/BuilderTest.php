@@ -9,7 +9,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Helpers\app\Classes\Enum;
+use LaravelEnso\Enums\app\Services\Enum;
 use LaravelEnso\Forms\app\Services\Builder;
 
 class BuilderTest extends TestCase

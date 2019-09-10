@@ -6,13 +6,13 @@ use LaravelEnso\Forms\app\Services\Form;
 
 class ModelForm
 {
-    private const FormPath = __DIR__.'/../Templates/template.json';
+    protected const FormPath = __DIR__.'/../Templates/template.json';
 
-    private $form;
+    protected $form;
 
     public function __construct()
     {
-        $this->form = new Form(self::FormPath);
+        $this->form = new Form(static::FormPath);
     }
 
     public function create()

@@ -3,7 +3,7 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Helpers\app\Classes\Enum;
+use LaravelEnso\Enums\app\Services\Enum;
 use LaravelEnso\Forms\app\Attributes\Meta as Attributes;
 use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
 use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
