@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms\app\Services;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -38,7 +39,7 @@ class Form
 
         $this->method('patch')
             ->routeParams([
-                camel_case(class_basename($model)) => $model->getKey(),
+                Str::camel(class_basename($model)) => $model->getKey(),
             ])->build();
 
         return $this->template;
