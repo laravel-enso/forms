@@ -19,7 +19,7 @@
     ],
     "require": {
         "laravel/framework": "6.0.*",
-        "laravel-enso/enums": "1.0.*",
+        "laravel-enso/enums": "1.1.*",
         "laravel-enso/helpers": "1.12.*"
     },
     "autoload": {
