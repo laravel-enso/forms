@@ -13,7 +13,7 @@ class TemplateException extends EnsoException
             ['attrs' => $attrs]
         ));
     }
-    
+
     public static function unknownRootAttributes($attrs)
     {
         return new static(__(
@@ -29,7 +29,7 @@ class TemplateException extends EnsoException
             ['action' => $action]
         ));
     }
-    
+
     public static function missingRoute($route)
     {
         return new static(__(
@@ -41,12 +41,12 @@ class TemplateException extends EnsoException
     {
         return new static(__('"actions" attribute must be an array'));
     }
-    
+
     public static function invalidParamsFormat()
     {
         return new static(__('"params" attribute must be an object'));
     }
-    
+
     public static function invalidSectionFormat()
     {
         return new static(__('"section" attribute must be an array'));
@@ -59,7 +59,7 @@ class TemplateException extends EnsoException
             ['attrs' => $attrs]
         ));
     }
-    
+
     public static function unknownSectionAttributes($attrs)
     {
         return new static(__(
@@ -96,6 +96,7 @@ class TemplateException extends EnsoException
             ['field' => $field]
         ));
     }
+
     public static function invalidFieldColumn($field)
     {
         return new static(__(
@@ -103,7 +104,7 @@ class TemplateException extends EnsoException
             ['field' => $field]
         ));
     }
-    
+
     public static function fieldMissing($field)
     {
         return new static(__(
@@ -135,7 +136,7 @@ class TemplateException extends EnsoException
             ['field' => $field]
         ));
     }
-    
+
     public static function missingMetaAttributes($field, $attrs)
     {
         return new static(__(
@@ -143,7 +144,7 @@ class TemplateException extends EnsoException
             ['attrs' => $attrs, 'field' => $field]
         ));
     }
-    
+
     public static function unknownMetaAttributes($field, $attrs)
     {
         return new static(__(
@@ -183,7 +184,7 @@ class TemplateException extends EnsoException
             ['field' => $field]
         ));
     }
-    
+
     public static function invalidSelectValue($field)
     {
         return new static(__(
