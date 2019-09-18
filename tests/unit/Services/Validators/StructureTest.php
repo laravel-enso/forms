@@ -4,10 +4,9 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Services\Validators\Structure;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
-use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
+use LaravelEnso\Forms\app\Attributes\Structure as Attributes;
 
 class StructureTest extends TestCase
 {
@@ -27,7 +26,12 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingRootAttributes('method')
+                ->getMessage()
+        );
 
         $structure->validate();
     }
@@ -39,43 +43,64 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::unknownRootAttributes('unknown_attribute')
+                ->getMessage()
+        );
+
 
         $structure->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_actions_format()
+    public function cannot_validate_with_invalid_actions_format()
     {
         $this->template->set('actions', 'not Obj');
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateFormatException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidActionsFormat()
+                ->getMessage()
+        );
 
         $structure->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_params_format()
+    public function cannot_validate_with_invalid_params_format()
     {
         $this->template->set('params', 'not Obj');
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateFormatException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidParamsFormat()
+                ->getMessage()
+        );
 
         $structure->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_sections_format()
+    public function cannot_validate_with_invalid_sections_format()
     {
         $this->template->set('sections', 'not Obj');
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateFormatException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidSectionFormat()
+                ->getMessage()
+        );
 
         $structure->validate();
     }
@@ -87,7 +112,12 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingSectionAttributes('columns')
+                ->getMessage()
+        );
 
         $structure->validate();
     }
@@ -99,32 +129,49 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::unknownSectionAttributes('unknown_attr')
+                ->getMessage()
+        );
 
         $structure->validate();
     }
 
     /** @test */
-    public function cannot_validate_sections_with_wrong_column_value()
+    public function cannot_validate_sections_with_invalid_column_value()
     {
         $this->section()->set('columns', -1);
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidColumnsAttributes(
+                $this->section()->get('columns'),
+                collect(Attributes::Columns)->implode(', ')
+            )->getMessage()
+        );
 
         $structure->validate();
     }
 
     /** @test */
-    public function cannot_validate_custom_column_sections_with_wrong_field_column_value()
+    public function cannot_validate_custom_column_sections_with_invalid_field_column_value()
     {
         $this->section()->set('columns', 'custom');
-        $this->section()->get('fields')->push(new Obj(['column' => -1]));
+        $this->section()->get('fields')->push(new Obj(['name' => 'field_name', 'column' => -1]));
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidFieldColumn('field_name')
+                ->getMessage()
+        );
 
         $structure->validate();
     }
@@ -137,19 +184,29 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingFieldColumn('field_name')
+                ->getMessage()
+        );
 
         $structure->validate();
     }
 
     /** @test */
-    public function when_form_has_tab_and_section_does_not_have_tab_then_should_not_validate()
+    public function failes_validation_when_tabbed_form_section_misses_tab()
     {
         $this->template->set('tabs', true);
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateFormatException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingTabAttribute(0)
+                ->getMessage()
+        );
 
         $structure->validate();
     }

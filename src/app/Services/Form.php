@@ -307,9 +307,6 @@ class Form
 
     private function throwMissingFieldException($fieldName)
     {
-        throw new TemplateException(__(
-            'The :field field is missing from the JSON template',
-            ['field' => $fieldName]
-        ));
+        throw TemplateException::fieldMissing($fieldName);
     }
 }

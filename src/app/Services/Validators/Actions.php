@@ -26,12 +26,9 @@ class Actions
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateException(__(
-                'Incorrect action(s) provided: :actions. Allowed actions are: :actionList', [
-                    'actions' => $diff->implode(', '),
-                    'actionList' => $attributes->implode(', '),
-                ]
-            ));
+            throw TemplateException::unknownActions(
+                $diff->implode(', '), $attributes->implode(', ')
+            );
         }
     }
 }

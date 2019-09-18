@@ -3,10 +3,8 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Structure as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class Structure
 {
@@ -32,10 +30,7 @@ class Structure
             ->diff($this->template->keys());
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Mandatory attribute(s) missing: ":attr"',
-                ['attr' => $diff->implode('", "')]
-            ));
+            throw TemplateException::missingRootAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -50,10 +45,7 @@ class Structure
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Unknown attribute(s) found: ":attr"',
-                ['attr' => $diff->implode('", "')]
-            ));
+            throw TemplateException::unknownRootAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -63,16 +55,16 @@ class Structure
     {
         if ($this->template->has('actions')
             && ! $this->template->get('actions') instanceof Obj) {
-            throw new TemplateFormatException(__('"actions" attribute must be an array'));
+            throw TemplateException::invalidActionsFormat();
         }
 
         if ($this->template->has('params')
             && ! $this->template->get('params') instanceof Obj) {
-            throw new TemplateFormatException(__('"params" attribute must be an object'));
+            throw TemplateException::invalidParamsFormat();
         }
 
         if (! $this->template->get('sections') instanceof Obj) {
-            throw new TemplateFormatException(__('"section" attribute must be an array'));
+            throw TemplateException::invalidSectionFormat();
         }
 
         return $this;
@@ -98,10 +90,7 @@ class Structure
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Mandatory attribute(s) missing from section object: ":attr"',
-                ['attr' => $diff->implode('", "')]
-            ));
+            throw TemplateException::missingSectionAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -115,10 +104,7 @@ class Structure
         );
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Unknown attribute(s) found in section object: ":attr"',
-                ['attr' => $diff->implode('", "')]
-            ));
+            throw TemplateException::unknownSectionAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -129,12 +115,10 @@ class Structure
         $this->template->get('sections')
             ->each(function ($section) {
                 if (! collect(Attributes::Columns)->contains($section->get('columns'))) {
-                    throw new TemplateValueException(__(
-                        'Invalid "columns" value found in section object: :columns. Allowed values are: :allowed', [
-                            'columns' => $section->get('columns'),
-                            'allowed' => collect(Attributes::Columns)->implode(', '),
-                        ]
-                    ));
+                    throw TemplateException::invalidColumnsAttributes(
+                        $section->get('columns'),
+                        collect(Attributes::Columns)->implode(', ')
+                    );
                 }
 
                 if ($section->get('columns') === 'custom') {
@@ -148,19 +132,13 @@ class Structure
         $section->get('fields')
             ->each(function ($field) {
                 if (! $field->has('column')) {
-                    throw new TemplateValueException(__(
-                        'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
-                        ['field' => $field->get('name')]
-                    ));
+                    throw TemplateException::missingFieldColumn($field->get('name'));
                 }
 
                 if (! is_int($field->get('column'))
                     || $field->get('column') <= 0
                     || $field->get('column') > 12) {
-                    throw new TemplateValueException(__(
-                        'Invalid "column" value found for field: :field. Allowed values from 1 to 12',
-                        ['field' => $field->get('name')]
-                    ));
+                    throw TemplateException::invalidFieldColumn($field->get('name'));
                 }
             });
     }
@@ -177,10 +155,7 @@ class Structure
             });
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateFormatException(__(
-                '"tab" attribute is missing on the following columns :columns',
-                ['columns' => $diff->keys()->implode('", "')]
-            ));
+            throw TemplateException::missingTabAttribute($diff->keys()->implode('", "'));
         }
     }
 }

@@ -20,13 +20,23 @@ class ActionTest extends TestCase
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_action()
+    public function cannot_validate_with_invalid_action()
     {
-        $this->template->get('actions')->push('WRONG_ACTION');
+        $unknownAction = 'UNKNOWN_ACTION';
+
+        $this->template->get('actions')->push($unknownAction);
 
         $action = new Actions($this->template);
 
         $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::unknownActions(
+                $unknownAction,
+                collect(Attributes::Create)->merge(Attributes::Update)
+                    ->unique()->implode(', ')
+            )->getMessage()
+        );
 
         $action->validate();
     }

@@ -4,10 +4,8 @@ namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Enums\app\Services\Enum;
 use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Meta as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
-use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class Meta
 {
@@ -38,10 +36,9 @@ class Meta
             ->diff($this->meta->keys());
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Mandatory Meta Attribute(s) Missing: ":attr" from field: :field',
-                ['attr' => $diff->implode('", "'), 'field' => $this->field->get('name')]
-            ));
+            throw TemplateException::missingMetaAttributes(
+                $this->field->get('name'), $diff->implode('", "')
+            );
         }
 
         return $this;
@@ -56,10 +53,9 @@ class Meta
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Unknown Attribute(s) Found: ":attr" in field: :field',
-                ['attr' => $diff->implode('", "'), 'field' => $this->field->get('name')]
-            ));
+            throw TemplateException::unknownMetaAttributes(
+                $this->field->get('name'), $diff->implode('", "')
+            );
         }
 
         return $this;
@@ -67,32 +63,26 @@ class Meta
 
     private function checkFormat()
     {
-        if ($this->meta->get('type') === 'select'
-            && self::selectMetaParameterMissing($this->field)) {
-            throw new TemplateFormatException(__(
-                'Mandatory "source" or "option" meta parameter is missing for the :field select field',
-                ['field' => $this->field->get('name')]
-            ));
+        if ($this->meta->get('type') === 'input') {
+            if (self::inputMetaParameterMissing($this->field)) {
+                throw TemplateException::missingInputAttribute($this->field->geT('name'));
+            }
+
+            return $this;
         }
 
-        if ($this->meta->get('type') === 'input'
-            && self::inputMetaParameterMissing($this->field)) {
-            throw new TemplateFormatException(__(
-                'Mandatory "type" meta parameter is missing for the :field input field',
-                ['field' => $this->field->geT('name')]
-            ));
-        }
+        if ($this->meta->get('type') === 'select') {
+            if (self::selectMetaParameterMissing($this->field)) {
+                throw TemplateException::missingSelectMetaAttribute($this->field->get('name'));
+            }
 
-        $options = $this->meta->get('options');
-        if ($options
-            && ! is_array($options)
-                && ! (is_string($options) && class_exists($options)
-                    && new $options instanceof Enum)
+            $options = $this->meta->get('options');
+
+            if ($options && ! is_array($options)
+                && ! (is_string($options) && class_exists($options) && new $options instanceof Enum)
                 && ! method_exists($options, 'toArray')) {
-            throw new TemplateFormatException(__(
-                '"options" meta parameter for field ":field" must be an array a collection or an Enum',
-                ['field' => $this->field->get('name')]
-            ));
+                throw TemplateException::invalidSelectOptions($this->field->get('name'));
+            }
         }
 
         return $this;
@@ -101,10 +91,7 @@ class Meta
     private function checkType()
     {
         if (! collect(Attributes::Types)->contains($this->meta->get('type'))) {
-            throw new TemplateValueException(__(
-                'Unknown Field Type Found: :type',
-                ['type' => $this->meta->get('type')]
-            ));
+            throw TemplateException::invalidFieldType($this->meta->get('type'));
         }
     }
 

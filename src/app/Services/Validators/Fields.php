@@ -3,10 +3,8 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
-use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class Fields
 {
@@ -39,9 +37,7 @@ class Fields
             })->isEmpty();
 
         if (! $valid) {
-            throw new TemplateFormatException(__(
-                'The fields attribute must be an array (of objects)'
-            ));
+            throw TemplateException::invalidFieldsFormat();
         }
     }
 
@@ -51,10 +47,7 @@ class Fields
             ->diff(collect($field)->keys());
 
         if ($diff->isNotEmpty()) {
-            throw new TemplateAttributeException(__(
-                'Mandatory Field Attribute(s) Missing: ":attr"',
-                ['attr' => $diff->implode('", "')]
-            ));
+            throw TemplateException::missingFieldAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -70,23 +63,15 @@ class Fields
 
         if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
             if (! is_bool($field->get('value'))) {
-                throw new TemplateValueException(__(
-                    'Chexboxes must have a boolean default value: ":field"',
-                    ['field' => $field->get('name')]
-                ));
+                throw TemplateException::invalidCheckboxValue($field->get('name'));
             }
 
             return;
         }
 
-        if ($meta->get('type') === 'select'
-            && $meta->get('multiple')
-            && ! is_array($field->get('value'))
-            && ! is_object($field->get('value'))) {
-            throw new TemplateValueException(__(
-                    'Multiple selects must have an array default value: ":field"',
-                    ['field' => $field->get('name')]
-                ));
+        if ($meta->get('type') === 'select' && $meta->get('multiple')
+            && ! is_array($field->get('value')) && ! is_object($field->get('value'))) {
+            throw TemplateException::invalidSelectValue($field->get('name'));
         }
     }
 }

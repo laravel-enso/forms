@@ -6,8 +6,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Routes;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 
 class RoutesTest extends TestCase
 {
@@ -24,40 +23,54 @@ class RoutesTest extends TestCase
     public function cannot_validate_incomplete_route_actions()
     {
         $this->template->get('actions')->push('post');
+
         $this->template->forget('routePrefix');
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingRoutePrefix('post')
+                ->getMessage()
+        );
 
         $route->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_prefix_route()
+    public function cannot_validate_with_invalid_prefix_route()
     {
         $this->template->get('actions')->push('post');
         $this->template->set('routePrefix', 'not_route');
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingRoute('not_route.post')
+                ->getMessage()
+        );
 
         $route->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_custom_routes()
+    public function cannot_validate_with_invalid_custom_routes()
     {
         $this->template->get('actions')->push('post');
         $this->template->forget('routePrefix');
-        $this->template->set('routes', new Obj([
-            'post' => 'not_route'
-        ]));
+        $this->template->set('routes', new Obj(['post' => 'not_route']));
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingRoute('not_route')
+                ->getMessage()
+        );
 
         $route->validate();
     }

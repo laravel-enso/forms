@@ -5,10 +5,8 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Fields;
+use LaravelEnso\Forms\app\Exceptions\TemplateException;
 use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateValueException;
-use LaravelEnso\Forms\app\Exceptions\TemplateFormatException;
-use LaravelEnso\Forms\app\Exceptions\TemplateAttributeException;
 
 class FieldsTest extends TestCase
 {
@@ -22,13 +20,17 @@ class FieldsTest extends TestCase
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_field_format()
+    public function cannot_validate_with_invalid_field_format()
     {
         $this->template->get('sections')->first()->get('fields')->push('');
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateFormatException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidFieldsFormat()->getMessage()
+        );
 
         $fields->validate();
     }
@@ -40,13 +42,19 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateAttributeException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::missingFieldAttributes(
+                $this->field()->get('name'), 'label'
+            )->getMessage()
+        );
 
         $fields->validate();
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_checkbox_value()
+    public function cannot_validate_with_invalid_checkbox_value()
     {
         $this->field()->set('value', 'NOT_BOOL');
         $this->field()->get('meta')->set('type', 'input');
@@ -54,13 +62,19 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidCheckboxValue(
+                $this->field()['name']
+            )->getMessage()
+        );
 
         $fields->validate();
     }
 
     /** @test */
-    public function can_validate_custom_meta_and_wrong_values()
+    public function can_validate_custom_meta_and_invalid_values()
     {
         $this->field()->set('value', 'NOT_BOOL');
         $this->field()->get('meta')->set('type', 'input');
@@ -75,7 +89,7 @@ class FieldsTest extends TestCase
     }
 
     /** @test */
-    public function cannot_validate_with_wrong_multiple_select_value()
+    public function cannot_validate_with_invalid_multiple_select_value()
     {
         $this->field()->set('value', 'NOT_ARRAY');
         $this->field()->get('meta')->set('type', 'select');
@@ -83,7 +97,14 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateValueException::class);
+        $this->expectException(TemplateException::class);
+
+        $this->expectExceptionMessage(
+            TemplateException::invalidSelectValue(
+                $this->field()['name']
+            )->getMessage()
+        );
+
 
         $fields->validate();
     }
