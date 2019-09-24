@@ -244,7 +244,7 @@ class Form
             });
     }
 
-    private function sectionVisibility($fields, bool $hidden)
+    public function sectionVisibility($fields, bool $hidden)
     {
         collect($fields)->each(function ($field) use ($hidden) {
             $this->section($field)->get('fields')
@@ -252,9 +252,11 @@ class Form
                     $field->get('meta')->set('hidden', $hidden);
                 });
         });
+
+        return $this;
     }
 
-    private function tabVisibility($tabs, $hidden)
+    public function tabVisibility($tabs, $hidden)
     {
         $this->template->get('sections')
             ->each(function ($section) use ($tabs, $hidden) {
@@ -264,6 +266,8 @@ class Form
                     });
                 }
             });
+
+        return $this;
     }
 
     private function section($field)
