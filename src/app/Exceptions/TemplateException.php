@@ -148,7 +148,7 @@ class TemplateException extends EnsoException
     public static function unknownMetaAttributes($field, $attrs)
     {
         return new static(__(
-            'Unknown Attribute(s) Found: ":attr" in field: :field',
+            'Unknown Attribute(s) Found: ":attrs" in field: :field',
             ['attrs' => $attrs, 'field' => $field]
         ));
     }
