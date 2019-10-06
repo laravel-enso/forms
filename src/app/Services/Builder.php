@@ -53,9 +53,11 @@ class Builder
     {
         $meta = $field->get('meta');
 
-        $value = $this->dirty->contains($field->get('name'))
-            ? $field->get('value')
-            : $this->attributeValue($field);
+        if ($this->dirty->contains($field->get('name'))) {
+            return $field->get('value');
+        }
+
+        $value = $this->attributeValue($field);
 
         if ($meta->get('type') === 'input'
             && $meta->get('content') === 'text'
