@@ -3,6 +3,7 @@
 namespace LaravelEnso\Forms\app\Services;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
@@ -305,8 +306,9 @@ class Form
 
     private function needsValidation()
     {
-        return ! app()->environment('production')
-            || config('enso.forms.validations') === 'always';
+        return collect([App::environment(), 'always'])->contains(
+            config('enso.forms.validations')
+        );
     }
 
     private function throwMissingFieldException($fieldName)
