@@ -51,34 +51,57 @@ class Builder
 
     private function value($field)
     {
+        $value = $this->dirty->contains($field->get('name'))
+            ? $field->get('value')
+            : $this->attributeValue($field);
+
         $meta = $field->get('meta');
 
-        if ($this->dirty->contains($field->get('name'))) {
-            return $field->get('value');
+        switch ($meta->get('type')) {
+            case 'input':
+                return $this->inputValue($value, $meta);
+            case 'datepicker':
+                return $this->dateValue($value, $meta);
+            case 'select':
+                return $this->selectValue($value, $meta);
+            default:
+                return $value;
+        }
+    }
+
+    private function inputValue($value, $meta)
+    {
+        return $meta->get('content') === 'text'
+            ? ($value ?? '')
+            : $value;
+    }
+
+    private function dateValue($value, $meta)
+    {
+        if (! $meta->has('format')) {
+            $meta->set('format', config('enso.forms.dateFormat'));
         }
 
-        $value = $this->attributeValue($field);
+        return $value instanceof Carbon
+            ? $value->format($meta->get('format'))
+            : $value;
+    }
 
-        if ($meta->get('type') === 'input'
-            && $meta->get('content') === 'text'
-            && $value === null) {
-            return '';
+    private function selectValue($value, $meta)
+    {
+        if ($meta->get('objects')) {
+            return $value;
         }
 
-        if ($meta->get('type') === 'datepicker'
-            && $value instanceof Carbon) {
-            return $value->format($this->dateFormat($field));
+        if ($meta->get('multiple')) {
+            return $value instanceof Collection
+                ? $value->pluck($meta->get('trackBy') ?? 'id')
+                : $value;
         }
 
-        if ($meta->get('type') === 'select'
-            && $meta->get('multiple')
-            && $value instanceof Collection) {
-            return $value->pluck(
-                $meta->get('trackBy') ?? 'id' //TODO refactor to config
-            );
-        }
-
-        return $value;
+        return $value instanceof Model
+            ? $value->{$meta->get('trackBy') ?? 'id'}
+            : $value;
     }
 
     private function attributeValue($field)
@@ -155,11 +178,11 @@ class Builder
         }
 
         if (! $meta->has('trackBy')) {
-            $meta->set('trackBy', 'id'); //TODO refactor to config
+            $meta->set('trackBy', 'id');
         }
 
         if (! $meta->has('label')) {
-            $meta->set('label', 'name'); //TODO refactor to config
+            $meta->set('label', 'name');
         }
 
         if ($meta->has('source')) {
@@ -170,10 +193,7 @@ class Builder
     private function computeDate($meta)
     {
         $meta->set(
-            'format',
-            $meta->has('format')
-                ? $meta->get('format')
-                : config('enso.forms.dateFormat')
+            'format', $meta->get('format', config('enso.forms.dateFormat'))
         );
     }
 
@@ -199,17 +219,6 @@ class Builder
         }
 
         return $this;
-    }
-
-    private function dateFormat($field)
-    {
-        $meta = $field->get('meta');
-
-        if (! $meta->has('format')) {
-            $meta->set('format', config('enso.forms.dateFormat'));
-        }
-
-        return $meta->get('format');
     }
 
     private function isForbidden($route)
