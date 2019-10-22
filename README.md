@@ -18,36 +18,10 @@ For live examples and demos, you may visit [laravel-enso.com](https://www.larave
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
-## Installation
 
-Comes pre-installed in Enso. 
+### Installation, Configuration & Usage
 
-To install outside of Enso:
-
-1. install the package `composer require laravel-enso/forms` 
-
-2. if needed, publish and customize the config
-
-3. install the api implementation for the front end: `yarm add @enso-ui/forms`
-
-## Features
-
-- allows for quick creation of forms
-- uses a JSON template file for generating the form
-- flexible form layout, that supports directly from the template
-    * grouping inputs into logical sections and columns of different widths, even on the same row
-    * grouping sections into tabs 
-- for most forms, the json template is all that it's needed
-- provides helpful error messages when the template is missing parameters or unexpected values are found
-- when needed, allows the customization of form components in order to cover all scenarios
-- comes with a `template.json` file that can be used as an example when starting out
-- integrates with the [Laravel Request Validation](https://laravel.com/docs/5.7/validation#available-validation-rules) for seamless usage and reusability
-- uses the Enso toast notifications for stylish feedback on the various actions
-- customizable placeholder for all elements
-
-### Configuration & Usage
-
-Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/backend/form-builder.html)
+Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/backend/forms.html)
 
 ### Contributions
 
