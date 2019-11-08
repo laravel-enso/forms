@@ -61,7 +61,7 @@
                     "meta": {
                         "type": "datepicker",
                         "custom": false,
-                        "format": "d-m-Y",
+                        "altFormat": "d-m-Y",
                         "time": false,
                         "disabled": false
                     }

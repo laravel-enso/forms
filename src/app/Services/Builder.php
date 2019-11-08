@@ -60,8 +60,6 @@ class Builder
         switch ($meta->get('type')) {
             case 'input':
                 return $this->inputValue($value, $meta);
-            case 'datepicker':
-                return $this->dateValue($value, $meta);
             case 'select':
                 return $this->selectValue($value, $meta);
             default:
@@ -69,21 +67,63 @@ class Builder
         }
     }
 
+    private function computeMetas()
+    {
+        $this->template->get('sections')
+            ->each(function ($section) {
+                $section->get('fields')
+                    ->each(function ($field) {
+                        $meta = $field->get('meta');
+
+                        if ($meta->get('type') === 'select') {
+                            $this->computeSelect($meta);
+                        }
+
+                        if ($meta->get('type') === 'datepicker') {
+                            $this->computeDate($meta);
+                        }
+                    });
+            });
+    }
+
+    private function computeSelect($meta)
+    {
+        if ($meta->has('options')
+            && is_string($meta->get('options'))) {
+            $enum = $meta->get('options');
+            $meta->set('options', $enum::select());
+        }
+
+        if (! $meta->has('placeholder')) {
+            $meta->set(
+                'placeholder', config('enso.forms.selectPlaceholder')
+            );
+        }
+
+        if (! $meta->has('trackBy')) {
+            $meta->set('trackBy', 'id');
+        }
+
+        if (! $meta->has('label')) {
+            $meta->set('label', 'name');
+        }
+
+        if ($meta->has('source')) {
+            $meta->set('source', route($meta->get('source')));
+        }
+    }
+
+    private function computeDate($meta)
+    {
+        $meta->set(
+            'altFormat', $meta->get('altFormat', config('enso.forms.altDateFormat'))
+        );
+    }
+
     private function inputValue($value, $meta)
     {
         return $meta->get('content') === 'text'
             ? ($value ?? '')
-            : $value;
-    }
-
-    private function dateValue($value, $meta)
-    {
-        if (! $meta->has('format')) {
-            $meta->set('format', config('enso.forms.dateFormat'));
-        }
-
-        return $value instanceof Carbon
-            ? $value->format($meta->get('format'))
             : $value;
     }
 
@@ -142,59 +182,6 @@ class Builder
             'forbidden' => $this->isForbidden($route),
             $routeOrPath => $value,
         ];
-    }
-
-    private function computeMetas()
-    {
-        $this->template->get('sections')
-            ->each(function ($section) {
-                $section->get('fields')
-                    ->each(function ($field) {
-                        $meta = $field->get('meta');
-
-                        if ($meta->get('type') === 'select') {
-                            $this->computeSelect($meta);
-                        }
-
-                        if ($meta->get('type') === 'datepicker') {
-                            $this->computeDate($meta);
-                        }
-                    });
-            });
-    }
-
-    private function computeSelect($meta)
-    {
-        if ($meta->has('options')
-            && is_string($meta->get('options'))) {
-            $enum = $meta->get('options');
-            $meta->set('options', $enum::select());
-        }
-
-        if (! $meta->has('placeholder')) {
-            $meta->set(
-                'placeholder', config('enso.forms.selectPlaceholder')
-            );
-        }
-
-        if (! $meta->has('trackBy')) {
-            $meta->set('trackBy', 'id');
-        }
-
-        if (! $meta->has('label')) {
-            $meta->set('label', 'name');
-        }
-
-        if ($meta->has('source')) {
-            $meta->set('source', route($meta->get('source')));
-        }
-    }
-
-    private function computeDate($meta)
-    {
-        $meta->set(
-            'format', $meta->get('format', config('enso.forms.dateFormat'))
-        );
     }
 
     private function appendConfigParams()
