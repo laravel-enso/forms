@@ -2,10 +2,10 @@
 
 namespace LaravelEnso\Forms\app\Services;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Builder
@@ -108,7 +108,7 @@ class Builder
         }
 
         if ($meta->has('source')) {
-            $meta->set('source', route($meta->get('source')));
+            $meta->set('source', route($meta->get('source'), [], false));
         }
     }
 
