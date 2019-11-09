@@ -64,12 +64,12 @@ class BuilderTest extends TestCase
     public function set_values_for_datepicker()
     {
         $this->field()->get('meta')->set('type', 'datepicker');
-        $this->field()->get('meta')->set('format', 'm-Y-d');
+        $this->field()->get('meta')->set('altFormat', 'm-Y-d');
         $this->testModel->test_field = new Carbon('2012-12-24');
 
         $this->runBuilder();
 
-        $this->assertEquals($this->field()->get('value'), '12-2012-24');
+        $this->assertTrue($this->field()->get('value')->eq($this->testModel->test_field));
     }
 
     /** @test */
