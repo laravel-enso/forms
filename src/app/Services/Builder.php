@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms\app\Services;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -59,11 +60,44 @@ class Builder
         switch ($meta->get('type')) {
             case 'input':
                 return $this->inputValue($value, $meta);
+            case 'datepicker':
+                return $this->dateValue($value, $meta);
             case 'select':
                 return $this->selectValue($value, $meta);
             default:
                 return $value;
         }
+    }
+
+    private function inputValue($value, $meta)
+    {
+        return $meta->get('content') === 'text'
+            ? ($value ?? '')
+            : $value;
+    }
+
+    private function dateValue($value, $meta)
+    {
+        return $value instanceof Carbon
+            ? $value->format($meta->get('format') ?? 'Y-m-d')
+            : $value;
+    }
+
+    private function selectValue($value, $meta)
+    {
+        if ($meta->get('objects')) {
+            return $value;
+        }
+
+        if ($meta->get('multiple')) {
+            return $value instanceof Collection
+                ? $value->pluck($meta->get('trackBy') ?? 'id')
+                : $value;
+        }
+
+        return $value instanceof Model
+            ? $value->{$meta->get('trackBy') ?? 'id'}
+            : $value;
     }
 
     private function computeMetas()
@@ -117,30 +151,6 @@ class Builder
         $meta->set(
             'altFormat', $meta->get('altFormat', config('enso.forms.altDateFormat'))
         );
-    }
-
-    private function inputValue($value, $meta)
-    {
-        return $meta->get('content') === 'text'
-            ? ($value ?? '')
-            : $value;
-    }
-
-    private function selectValue($value, $meta)
-    {
-        if ($meta->get('objects')) {
-            return $value;
-        }
-
-        if ($meta->get('multiple')) {
-            return $value instanceof Collection
-                ? $value->pluck($meta->get('trackBy') ?? 'id')
-                : $value;
-        }
-
-        return $value instanceof Model
-            ? $value->{$meta->get('trackBy') ?? 'id'}
-            : $value;
     }
 
     private function attributeValue($field)
