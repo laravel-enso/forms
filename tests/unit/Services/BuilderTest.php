@@ -2,14 +2,14 @@
 
 namespace LaravelEnso\Forms\tests\Services;
 
-use Mockery;
 use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use LaravelEnso\Enums\app\Services\Enum;
-use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Builder;
+use LaravelEnso\Helpers\app\Classes\Obj;
+use Mockery;
+use Tests\TestCase;
 
 class BuilderTest extends TestCase
 {
@@ -69,7 +69,7 @@ class BuilderTest extends TestCase
 
         $this->runBuilder();
 
-        $this->assertTrue($this->field()->get('value')->eq($this->testModel->test_field));
+        $this->assertEquals($this->field()->get('value'), $this->testModel->test_field->format('Y-m-d'));
     }
 
     /** @test */
