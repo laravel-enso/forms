@@ -20,7 +20,7 @@ class Form
     public function __construct(string $filename)
     {
         $this->readTemplate($filename);
-        $this->template->set('routeParams', new Obj);
+
         $this->dirty = collect();
     }
 
@@ -29,6 +29,7 @@ class Form
         $this->model = $model;
 
         $this->method('post')
+            ->routeParams([])
             ->build();
 
         return $this->template;
