@@ -19,7 +19,8 @@ class Form
 
     public function __construct(string $filename)
     {
-        $this->readTemplate($filename);
+        $this->readTemplate($filename)
+            ->routeParams([]);
 
         $this->dirty = collect();
     }
@@ -29,7 +30,6 @@ class Form
         $this->model = $model;
 
         $this->method('post')
-            ->routeParams([])
             ->build();
 
         return $this->template;
@@ -218,6 +218,8 @@ class Form
         $this->template = new Obj(
             (new JsonParser($filename))->array()
         );
+
+        return $this;
     }
 
     private function method(string $method)
