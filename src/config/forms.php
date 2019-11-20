@@ -123,4 +123,15 @@ return [
     */
 
     'labels' => 'true',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | TinyMCE Api Key
+    |--------------------------------------------------------------------------
+    | If you're using the wysiwyg field you need to get a free api key from 
+    | https://www.tiny.cloud/get-tiny/ first.
+    | 
+    */
+
+    'tinyMCEApiKey' => env('TINY_MCE_API_KEY', null),
 ];

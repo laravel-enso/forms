@@ -106,17 +106,26 @@ class Builder
             ->each(function ($section) {
                 $section->get('fields')
                     ->each(function ($field) {
-                        $meta = $field->get('meta');
-
-                        if ($meta->get('type') === 'select') {
-                            $this->computeSelect($meta);
-                        }
-
-                        if ($meta->get('type') === 'datepicker') {
-                            $this->computeDate($meta);
-                        }
+                        $this->computeMeta($field);
                     });
             });
+    }
+
+    private function computeMeta($field)
+    {
+        $meta = $field->get('meta');
+
+        switch ($meta->get('type')) {
+            case 'select':
+                $this->computeSelect($meta);
+            break;
+            case 'datepicker':
+                $this->computeDate($meta);
+            break;
+            case 'wysiwyg':
+                $this->computeWysiwyg($meta);
+            break;
+        }
     }
 
     private function computeSelect($meta)
@@ -151,6 +160,11 @@ class Builder
         $meta->set(
             'altFormat', $meta->get('altFormat', config('enso.forms.altDateFormat'))
         );
+    }
+
+    private function computeWysiwyg($meta)
+    {
+        $meta->set('apiKey', config('enso.forms.tinyMCEApiKey'));
     }
 
     private function attributeValue($field)
