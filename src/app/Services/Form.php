@@ -19,16 +19,16 @@ class Form
 
     public function __construct(string $filename)
     {
-        $this->readTemplate($filename)
-            ->routeParams([]);
-
+        $this->readTemplate($filename);
         $this->dirty = collect();
     }
 
     public function create(Model $model = null)
     {
         $this->model = $model;
-
+        if (! $this->template->has('routeParams')) {
+            $this->routeParams([]);
+        }
         $this->method('post')
             ->build();
 
@@ -38,11 +38,12 @@ class Form
     public function edit(Model $model)
     {
         $this->model = $model;
-
-        $this->method('patch')
-            ->routeParams([
+        if (! $this->template->has('routeParams')) {
+            $this->routeParams([
                 Str::camel(class_basename($model)) => $model->getKey(),
-            ])->build();
+            ]);
+        }
+        $this->method('patch')->build();
 
         return $this->template;
     }
@@ -80,7 +81,6 @@ class Form
         if (! $this->template->has('routes')) {
             $this->template->set('routes', new Obj());
         }
-
         $this->template->get('routes')->set($action, $route);
 
         return $this;
@@ -177,7 +177,6 @@ class Form
         if (! $this->template->has('params')) {
             $this->template->set('params', new Obj());
         }
-
         $this->template->get('params')->set($prop, $value);
 
         return $this;
@@ -209,7 +208,6 @@ class Form
         if ($this->needsValidation()) {
             (new Validator($this->template))->run();
         }
-
         (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
@@ -225,7 +223,6 @@ class Form
     private function method(string $method)
     {
         $this->template->set('method', $method);
-
         if (! $this->template->has('actions')) {
             $this->template->set('actions', $this->defaultActions());
 
@@ -283,7 +280,6 @@ class Form
                         return $sectionField->get('name') === $field;
                     });
             });
-
         if (! $section) {
             $this->throwMissingFieldException($field);
         }
@@ -299,7 +295,6 @@ class Form
             }, collect())->first(function ($field) use ($fieldName) {
                 return $field->get('name') === $fieldName;
             });
-
         if (! $field) {
             $this->throwMissingFieldException($fieldName);
         }
