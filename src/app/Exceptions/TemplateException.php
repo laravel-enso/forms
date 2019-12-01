@@ -9,7 +9,7 @@ class TemplateException extends EnsoException
     public static function missingRootAttributes($attrs)
     {
         return new static(__(
-            'Mandatory attribute(s) missing: ":attr"',
+            'Mandatory attribute(s) missing: ":attrs"',
             ['attrs' => $attrs]
         ));
     }
@@ -55,7 +55,7 @@ class TemplateException extends EnsoException
     public static function missingSectionAttributes($attrs)
     {
         return new static(__(
-            'Mandatory attribute(s) missing from section object: ":attr"',
+            'Mandatory attribute(s) missing from section object: ":attrs"',
             ['attrs' => $attrs]
         ));
     }
@@ -63,7 +63,7 @@ class TemplateException extends EnsoException
     public static function unknownSectionAttributes($attrs)
     {
         return new static(__(
-            'Unknown attribute(s) found in section object: ":attr"',
+            'Unknown attribute(s) found in section object: ":attrs"',
             ['attrs' => $attrs]
         ));
     }
