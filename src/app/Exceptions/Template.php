@@ -4,7 +4,7 @@ namespace LaravelEnso\Forms\app\Exceptions;
 
 use LaravelEnso\Helpers\app\Exceptions\EnsoException;
 
-class TemplateException extends EnsoException
+class Template extends EnsoException
 {
     public static function missingRootAttributes($attrs)
     {
@@ -92,7 +92,8 @@ class TemplateException extends EnsoException
     public static function missingFieldColumn($field)
     {
         return new static(__(
-            'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
+            'Missing "column" attribute from the field: ":field" which is required when using 
+                custom columns on a section.',
             ['field' => $field]
         ));
     }

@@ -3,7 +3,7 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Fields
@@ -37,7 +37,7 @@ class Fields
             })->isEmpty();
 
         if (! $valid) {
-            throw TemplateException::invalidFieldsFormat();
+            throw Template::invalidFieldsFormat();
         }
     }
 
@@ -47,7 +47,7 @@ class Fields
             ->diff(collect($field)->keys());
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingFieldAttributes($diff->implode('", "'));
+            throw Template::missingFieldAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -63,7 +63,7 @@ class Fields
 
         if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
             if (! is_bool($field->get('value'))) {
-                throw TemplateException::invalidCheckboxValue($field->get('name'));
+                throw Template::invalidCheckboxValue($field->get('name'));
             }
 
             return;
@@ -71,7 +71,7 @@ class Fields
 
         if ($meta->get('type') === 'select' && $meta->get('multiple')
             && ! is_array($field->get('value')) && ! is_object($field->get('value'))) {
-            throw TemplateException::invalidSelectValue($field->get('name'));
+            throw Template::invalidSelectValue($field->get('name'));
         }
     }
 }

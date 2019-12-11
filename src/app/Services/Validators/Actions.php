@@ -3,7 +3,7 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Forms\app\Attributes\Actions as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Actions
@@ -26,7 +26,7 @@ class Actions
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::unknownActions(
+            throw Template::unknownActions(
                 $diff->implode(', '), $attributes->implode(', ')
             );
         }

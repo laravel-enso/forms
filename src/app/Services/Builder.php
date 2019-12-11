@@ -15,7 +15,7 @@ class Builder
     private $model;
     private $dirty;
 
-    public function __construct(Obj $template, Collection $dirty, Model $model = null)
+    public function __construct(Obj $template, Collection $dirty, ?Model $model = null)
     {
         $this->template = $template;
         $this->model = $model;
@@ -118,13 +118,13 @@ class Builder
         switch ($meta->get('type')) {
             case 'select':
                 $this->computeSelect($meta);
-            break;
+                break;
             case 'datepicker':
                 $this->computeDate($meta);
-            break;
+                break;
             case 'wysiwyg':
                 $this->computeWysiwyg($meta);
-            break;
+                break;
         }
     }
 
@@ -181,7 +181,7 @@ class Builder
                 return $collector->set(
                     $action, $this->actionConfig($action)
                 );
-            }, new Obj);
+            }, new Obj());
 
         $this->template->set('actions', $actions);
 

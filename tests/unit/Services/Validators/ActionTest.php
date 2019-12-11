@@ -5,7 +5,7 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Actions;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Forms\app\Attributes\Actions as Attributes;
 
 class ActionTest extends TestCase
@@ -28,10 +28,10 @@ class ActionTest extends TestCase
 
         $action = new Actions($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::unknownActions(
+            Template::unknownActions(
                 $unknownAction,
                 collect(Attributes::Create)->merge(Attributes::Update)
                     ->unique()->implode(', ')
