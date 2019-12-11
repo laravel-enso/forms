@@ -20,12 +20,7 @@ class Fields
         $this->template->get('sections')
             ->each(function ($section) {
                 $this->checkFormat($section);
-
-                $section->get('fields')->each(function ($field) {
-                    $this->checkAttributes($field);
-                    $this->checkValue($field);
-                    (new Meta($field))->validate();
-                });
+                $this->validateSection($section);
             });
     }
 
@@ -39,6 +34,18 @@ class Fields
         if (! $valid) {
             throw Template::invalidFieldsFormat();
         }
+    }
+
+    private function validateSection($section): void
+    {
+        $section->get('fields')->each(function ($field) {
+            $this->checkAttributes($field);
+            $this->checkValue($field);
+        })->filter(function ($field) {
+            return ! $field->get('meta')->get('custom');
+        })->each(function ($field) {
+            (new Meta($field))->validate();
+        });
     }
 
     private function checkAttributes($field)

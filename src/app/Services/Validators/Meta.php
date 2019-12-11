@@ -20,10 +20,6 @@ class Meta
 
     public function validate()
     {
-        if ($this->meta->get('custom')) {
-            return;
-        }
-
         $this->checkMandatoryAttributes()
             ->checkOptionalAttributes()
             ->checkFormat()
@@ -49,8 +45,7 @@ class Meta
         $attributes = collect(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
-        $diff = $this->meta->keys()
-            ->diff($attributes);
+        $diff = $this->meta->keys()->diff($attributes);
 
         if ($diff->isNotEmpty()) {
             throw Template::unknownMetaAttributes(
@@ -64,25 +59,16 @@ class Meta
     private function checkFormat()
     {
         if ($this->meta->get('type') === 'input') {
-            if (self::inputMetaParameterMissing($this->field)) {
-                throw Template::missingInputAttribute($this->field->geT('name'));
-            }
+            $this->validateInputMeta();
 
             return $this;
         }
 
         if ($this->meta->get('type') === 'select') {
-            if (self::selectMetaParameterMissing($this->field)) {
-                throw Template::missingSelectMetaAttribute($this->field->get('name'));
-            }
+            $this->validateSelectMeta();
 
             $options = $this->meta->get('options');
-
-            if ($options && ! is_array($options)
-                && ! (is_string($options) && class_exists($options) && new $options() instanceof Enum)
-                && ! method_exists($options, 'toArray')) {
-                throw Template::invalidSelectOptions($this->field->get('name'));
-            }
+            $this->validateSelectOptions($options);
         }
 
         return $this;
@@ -104,5 +90,28 @@ class Meta
     private function inputMetaParameterMissing()
     {
         return $this->meta === null || ! $this->meta->has('content');
+    }
+
+    private function validateInputMeta(): void
+    {
+        if ($this->inputMetaParameterMissing($this->field)) {
+            throw Template::missingInputAttribute($this->field->geT('name'));
+        }
+    }
+
+    private function validateSelectMeta(): void
+    {
+        if ($this->selectMetaParameterMissing($this->field)) {
+            throw Template::missingSelectMetaAttribute($this->field->get('name'));
+        }
+    }
+
+    private function validateSelectOptions($options): void
+    {
+        if ($options && ! is_array($options)
+            && ! (is_string($options) && class_exists($options) && new $options() instanceof Enum)
+            && ! method_exists($options, 'toArray')) {
+            throw Template::invalidSelectOptions($this->field->get('name'));
+        }
     }
 }
