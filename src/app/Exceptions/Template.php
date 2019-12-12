@@ -92,8 +92,8 @@ class Template extends EnsoException
     public static function missingFieldColumn($field)
     {
         return new static(__(
-            'Missing "column" attribute from the field: ":field" which is required when using 
-                custom columns on a section.',
+            'Missing "column" attribute from the field: ":field" which is required when using'
+                .' custom columns on a section.',
             ['field' => $field]
         ));
     }
