@@ -203,7 +203,15 @@ class Form
         return $this;
     }
 
-    public function sectionVisibility($fields, bool $hidden)
+    private function build()
+    {
+        if ($this->needsValidation()) {
+            (new Validator($this->template))->run();
+        }
+        (new Builder($this->template, $this->dirty, $this->model))->run();
+    }
+
+    private function sectionVisibility($fields, bool $hidden)
     {
         collect($fields)->each(function ($field) use ($hidden) {
             $this->section($field)->get('fields')
@@ -215,7 +223,7 @@ class Form
         return $this;
     }
 
-    public function tabVisibility($tabs, $hidden)
+    private function tabVisibility($tabs, $hidden)
     {
         $this->template->get('sections')
             ->each(function ($section) use ($tabs, $hidden) {
@@ -227,14 +235,6 @@ class Form
             });
 
         return $this;
-    }
-
-    private function build()
-    {
-        if ($this->needsValidation()) {
-            (new Validator($this->template))->run();
-        }
-        (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
     private function readTemplate(string $filename)

@@ -130,16 +130,6 @@ class MetaTest extends TestCase
     }
 
     /** @test */
-    public function can_validate_custom_meta_without_any_other_attributes()
-    {
-        $meta = new Meta(new Obj(['meta' => ['custom' => true]]));
-
-        $meta->validate();
-
-        $this->assertTrue(true);
-    }
-
-    /** @test */
     public function can_validate()
     {
         $meta = new Meta($this->template);

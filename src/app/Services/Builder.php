@@ -15,7 +15,7 @@ class Builder
     private $model;
     private $dirty;
 
-    public function __construct(Obj $template, Collection $dirty, ?Model $model = null)
+    public function __construct(Obj $template, Collection $dirty, ?Model $model)
     {
         $this->template = $template;
         $this->model = $model;
