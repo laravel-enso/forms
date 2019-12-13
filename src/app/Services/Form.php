@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use LaravelEnso\Forms\app\Attributes\Actions;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Helpers\app\Classes\JsonParser;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
@@ -23,7 +23,7 @@ class Form
         $this->dirty = collect();
     }
 
-    public function create(Model $model = null)
+    public function create(?Model $model = null)
     {
         $this->model = $model;
         if (! $this->template->has('routeParams')) {
@@ -211,6 +211,32 @@ class Form
         (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
+    private function sectionVisibility($fields, bool $hidden)
+    {
+        collect($fields)->each(function ($field) use ($hidden) {
+            $this->section($field)->get('fields')
+                ->each(function ($field) use ($hidden) {
+                    $field->get('meta')->set('hidden', $hidden);
+                });
+        });
+
+        return $this;
+    }
+
+    private function tabVisibility($tabs, $hidden)
+    {
+        $this->template->get('sections')
+            ->each(function ($section) use ($tabs, $hidden) {
+                if (collect($tabs)->contains($section->get('tab'))) {
+                    $section->get('fields')->each(function ($field) use ($hidden) {
+                        $field->get('meta')->set('hidden', $hidden);
+                    });
+                }
+            });
+
+        return $this;
+    }
+
     private function readTemplate(string $filename)
     {
         $this->template = new Obj(
@@ -243,32 +269,6 @@ class Form
                 return Route::has($this->template->get('routePrefix').'.'.$action)
                     || $action === 'back';
             });
-    }
-
-    public function sectionVisibility($fields, bool $hidden)
-    {
-        collect($fields)->each(function ($field) use ($hidden) {
-            $this->section($field)->get('fields')
-                ->each(function ($field) use ($hidden) {
-                    $field->get('meta')->set('hidden', $hidden);
-                });
-        });
-
-        return $this;
-    }
-
-    public function tabVisibility($tabs, $hidden)
-    {
-        $this->template->get('sections')
-            ->each(function ($section) use ($tabs, $hidden) {
-                if (collect($tabs)->contains($section->get('tab'))) {
-                    $section->get('fields')->each(function ($field) use ($hidden) {
-                        $field->get('meta')->set('hidden', $hidden);
-                    });
-                }
-            });
-
-        return $this;
     }
 
     private function section($field)
@@ -311,6 +311,6 @@ class Form
 
     private function throwMissingFieldException($fieldName)
     {
-        throw TemplateException::fieldMissing($fieldName);
+        throw Template::fieldMissing($fieldName);
     }
 }

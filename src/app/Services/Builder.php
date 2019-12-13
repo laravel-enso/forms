@@ -15,7 +15,7 @@ class Builder
     private $model;
     private $dirty;
 
-    public function __construct(Obj $template, Collection $dirty, Model $model = null)
+    public function __construct(Obj $template, Collection $dirty, ?Model $model)
     {
         $this->template = $template;
         $this->model = $model;
@@ -25,26 +25,24 @@ class Builder
     public function run()
     {
         $this->appendConfigParams()
-            ->setValues()
+            ->values()
             ->computeActions()
             ->computeMetas();
 
         $this->template->forget(['routes', 'routePrefix', 'authorize']);
     }
 
-    private function setValues()
+    private function values()
     {
         if (! $this->model) {
             return $this;
         }
 
-        $this->template->get('sections')
-            ->each(function ($section) {
-                $section->get('fields')
-                    ->each(function ($field) {
-                        $field->set('value', $this->value($field));
-                    });
+        $this->template->get('sections')->each(function ($section) {
+            $section->get('fields')->each(function ($field) {
+                $field->set('value', $this->value($field));
             });
+        });
 
         return $this;
     }
@@ -118,28 +116,25 @@ class Builder
         switch ($meta->get('type')) {
             case 'select':
                 $this->computeSelect($meta);
-            break;
+                break;
             case 'datepicker':
                 $this->computeDate($meta);
-            break;
+                break;
             case 'wysiwyg':
                 $this->computeWysiwyg($meta);
-            break;
+                break;
         }
     }
 
     private function computeSelect($meta)
     {
-        if ($meta->has('options')
-            && is_string($meta->get('options'))) {
+        if ($meta->has('options') && is_string($meta->get('options'))) {
             $enum = $meta->get('options');
             $meta->set('options', $enum::select());
         }
 
         if (! $meta->has('placeholder')) {
-            $meta->set(
-                'placeholder', config('enso.forms.selectPlaceholder')
-            );
+            $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
         }
 
         if (! $meta->has('trackBy')) {
@@ -181,7 +176,7 @@ class Builder
                 return $collector->set(
                     $action, $this->actionConfig($action)
                 );
-            }, new Obj);
+            }, new Obj());
 
         $this->template->set('actions', $actions);
 
@@ -191,7 +186,7 @@ class Builder
     private function actionConfig($action)
     {
         $route = $this->template->has('routes')
-            && $this->template->get('routes')->has($action)
+        && $this->template->get('routes')->has($action)
             ? $this->template->get('routes')->get($action)
             : $this->template->get('routePrefix').'.'.$action;
 
@@ -210,22 +205,15 @@ class Builder
     private function appendConfigParams()
     {
         if (! $this->template->has('authorize')) {
-            $this->template->set(
-                'authorize', config('enso.forms.authorize')
-            );
+            $this->template->set('authorize', config('enso.forms.authorize'));
         }
 
         if (! $this->template->has('dividerTitlePlacement')) {
-            $this->template->set(
-                'dividerTitlePlacement',
-                config('enso.forms.dividerTitlePlacement')
-            );
+            $this->template->set('dividerTitlePlacement', config('enso.forms.dividerTitlePlacement'));
         }
 
         if (! $this->template->has('labels')) {
-            $this->template->set(
-                'labels', config('enso.forms.labels')
-            );
+            $this->template->set('labels', config('enso.forms.labels'));
         }
 
         return $this;

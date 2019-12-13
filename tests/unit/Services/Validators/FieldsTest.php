@@ -5,7 +5,7 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Fields;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
 
 class FieldsTest extends TestCase
@@ -26,10 +26,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidFieldsFormat()->getMessage()
+            Template::invalidFieldsFormat()->getMessage()
         );
 
         $fields->validate();
@@ -42,10 +42,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingFieldAttributes(
+            Template::missingFieldAttributes(
                 $this->field()->get('name'), 'label'
             )->getMessage()
         );
@@ -62,10 +62,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidCheckboxValue(
+            Template::invalidCheckboxValue(
                 $this->field()['name']
             )->getMessage()
         );
@@ -97,10 +97,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidSelectValue(
+            Template::invalidSelectValue(
                 $this->field()['name']
             )->getMessage()
         );

@@ -4,7 +4,7 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Forms\app\Services\Validators\Structure;
 use LaravelEnso\Forms\app\Attributes\Structure as Attributes;
 
@@ -26,10 +26,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingRootAttributes('method')
+            Template::missingRootAttributes('method')
                 ->getMessage()
         );
 
@@ -43,10 +43,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::unknownRootAttributes('unknown_attribute')
+            Template::unknownRootAttributes('unknown_attribute')
                 ->getMessage()
         );
 
@@ -61,10 +61,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidActionsFormat()
+            Template::invalidActionsFormat()
                 ->getMessage()
         );
 
@@ -78,10 +78,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidParamsFormat()
+            Template::invalidParamsFormat()
                 ->getMessage()
         );
 
@@ -95,10 +95,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidSectionFormat()
+            Template::invalidSectionFormat()
                 ->getMessage()
         );
 
@@ -112,10 +112,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingSectionAttributes('columns')
+            Template::missingSectionAttributes('columns')
                 ->getMessage()
         );
 
@@ -129,10 +129,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::unknownSectionAttributes('unknown_attr')
+            Template::unknownSectionAttributes('unknown_attr')
                 ->getMessage()
         );
 
@@ -146,10 +146,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidColumnsAttributes(
+            Template::invalidColumnsAttributes(
                 $this->section()->get('columns'),
                 collect(Attributes::Columns)->implode(', ')
             )->getMessage()
@@ -166,10 +166,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidFieldColumn('field_name')
+            Template::invalidFieldColumn('field_name')
                 ->getMessage()
         );
 
@@ -184,10 +184,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingFieldColumn('field_name')
+            Template::missingFieldColumn('field_name')
                 ->getMessage()
         );
 
@@ -201,10 +201,10 @@ class StructureTest extends TestCase
 
         $structure = new Structure($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingTabAttribute(0)
+            Template::missingTabAttribute(0)
                 ->getMessage()
         );
 

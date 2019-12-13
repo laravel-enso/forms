@@ -3,7 +3,7 @@
 namespace LaravelEnso\Forms\app\Services\Validators;
 
 use LaravelEnso\Forms\app\Attributes\Structure as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
 class Structure
@@ -30,7 +30,7 @@ class Structure
             ->diff($this->template->keys());
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingRootAttributes($diff->implode('", "'));
+            throw Template::missingRootAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -45,7 +45,7 @@ class Structure
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::unknownRootAttributes($diff->implode('", "'));
+            throw Template::unknownRootAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -55,16 +55,16 @@ class Structure
     {
         if ($this->template->has('actions')
             && ! $this->template->get('actions') instanceof Obj) {
-            throw TemplateException::invalidActionsFormat();
+            throw Template::invalidActionsFormat();
         }
 
         if ($this->template->has('params')
             && ! $this->template->get('params') instanceof Obj) {
-            throw TemplateException::invalidParamsFormat();
+            throw Template::invalidParamsFormat();
         }
 
         if (! $this->template->get('sections') instanceof Obj) {
-            throw TemplateException::invalidSectionFormat();
+            throw Template::invalidSectionFormat();
         }
 
         return $this;
@@ -90,7 +90,7 @@ class Structure
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingSectionAttributes($diff->implode('", "'));
+            throw Template::missingSectionAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -104,7 +104,7 @@ class Structure
         );
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::unknownSectionAttributes($diff->implode('", "'));
+            throw Template::unknownSectionAttributes($diff->implode('", "'));
         }
 
         return $this;
@@ -115,7 +115,7 @@ class Structure
         $this->template->get('sections')
             ->each(function ($section) {
                 if (! collect(Attributes::Columns)->contains($section->get('columns'))) {
-                    throw TemplateException::invalidColumnsAttributes(
+                    throw Template::invalidColumnsAttributes(
                         $section->get('columns'),
                         collect(Attributes::Columns)->implode(', ')
                     );
@@ -132,13 +132,13 @@ class Structure
         $section->get('fields')
             ->each(function ($field) {
                 if (! $field->has('column')) {
-                    throw TemplateException::missingFieldColumn($field->get('name'));
+                    throw Template::missingFieldColumn($field->get('name'));
                 }
 
                 if (! is_int($field->get('column'))
                     || $field->get('column') <= 0
                     || $field->get('column') > 12) {
-                    throw TemplateException::invalidFieldColumn($field->get('name'));
+                    throw Template::invalidFieldColumn($field->get('name'));
                 }
             });
     }
@@ -155,7 +155,7 @@ class Structure
             });
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingTabAttribute($diff->keys()->implode('", "'));
+            throw Template::missingTabAttribute($diff->keys()->implode('", "'));
         }
     }
 }

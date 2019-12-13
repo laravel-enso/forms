@@ -5,7 +5,7 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 use Tests\TestCase;
 use LaravelEnso\Helpers\app\Classes\Obj;
 use LaravelEnso\Forms\app\Services\Validators\Meta;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Forms\app\Exceptions\Template;
 
 class MetaTest extends TestCase
 {
@@ -25,10 +25,10 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingMetaAttributes(
+            Template::missingMetaAttributes(
                 $this->mockedField()['name'],
                 'type'
             )->getMessage()
@@ -44,10 +44,10 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::unknownMetaAttributes(
+            Template::unknownMetaAttributes(
                 $this->mockedField()['name'],
                 'unknown'
             )->getMessage()
@@ -64,10 +64,10 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingSelectMetaAttribute(
+            Template::missingSelectMetaAttribute(
                 $this->mockedField()['name']
             )->getMessage()
         );
@@ -82,10 +82,10 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingInputAttribute(
+            Template::missingInputAttribute(
                 $this->mockedField()['name']
             )->getMessage()
         );
@@ -101,10 +101,10 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidSelectOptions(
+            Template::invalidSelectOptions(
                 $this->mockedField()['name']
             )->getMessage()
         );
@@ -120,23 +120,13 @@ class MetaTest extends TestCase
 
         $meta = new Meta($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidFieldType($invalidType)->getMessage()
+            Template::invalidFieldType($invalidType)->getMessage()
         );
 
         $meta->validate();
-    }
-
-    /** @test */
-    public function can_validate_custom_meta_without_any_other_attributes()
-    {
-        $meta = new Meta(new Obj(['meta' => ['custom' => true]]));
-
-        $meta->validate();
-
-        $this->assertTrue(true);
     }
 
     /** @test */

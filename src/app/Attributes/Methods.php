@@ -4,5 +4,5 @@ namespace LaravelEnso\Forms\app\Attributes;
 
 class Methods
 {
-    const List = ['post', 'patch', 'put'];
+    public const List = ['post', 'patch', 'put'];
 }
