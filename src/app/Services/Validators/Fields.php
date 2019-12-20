@@ -27,9 +27,9 @@ class Fields
     private function checkFormat($section)
     {
         $valid = $section->get('fields') instanceof Obj
-            && $section->get('fields')->filter(function ($field) {
-                return ! $field instanceof Obj;
-            })->isEmpty();
+            && $section->get('fields')
+                ->filter(fn($field) => ! $field instanceof Obj)
+                ->isEmpty();
 
         if (! $valid) {
             throw Template::invalidFieldsFormat();
@@ -38,14 +38,12 @@ class Fields
 
     private function validateSection($section): void
     {
-        $section->get('fields')->each(function ($field) {
-            $this->checkAttributes($field);
-            $this->checkValue($field);
-        })->filter(function ($field) {
-            return ! $field->get('meta')->get('custom');
-        })->each(function ($field) {
-            (new Meta($field))->validate();
-        });
+        $section->get('fields')->each(fn($field) => (
+            $this->checkAttributes($field)
+                ->checkValue($field)
+        ))
+        ->filter(fn($field) => ! $field->get('meta')->get('custom'))
+        ->each(fn($field) => (new Meta($field))->validate());
     }
 
     private function checkAttributes($field)

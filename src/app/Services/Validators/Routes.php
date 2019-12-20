@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms\app\Services\Validators;
 
+use Route;
 use LaravelEnso\Forms\app\Exceptions\Template;
 use LaravelEnso\Helpers\app\Classes\Obj;
 
@@ -54,7 +55,7 @@ class Routes
 
     private function checkRoute($route)
     {
-        if (! \Route::has($route)) {
+        if (! Route::has($route)) {
             throw Template::missingRoute($route);
         }
     }
