@@ -18,10 +18,10 @@ class Fields
     public function validate()
     {
         $this->template->get('sections')
-            ->each(function ($section) {
-                $this->checkFormat($section);
-                $this->validateSection($section);
-            });
+            ->each(fn($section) => (
+                $this->checkFormat($section)
+                    ->validateSection($section)
+            ));
     }
 
     private function checkFormat($section)
@@ -34,6 +34,8 @@ class Fields
         if (! $valid) {
             throw Template::invalidFieldsFormat();
         }
+
+        return $this;
     }
 
     private function validateSection($section): void

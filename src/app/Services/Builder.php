@@ -101,12 +101,10 @@ class Builder
     private function computeMetas()
     {
         $this->template->get('sections')
-            ->each(function ($section) {
+            ->each(fn($section) => (
                 $section->get('fields')
-                    ->each(function ($field) {
-                        $this->computeMeta($field);
-                    });
-            });
+                    ->each(fn($field) => $this->computeMeta($field))
+            ));
     }
 
     private function computeMeta($field)
@@ -172,8 +170,8 @@ class Builder
     private function computeActions()
     {
         $actions = $this->template->get('actions')
-            ->reduce(fn($collector, $action) => $collector->set(
-                $action, $this->actionConfig($action)
+            ->reduce(fn($collector, $action) => (
+                $collector->set($action, $this->actionConfig($action))
             ), new Obj());
 
         $this->template->set('actions', $actions);
