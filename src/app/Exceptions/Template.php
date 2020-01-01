@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Exceptions;
+namespace LaravelEnso\Forms\App\Exceptions;
 
-use LaravelEnso\Helpers\app\Exceptions\EnsoException;
+use LaravelEnso\Helpers\App\Exceptions\EnsoException;
 
-class TemplateException extends EnsoException
+class Template extends EnsoException
 {
     public static function missingRootAttributes($attrs)
     {
@@ -79,7 +79,7 @@ class TemplateException extends EnsoException
     public static function invalidColumnsAttributes($columns, $allowed)
     {
         return new static(__(
-            'Invalid "columns" attribute found in section object: :columns. Allowed values are: :allowed',
+            'Invalid "columns" attribute in section object: :columns. Allowed values: :allowed',
             ['columns' => $columns, 'allowed' => $allowed]
         ));
     }
@@ -92,7 +92,7 @@ class TemplateException extends EnsoException
     public static function missingFieldColumn($field)
     {
         return new static(__(
-            'Missing "column" attribute from the field: ":field". This is mandatory when using custom columns on a section.',
+            'Missing "column" mandatory attribute (on custom columns) from the field: ":field".',
             ['field' => $field]
         ));
     }

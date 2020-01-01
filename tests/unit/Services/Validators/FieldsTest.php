@@ -2,11 +2,12 @@
 
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
+use Illuminate\Support\Collection;
+use LaravelEnso\Forms\App\Attributes\Fields as Attributes;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Forms\App\Services\Validators\Fields;
+use LaravelEnso\Helpers\App\Classes\Obj;
 use Tests\TestCase;
-use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Forms\app\Services\Validators\Fields;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
 
 class FieldsTest extends TestCase
 {
@@ -26,10 +27,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidFieldsFormat()->getMessage()
+            Template::invalidFieldsFormat()->getMessage()
         );
 
         $fields->validate();
@@ -42,10 +43,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingFieldAttributes(
+            Template::missingFieldAttributes(
                 $this->field()->get('name'), 'label'
             )->getMessage()
         );
@@ -62,10 +63,10 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidCheckboxValue(
+            Template::invalidCheckboxValue(
                 $this->field()['name']
             )->getMessage()
         );
@@ -97,14 +98,13 @@ class FieldsTest extends TestCase
 
         $fields = new Fields($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::invalidSelectValue(
+            Template::invalidSelectValue(
                 $this->field()['name']
             )->getMessage()
         );
-
 
         $fields->validate();
     }
@@ -121,17 +121,14 @@ class FieldsTest extends TestCase
 
     protected function mockedForm(): array
     {
-        $field = collect(Attributes::List)->reduce(function ($field, $attribute) {
-            return $field->put($attribute, new Obj());
-        }, new Obj());
+        $field = (new Collection(Attributes::List))
+            ->reduce(fn ($field, $attribute) => $field->put($attribute, new Obj()), new Obj());
 
         $field->get('meta')->set('type', 'textarea');
 
         return [
             'sections' => [
-                [
-                    'fields' => [$field]
-                ]
+                ['fields' => [$field]]
             ]
         ];
     }

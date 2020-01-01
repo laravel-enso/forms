@@ -2,11 +2,12 @@
 
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
+use Illuminate\Support\Collection;
 use Tests\TestCase;
-use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Forms\app\Services\Validators\Actions;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Forms\app\Attributes\Actions as Attributes;
+use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\App\Services\Validators\Actions;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Forms\App\Attributes\Actions as Attributes;
 
 class ActionTest extends TestCase
 {
@@ -28,14 +29,13 @@ class ActionTest extends TestCase
 
         $action = new Actions($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
+
+        $actions = (new Collection(Attributes::Create))
+            ->merge(Attributes::Update)->unique()->implode(', ');
 
         $this->expectExceptionMessage(
-            TemplateException::unknownActions(
-                $unknownAction,
-                collect(Attributes::Create)->merge(Attributes::Update)
-                    ->unique()->implode(', ')
-            )->getMessage()
+            Template::unknownActions($unknownAction, $actions)->getMessage()
         );
 
         $action->validate();
@@ -53,7 +53,7 @@ class ActionTest extends TestCase
 
     private function mockedActions()
     {
-        return collect(Attributes::Create)
+        return (new Collection(Attributes::Create))
             ->merge(Attributes::Update)
             ->unique()
             ->values();

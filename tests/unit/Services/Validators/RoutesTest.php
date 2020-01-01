@@ -4,9 +4,9 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
-use LaravelEnso\Helpers\app\Classes\Obj;
-use LaravelEnso\Forms\app\Services\Validators\Routes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
+use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\App\Services\Validators\Routes;
+use LaravelEnso\Forms\App\Exceptions\Template;
 
 class RoutesTest extends TestCase
 {
@@ -28,11 +28,10 @@ class RoutesTest extends TestCase
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingRoutePrefix('post')
-                ->getMessage()
+            Template::missingRoutePrefix('post')->getMessage()
         );
 
         $route->validate();
@@ -46,11 +45,10 @@ class RoutesTest extends TestCase
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingRoute('not_route.post')
-                ->getMessage()
+            Template::missingRoute('not_route.post')->getMessage()
         );
 
         $route->validate();
@@ -65,11 +63,10 @@ class RoutesTest extends TestCase
 
         $route = new Routes($this->template);
 
-        $this->expectException(TemplateException::class);
+        $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            TemplateException::missingRoute('not_route')
-                ->getMessage()
+            Template::missingRoute('not_route')->getMessage()
         );
 
         $route->validate();

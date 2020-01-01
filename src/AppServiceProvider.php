@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Forms;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,10 +13,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config' => config_path('enso'),
-        ], 'forms-config');
+        ], ['forms-config', 'enso-config']);
 
-        $this->publishes([
-            __DIR__.'/app/Forms' => app_path('Forms'),
-        ], 'forms');
+        (new Collection(['Forms/Builders/ModelForm', 'Forms/Templates/template']))
+            ->each(fn ($stub) => $this->publishes([
+                __DIR__."/../stubs/{$stub}.stub" => app_path("{$stub}.php"),
+            ], 'forms-resources'));
     }
 }

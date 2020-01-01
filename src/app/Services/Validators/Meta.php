@@ -1,16 +1,17 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services\Validators;
+namespace LaravelEnso\Forms\App\Services\Validators;
 
-use LaravelEnso\Enums\app\Services\Enum;
-use LaravelEnso\Forms\app\Attributes\Meta as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use Illuminate\Support\Collection;
+use LaravelEnso\Enums\App\Services\Enum;
+use LaravelEnso\Forms\App\Attributes\Meta as Attributes;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Meta
 {
-    private $field;
-    private $meta;
+    private Obj $field;
+    private ?Obj $meta;
 
     public function __construct(Obj $field)
     {
@@ -18,25 +19,25 @@ class Meta
         $this->meta = $field->get('meta');
     }
 
-    public function validate()
+    public function validate(): void
     {
         if ($this->meta->get('custom')) {
             return;
         }
 
-        $this->checkMandatoryAttributes()
-            ->checkOptionalAttributes()
-            ->checkFormat()
-            ->checkType();
+        $this->mandatoryAttributes()
+            ->optionalAttributes()
+            ->format()
+            ->type();
     }
 
-    private function checkMandatoryAttributes()
+    private function mandatoryAttributes(): self
     {
-        $diff = collect(Attributes::Mandatory)
+        $diff = (new Collection(Attributes::Mandatory))
             ->diff($this->meta->keys());
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingMetaAttributes(
+            throw Template::missingMetaAttributes(
                 $this->field->get('name'), $diff->implode('", "')
             );
         }
@@ -44,16 +45,16 @@ class Meta
         return $this;
     }
 
-    private function checkOptionalAttributes()
+    private function optionalAttributes(): self
     {
-        $attributes = collect(Attributes::Mandatory)
+        $attributes = (new Collection(Attributes::Mandatory))
             ->merge(Attributes::Optional);
 
         $diff = $this->meta->keys()
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::unknownMetaAttributes(
+            throw Template::unknownMetaAttributes(
                 $this->field->get('name'), $diff->implode('", "')
             );
         }
@@ -61,48 +62,52 @@ class Meta
         return $this;
     }
 
-    private function checkFormat()
+    private function format(): self
     {
         if ($this->meta->get('type') === 'input') {
-            if (self::inputMetaParameterMissing($this->field)) {
-                throw TemplateException::missingInputAttribute($this->field->geT('name'));
+            if ($this->inputMetaParameterMissing($this->field)) {
+                throw Template::missingInputAttribute($this->field->geT('name'));
             }
 
             return $this;
         }
 
         if ($this->meta->get('type') === 'select') {
-            if (self::selectMetaParameterMissing($this->field)) {
-                throw TemplateException::missingSelectMetaAttribute($this->field->get('name'));
+            if ($this->selectMetaParameterMissing($this->field)) {
+                throw Template::missingSelectMetaAttribute($this->field->get('name'));
             }
 
-            $options = $this->meta->get('options');
-
-            if ($options && ! is_array($options)
-                && ! (is_string($options) && class_exists($options) && new $options instanceof Enum)
-                && ! method_exists($options, 'toArray')) {
-                throw TemplateException::invalidSelectOptions($this->field->get('name'));
+            if ($this->invalidOptions($this->meta->get('options'))) {
+                throw Template::invalidSelectOptions($this->field->get('name'));
             }
         }
 
         return $this;
     }
 
-    private function checkType()
+    private function type(): void
     {
-        if (! collect(Attributes::Types)->contains($this->meta->get('type'))) {
-            throw TemplateException::invalidFieldType($this->meta->get('type'));
+        if (! (new Collection(Attributes::Types))->contains($this->meta->get('type'))) {
+            throw Template::invalidFieldType($this->meta->get('type'));
         }
     }
 
-    private function selectMetaParameterMissing()
+    private function inputMetaParameterMissing(): bool
+    {
+        return $this->meta === null || ! $this->meta->has('content');
+    }
+
+    private function selectMetaParameterMissing(): bool
     {
         return $this->meta === null
             || (! $this->meta->has('options') && ! $this->meta->has('source'));
     }
 
-    private function inputMetaParameterMissing()
+    private function invalidOptions($options)
     {
-        return $this->meta === null || ! $this->meta->has('content');
+        return $options && ! is_array($options)
+            && ! (is_string($options) && class_exists($options)
+                && new $options() instanceof Enum)
+            && ! method_exists($options, 'toArray');
     }
 }

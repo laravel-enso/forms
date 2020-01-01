@@ -1,23 +1,24 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services\Validators;
+namespace LaravelEnso\Forms\App\Services\Validators;
 
-use LaravelEnso\Forms\app\Attributes\Actions as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use Illuminate\Support\Collection;
+use LaravelEnso\Forms\App\Attributes\Actions as Attributes;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Actions
 {
-    private $template;
+    private Obj $template;
 
     public function __construct(Obj $template)
     {
         $this->template = $template;
     }
 
-    public function validate()
+    public function validate(): void
     {
-        $attributes = collect(Attributes::Create)
+        $attributes = (new Collection(Attributes::Create))
             ->merge(Attributes::Update)
             ->unique()
             ->values();
@@ -26,7 +27,7 @@ class Actions
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::unknownActions(
+            throw Template::unknownActions(
                 $diff->implode(', '), $attributes->implode(', ')
             );
         }

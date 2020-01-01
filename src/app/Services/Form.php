@@ -1,99 +1,103 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services;
+namespace LaravelEnso\Forms\App\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use LaravelEnso\Forms\app\Attributes\Actions;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Helpers\app\Classes\JsonParser;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Forms\App\Attributes\Actions;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Helpers\App\Classes\JsonParser;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Form
 {
-    private $model;
-    private $template;
-    private $dirty;
+    private ?Model $model;
+    private Obj $template;
+    private Collection $dirty;
 
     public function __construct(string $filename)
     {
-        $this->readTemplate($filename);
-        $this->dirty = collect();
+        $this->template = new Obj((new JsonParser($filename))->array());
+        $this->dirty = new Collection();
     }
 
-    public function create(Model $model = null)
+    public function create(?Model $model = null): Obj
     {
         $this->model = $model;
+
         if (! $this->template->has('routeParams')) {
             $this->routeParams([]);
         }
-        $this->method('post')
-            ->build();
+
+        $this->method('post')->build();
 
         return $this->template;
     }
 
-    public function edit(Model $model)
+    public function edit(Model $model): Obj
     {
         $this->model = $model;
+
         if (! $this->template->has('routeParams')) {
-            $this->routeParams([
-                Str::camel(class_basename($model)) => $model->getKey(),
-            ]);
+            $param = Str::camel(class_basename($model));
+            $this->routeParams([$param => $model->getKey()]);
         }
+
         $this->method('patch')->build();
 
         return $this->template;
     }
 
-    public function actions($actions)
+    public function actions($actions): self
     {
         $this->template->set('actions', new Obj($actions));
 
         return $this;
     }
 
-    public function routePrefix(string $prefix)
+    public function routePrefix(string $prefix): self
     {
         $this->template->set('routePrefix', $prefix);
 
         return $this;
     }
 
-    public function title(string $title)
+    public function title(string $title): self
     {
         $this->template->set('title', $title);
 
         return $this;
     }
 
-    public function icon(string $icon)
+    public function icon(string $icon): self
     {
         $this->template->set('icon', $icon);
 
         return $this;
     }
 
-    public function route(string $action, string $route)
+    public function route(string $action, string $route): self
     {
         if (! $this->template->has('routes')) {
             $this->template->set('routes', new Obj());
         }
+
         $this->template->get('routes')->set($action, $route);
 
         return $this;
     }
 
-    public function options(string $name, $value)
+    public function options(string $name, $value): self
     {
         $this->field($name)->get('meta')->set('options', $value);
 
         return $this;
     }
 
-    public function value(string $field, $value)
+    public function value(string $field, $value): self
     {
         $this->field($field)->set('value', $value);
         $this->dirty->push($field);
@@ -101,185 +105,165 @@ class Form
         return $this;
     }
 
-    public function hide($fields)
+    public function hide($fields): self
     {
-        collect($fields)->each(function ($field) {
-            $this->field($field)->get('meta')->set('hidden', true);
-        });
+        (new Collection($fields))->each(fn ($field) => $this->field($field)
+            ->get('meta')->set('hidden', true));
 
         return $this;
     }
 
-    public function hideSection($fields)
+    public function hideSection($fields): self
     {
         $this->sectionVisibility($fields, $hidden = true);
 
         return $this;
     }
 
-    public function showSection($fields)
+    public function showSection($fields): self
     {
         $this->sectionVisibility($fields, $hidden = false);
 
         return $this;
     }
 
-    public function hideTab($tabs)
+    public function hideTab($tabs): self
     {
         $this->tabVisibility($tabs, $hidden = true);
 
         return $this;
     }
 
-    public function showTab($tabs)
+    public function showTab($tabs): self
     {
         $this->tabVisibility($tabs, $hidden = false);
 
         return $this;
     }
 
-    public function show($fields)
+    public function show($fields): self
     {
-        collect($fields)->each(function ($field) {
-            $this->field($field)->get('meta')->set('hidden', false);
-        });
+        (new Collection($fields))->each(fn ($field) => $this->field($field)
+            ->get('meta')->set('hidden', false));
 
         return $this;
     }
 
-    public function disable($fields)
+    public function disable($fields): self
     {
-        collect($fields)->each(function ($field) {
-            $this->field($field)->get('meta')->set('disabled', true);
-        });
+        (new Collection($fields))->each(fn ($field) => $this->field($field)
+            ->get('meta')->set('disabled', true));
 
         return $this;
     }
 
-    public function readonly($fields)
+    public function readonly($fields): self
     {
-        collect($fields)->each(function ($field) {
-            $this->field($field)->get('meta')->set('readonly', true);
-        });
+        (new Collection($fields))->each(fn ($field) => $this->field($field)
+            ->get('meta')->set('readonly', true));
 
         return $this;
     }
 
-    public function meta(string $field, string $param, $value)
+    public function meta(string $field, string $param, $value): self
     {
         $this->field($field)->get('meta')->set($param, $value);
 
         return $this;
     }
 
-    public function append($prop, $value)
+    public function append($prop, $value): self
     {
         if (! $this->template->has('params')) {
             $this->template->set('params', new Obj());
         }
+
         $this->template->get('params')->set($prop, $value);
 
         return $this;
     }
 
-    public function routeParams(array $params)
+    public function routeParams(array $params): self
     {
         $this->template->set('routeParams', $params);
 
         return $this;
     }
 
-    public function authorize(bool $authorize)
+    public function authorize(bool $authorize): self
     {
         $this->template->set('authorize', $authorize);
 
         return $this;
     }
 
-    public function labels(bool $labels)
+    public function labels(bool $labels): self
     {
         $this->template->set('labels', $labels);
 
         return $this;
     }
 
-    private function build()
+    public function sectionVisibility($fields, bool $hidden): self
+    {
+        (new Collection($fields))->each(fn ($field) => $this->section($field)
+            ->get('fields')->each(fn ($field) => $field->get('meta')
+                ->set('hidden', $hidden)));
+
+        return $this;
+    }
+
+    public function tabVisibility($tabs, $hidden): self
+    {
+        $this->template->get('sections')
+            ->filter(fn ($section) => (new Collection($tabs))
+                ->contains($section->get('tab'))
+            )->each(fn ($section) => $section->get('fields')
+                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
+
+        return $this;
+    }
+
+    private function build(): void
     {
         if ($this->needsValidation()) {
             (new Validator($this->template))->run();
         }
-        (new Builder($this->template, $this->dirty, $this->model))->run();
+
+        (new Builder(
+            $this->template, $this->dirty, $this->model
+        ))->run();
     }
 
-    private function readTemplate(string $filename)
-    {
-        $this->template = new Obj(
-            (new JsonParser($filename))->array()
-        );
-
-        return $this;
-    }
-
-    private function method(string $method)
+    private function method(string $method): self
     {
         $this->template->set('method', $method);
+
         if (! $this->template->has('actions')) {
             $this->template->set('actions', $this->defaultActions());
-
-            return $this;
         }
 
         return $this;
     }
 
-    private function defaultActions()
+    private function defaultActions(): Obj
     {
         $actions = $this->template->get('method') === 'post'
             ? Actions::Create
             : Actions::Update;
 
         return (new Obj($actions))
-            ->filter(function ($action) {
-                return Route::has($this->template->get('routePrefix').'.'.$action)
-                    || $action === 'back';
-            });
+            ->filter(fn ($action) => Route::has(
+                "{$this->template->get('routePrefix')}.{$action}"
+            ) || $action === 'back');
     }
 
-    public function sectionVisibility($fields, bool $hidden)
-    {
-        collect($fields)->each(function ($field) use ($hidden) {
-            $this->section($field)->get('fields')
-                ->each(function ($field) use ($hidden) {
-                    $field->get('meta')->set('hidden', $hidden);
-                });
-        });
-
-        return $this;
-    }
-
-    public function tabVisibility($tabs, $hidden)
-    {
-        $this->template->get('sections')
-            ->each(function ($section) use ($tabs, $hidden) {
-                if (collect($tabs)->contains($section->get('tab'))) {
-                    $section->get('fields')->each(function ($field) use ($hidden) {
-                        $field->get('meta')->set('hidden', $hidden);
-                    });
-                }
-            });
-
-        return $this;
-    }
-
-    private function section($field)
+    private function section($field): Obj
     {
         $section = $this->template->get('sections')
-            ->first(function ($section) use ($field) {
-                return $section->get('fields')
-                    ->contains(function ($sectionField) use ($field) {
-                        return $sectionField->get('name') === $field;
-                    });
-            });
+            ->first(fn ($section) => $section->get('fields')
+                ->contains(fn ($sectionField) => $sectionField->get('name') === $field));
+
         if (! $section) {
             $this->throwMissingFieldException($field);
         }
@@ -287,14 +271,13 @@ class Form
         return $section;
     }
 
-    private function field(string $fieldName)
+    private function field(string $fieldName): Obj
     {
         $field = $this->template->get('sections')
-            ->reduce(function ($fields, $section) {
-                return $fields->merge($section->get('fields'));
-            }, collect())->first(function ($field) use ($fieldName) {
-                return $field->get('name') === $fieldName;
-            });
+            ->reduce(fn ($fields, $section) => $fields
+                ->merge($section->get('fields')), new Collection()
+            )->first(fn ($field) => $field->get('name') === $fieldName);
+
         if (! $field) {
             $this->throwMissingFieldException($fieldName);
         }
@@ -302,15 +285,16 @@ class Form
         return $field;
     }
 
-    private function needsValidation()
+    private function needsValidation(): bool
     {
-        return collect([App::environment(), 'always'])->contains(
-            config('enso.forms.validations')
+        return in_array(
+            config('enso.forms.validations'),
+            [App::environment(), 'always']
         );
     }
 
-    private function throwMissingFieldException($fieldName)
+    private function throwMissingFieldException($fieldName): void
     {
-        throw TemplateException::fieldMissing($fieldName);
+        throw Template::fieldMissing($fieldName);
     }
 }

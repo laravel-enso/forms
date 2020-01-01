@@ -1,59 +1,67 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services\Validators;
+namespace LaravelEnso\Forms\App\Services\Validators;
 
-use LaravelEnso\Forms\app\Attributes\Fields as Attributes;
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use Illuminate\Support\Collection;
+use LaravelEnso\Forms\App\Attributes\Fields as Attributes;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Fields
 {
-    private $template;
+    private Obj $template;
 
-    public function __construct($template)
+    public function __construct(Obj $template)
     {
         $this->template = $template;
     }
 
-    public function validate()
+    public function validate(): void
     {
         $this->template->get('sections')
-            ->each(function ($section) {
-                $this->checkFormat($section);
-
-                $section->get('fields')->each(function ($field) {
-                    $this->checkAttributes($field);
-                    $this->checkValue($field);
-                    (new Meta($field))->validate();
-                });
-            });
+            ->each(fn ($section) => $this->section($section));
     }
 
-    private function checkFormat($section)
+    private function section(Obj $section): void
+    {
+        $this->format($section);
+
+        $section->get('fields')->each(fn ($field) => $this->field($field));
+    }
+
+    private function field(Obj $field): void
+    {
+        $this->attributes($field)
+            ->value($field);
+
+        (new Meta($field))->validate();
+    }
+
+    private function format($section): void
     {
         $valid = $section->get('fields') instanceof Obj
-            && $section->get('fields')->filter(function ($field) {
-                return ! $field instanceof Obj;
-            })->isEmpty();
+            && $section->get('fields')
+                ->filter(fn ($field) => ! $field instanceof Obj)
+                ->isEmpty();
 
         if (! $valid) {
-            throw TemplateException::invalidFieldsFormat();
+            throw Template::invalidFieldsFormat();
         }
     }
 
-    private function checkAttributes($field)
+    private function attributes($field): self
     {
-        $diff = collect(Attributes::List)
-            ->diff(collect($field)->keys());
+        $diff = (new Collection(Attributes::List))
+            ->diff($field->keys());
 
         if ($diff->isNotEmpty()) {
-            throw TemplateException::missingFieldAttributes($diff->implode('", "'));
+            throw Template::missingFieldAttributes($diff->implode('", "'));
         }
 
         return $this;
     }
 
-    private function checkValue($field)
+    private function value($field): void
     {
         $meta = $field->get('meta');
 
@@ -63,7 +71,7 @@ class Fields
 
         if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
             if (! is_bool($field->get('value'))) {
-                throw TemplateException::invalidCheckboxValue($field->get('name'));
+                throw Template::invalidCheckboxValue($field->get('name'));
             }
 
             return;
@@ -71,7 +79,7 @@ class Fields
 
         if ($meta->get('type') === 'select' && $meta->get('multiple')
             && ! is_array($field->get('value')) && ! is_object($field->get('value'))) {
-            throw TemplateException::invalidSelectValue($field->get('name'));
+            throw Template::invalidSelectValue($field->get('name'));
         }
     }
 }

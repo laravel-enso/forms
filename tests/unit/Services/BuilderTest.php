@@ -4,10 +4,11 @@ namespace LaravelEnso\Forms\tests\Services;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use LaravelEnso\Enums\app\Services\Enum;
-use LaravelEnso\Forms\app\Services\Builder;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Enums\App\Services\Enum;
+use LaravelEnso\Forms\App\Services\Builder;
+use LaravelEnso\Helpers\App\Classes\Obj;
 use Mockery;
 use Tests\TestCase;
 
@@ -81,7 +82,7 @@ class BuilderTest extends TestCase
 
         $this->runBuilder();
 
-        $this->assertEmpty(collect($this->field()->get('value'))->diff([1, 2]));
+        $this->assertEmpty((new Collection($this->field()->get('value')))->diff([1, 2]));
     }
 
     /** @test */
@@ -163,7 +164,7 @@ class BuilderTest extends TestCase
     {
         (new Builder(
             $this->template,
-            collect($this->dirty),
+            new Collection($this->dirty),
             $this->testModel
         ))->run();
     }

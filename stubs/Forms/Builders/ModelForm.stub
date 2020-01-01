@@ -2,13 +2,14 @@
 
 namespace App\Forms\Builders;
 
-use LaravelEnso\Forms\app\Services\Form;
+use App\Models\Model;
+use LaravelEnso\Forms\App\Services\Form;
 
 class ModelForm
 {
     protected const FormPath = __DIR__.'/../Templates/template.json';
 
-    protected $form;
+    protected Form $form;
 
     public function __construct()
     {

@@ -1,50 +1,47 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services;
+namespace LaravelEnso\Forms\App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Builder
 {
-    private $template;
-    private $model;
-    private $dirty;
+    private Obj $template;
+    private Collection $dirty;
+    private ?Model $model;
 
-    public function __construct(Obj $template, Collection $dirty, Model $model = null)
+    public function __construct(Obj $template, Collection $dirty, ?Model $model = null)
     {
         $this->template = $template;
         $this->model = $model;
         $this->dirty = $dirty;
     }
 
-    public function run()
+    public function run(): void
     {
         $this->appendConfigParams()
-            ->setValues()
+            ->values()
             ->computeActions()
             ->computeMetas();
 
         $this->template->forget(['routes', 'routePrefix', 'authorize']);
     }
 
-    private function setValues()
+    private function values(): self
     {
         if (! $this->model) {
             return $this;
         }
 
         $this->template->get('sections')
-            ->each(function ($section) {
-                $section->get('fields')
-                    ->each(function ($field) {
-                        $field->set('value', $this->value($field));
-                    });
-            });
+            ->each(fn ($section) => $section->get('fields')
+                ->each(fn ($field) => $field
+                    ->set('value', $this->value($field))));
 
         return $this;
     }
@@ -100,15 +97,11 @@ class Builder
             : $value;
     }
 
-    private function computeMetas()
+    private function computeMetas(): void
     {
         $this->template->get('sections')
-            ->each(function ($section) {
-                $section->get('fields')
-                    ->each(function ($field) {
-                        $this->computeMeta($field);
-                    });
-            });
+            ->each(fn ($section) => $section->get('fields')
+                ->each(fn ($field) => $this->computeMeta($field)));
     }
 
     private function computeMeta($field)
@@ -118,28 +111,25 @@ class Builder
         switch ($meta->get('type')) {
             case 'select':
                 $this->computeSelect($meta);
-            break;
+                break;
             case 'datepicker':
                 $this->computeDate($meta);
-            break;
+                break;
             case 'wysiwyg':
                 $this->computeWysiwyg($meta);
-            break;
+                break;
         }
     }
 
-    private function computeSelect($meta)
+    private function computeSelect($meta): void
     {
-        if ($meta->has('options')
-            && is_string($meta->get('options'))) {
+        if ($meta->has('options') && is_string($meta->get('options'))) {
             $enum = $meta->get('options');
             $meta->set('options', $enum::select());
         }
 
         if (! $meta->has('placeholder')) {
-            $meta->set(
-                'placeholder', config('enso.forms.selectPlaceholder')
-            );
+            $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
         }
 
         if (! $meta->has('trackBy')) {
@@ -155,14 +145,13 @@ class Builder
         }
     }
 
-    private function computeDate($meta)
+    private function computeDate($meta): void
     {
-        $meta->set(
-            'altFormat', $meta->get('altFormat', config('enso.forms.altDateFormat'))
-        );
+        $altFormat = $meta->get('altFormat', config('enso.forms.altDateFormat'));
+        $meta->set('altFormat', $altFormat);
     }
 
-    private function computeWysiwyg($meta)
+    private function computeWysiwyg($meta): void
     {
         $meta->set('apiKey', config('enso.forms.tinyMCEApiKey'));
     }
@@ -174,28 +163,26 @@ class Builder
             : $this->model->{$field->get('name')};
     }
 
-    private function computeActions()
+    private function computeActions(): self
     {
         $actions = $this->template->get('actions')
-            ->reduce(function ($collector, $action) {
-                return $collector->set(
-                    $action, $this->actionConfig($action)
-                );
-            }, new Obj);
+            ->reduce(fn ($collector, $action) => $collector->set(
+                $action, $this->actionConfig($action)
+            ), new Obj());
 
         $this->template->set('actions', $actions);
 
         return $this;
     }
 
-    private function actionConfig($action)
+    private function actionConfig($action): array
     {
         $route = $this->template->has('routes')
             && $this->template->get('routes')->has($action)
             ? $this->template->get('routes')->get($action)
             : $this->template->get('routePrefix').'.'.$action;
 
-        [$routeOrPath, $value] = collect(['create', 'show', 'back'])
+        [$routeOrPath, $value] = (new Collection(['create', 'show', 'back']))
             ->contains($action)
             ? ['route', $route]
             : ['path', route($route, $this->template->get('routeParams'), false)];
@@ -207,31 +194,25 @@ class Builder
         ];
     }
 
-    private function appendConfigParams()
+    private function appendConfigParams(): self
     {
         if (! $this->template->has('authorize')) {
-            $this->template->set(
-                'authorize', config('enso.forms.authorize')
-            );
+            $this->template->set('authorize', config('enso.forms.authorize'));
         }
 
         if (! $this->template->has('dividerTitlePlacement')) {
-            $this->template->set(
-                'dividerTitlePlacement',
-                config('enso.forms.dividerTitlePlacement')
-            );
+            $placement = config('enso.forms.dividerTitlePlacement');
+            $this->template->set('dividerTitlePlacement', $placement);
         }
 
         if (! $this->template->has('labels')) {
-            $this->template->set(
-                'labels', config('enso.forms.labels')
-            );
+            $this->template->set('labels', config('enso.forms.labels'));
         }
 
         return $this;
     }
 
-    private function isForbidden($route)
+    private function isForbidden($route): bool
     {
         return $route !== 'back'
             && $this->template->get('authorize')

@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Attributes;
+namespace LaravelEnso\Forms\App\Attributes;
 
 class Fields
 {
-    const List = ['label', 'name', 'value', 'meta'];
+    public const List = ['label', 'name', 'value', 'meta'];
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Services\Validators;
+namespace LaravelEnso\Forms\App\Services\Validators;
 
-use LaravelEnso\Forms\app\Exceptions\TemplateException;
-use LaravelEnso\Helpers\app\Classes\Obj;
+use Illuminate\Support\Facades\Route;
+use LaravelEnso\Forms\App\Exceptions\Template;
+use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Routes
 {
-    private $template;
+    private Obj $template;
 
     public function __construct(Obj $template)
     {
@@ -16,46 +17,55 @@ class Routes
 
     public function validate()
     {
-        $this->checkActionRouteMapping()
-            ->checkRoutes();
+        $this->actions()
+            ->routes();
     }
 
-    private function checkActionRouteMapping()
+    private function actions(): self
     {
         if ($this->template->filled('routePrefix')) {
             return $this;
         }
 
-        $this->template->get('actions')
-            ->each(function ($action) {
-                if ($action !== 'back' && (! $this->template->has('routes')
-                    || ! $this->template->get('routes')->has($action))) {
-                    throw TemplateException::missingRoutePrefix($action);
-                }
-            });
+        $this->filteredActions()
+            ->each(fn ($action) => $this->actionRouteMapping($action));
 
         return $this;
     }
 
-    private function checkRoutes()
+    private function actionRouteMapping(string $action): void
     {
-        $this->template->get('actions')
-            ->each(function ($action) {
-                if ($action !== 'back') {
-                    $route = $this->template->has('routes')
-                        && $this->template->get('routes')->has($action)
-                            ? $this->template->get('routes')->get($action)
-                            : $this->template->get('routePrefix').'.'.$action;
-
-                    $this->checkRoute($route);
-                }
-            });
+        if (! $this->exists($action)) {
+            throw Template::missingRoutePrefix($action);
+        }
     }
 
-    private function checkRoute($route)
+    private function routes(): void
     {
-        if (! \Route::has($route)) {
-            throw TemplateException::missingRoute($route);
+        $this->filteredActions()
+            ->each(fn ($action) => $this->checkRoute($action));
+    }
+
+    private function checkRoute(string $action): void
+    {
+        $route = $this->exists($action)
+            ? $this->template->get('routes')->get($action)
+            : $this->template->get('routePrefix').'.'.$action;
+
+        if (! Route::has($route)) {
+            throw Template::missingRoute($route);
         }
+    }
+
+    private function exists(string $action): bool
+    {
+        return $this->template->has('routes')
+            && $this->template->get('routes')->has($action);
+    }
+
+    private function filteredActions(): Obj
+    {
+        return $this->template->get('actions')
+            ->reject(fn ($action) => $action === 'back');
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\Forms\app\Attributes;
+namespace LaravelEnso\Forms\App\Attributes;
 
 class Actions
 {
-    const Create = ['back', 'store'];
-    const Update = ['back', 'create', 'show', 'update', 'destroy'];
+    public const Create = ['back', 'store'];
+    public const Update = ['back', 'create', 'show', 'update', 'destroy'];
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\Forms\app\TestTraits;
+namespace LaravelEnso\Forms\App\TestTraits;
 
 trait EditForm
 {
