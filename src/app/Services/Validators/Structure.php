@@ -73,7 +73,7 @@ class Structure
     private function checkSections()
     {
         $attributes = $this->template->get('sections')
-            ->reduce(fn($attributes, $section) => (
+            ->reduce(fn ($attributes, $section) => (
                 $attributes->merge($section->keys())
             ), collect())
             ->unique()
@@ -152,7 +152,7 @@ class Structure
         }
 
         $diff = $this->template->get('sections')
-            ->filter(fn($section) => ! $section->has('tab'));
+            ->filter(fn ($section) => ! $section->has('tab'));
 
         if ($diff->isNotEmpty()) {
             throw Template::missingTabAttribute($diff->keys()->implode('", "'));

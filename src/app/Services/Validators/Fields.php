@@ -18,7 +18,7 @@ class Fields
     public function validate()
     {
         $this->template->get('sections')
-            ->each(fn($section) => (
+            ->each(fn ($section) => (
                 $this->checkFormat($section)
                     ->validateSection($section)
             ));
@@ -28,7 +28,7 @@ class Fields
     {
         $valid = $section->get('fields') instanceof Obj
             && $section->get('fields')
-                ->filter(fn($field) => ! $field instanceof Obj)
+                ->filter(fn ($field) => ! $field instanceof Obj)
                 ->isEmpty();
 
         if (! $valid) {
@@ -40,12 +40,12 @@ class Fields
 
     private function validateSection($section): void
     {
-        $section->get('fields')->each(fn($field) => (
+        $section->get('fields')->each(fn ($field) => (
             $this->checkAttributes($field)
                 ->checkValue($field)
         ))
-        ->filter(fn($field) => ! $field->get('meta')->get('custom'))
-        ->each(fn($field) => (new Meta($field))->validate());
+        ->filter(fn ($field) => ! $field->get('meta')->get('custom'))
+        ->each(fn ($field) => (new Meta($field))->validate());
     }
 
     private function checkAttributes($field)

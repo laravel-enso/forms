@@ -103,7 +103,7 @@ class Form
 
     public function hide($fields)
     {
-        collect($fields)->each(fn($field) => (
+        collect($fields)->each(fn ($field) => (
             $this->field($field)->get('meta')->set('hidden', true)
         ));
 
@@ -140,7 +140,7 @@ class Form
 
     public function show($fields)
     {
-        collect($fields)->each(fn($field) => (
+        collect($fields)->each(fn ($field) => (
             $this->field($field)->get('meta')->set('hidden', false)
         ));
 
@@ -149,7 +149,7 @@ class Form
 
     public function disable($fields)
     {
-        collect($fields)->each(fn($field) => (
+        collect($fields)->each(fn ($field) => (
             $this->field($field)->get('meta')->set('disabled', true)
         ));
 
@@ -158,7 +158,7 @@ class Form
 
     public function readonly($fields)
     {
-        collect($fields)->each(fn($field) => (
+        collect($fields)->each(fn ($field) => (
             $this->field($field)->get('meta')->set('readonly', true)
         ));
 
@@ -214,8 +214,8 @@ class Form
 
     private function sectionVisibility($fields, bool $hidden)
     {
-        collect($fields)->each(fn($field) => $this->section($field)->get('fields')
-            ->each(fn($field) => $field->get('meta')->set('hidden', $hidden)));
+        collect($fields)->each(fn ($field) => $this->section($field)->get('fields')
+            ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
 
         return $this;
     }
@@ -223,9 +223,9 @@ class Form
     private function tabVisibility($tabs, $hidden)
     {
         $this->template->get('sections')
-            ->filter(fn($section) => collect($tabs)->contains($section->get('tab')))
-            ->each(fn($section) => (
-                $section->get('fields')->each(fn($field) => (
+            ->filter(fn ($section) => collect($tabs)->contains($section->get('tab')))
+            ->each(fn ($section) => (
+                $section->get('fields')->each(fn ($field) => (
                     $field->get('meta')->set('hidden', $hidden)
                 ))
             ));
@@ -261,15 +261,15 @@ class Form
             : Actions::Update;
 
         return (new Obj($actions))
-            ->filter(fn($action) => Route::has($this->template->get('routePrefix').'.'.$action)
+            ->filter(fn ($action) => Route::has($this->template->get('routePrefix').'.'.$action)
                 || $action === 'back');
     }
 
     private function section($field)
     {
         $section = $this->template->get('sections')
-            ->first(fn($section) => $section->get('fields')
-                ->contains(fn($sectionField) => $sectionField->get('name') === $field));
+            ->first(fn ($section) => $section->get('fields')
+                ->contains(fn ($sectionField) => $sectionField->get('name') === $field));
         if (! $section) {
             $this->throwMissingFieldException($field);
         }
@@ -280,7 +280,7 @@ class Form
     private function field(string $fieldName)
     {
         $field = $this->template->get('sections')
-            ->reduce(fn($fields, $section) => $fields->merge($section->get('fields')), collect())->first(fn($field) => $field->get('name') === $fieldName);
+            ->reduce(fn ($fields, $section) => $fields->merge($section->get('fields')), collect())->first(fn ($field) => $field->get('name') === $fieldName);
         if (! $field) {
             $this->throwMissingFieldException($fieldName);
         }
