@@ -38,11 +38,11 @@ class Builder
             return $this;
         }
 
-        $this->template->get('sections')->each(function ($section) {
-            $section->get('fields')->each(function ($field) {
-                $field->set('value', $this->value($field));
-            });
-        });
+        $this->template->get('sections')->each(fn($section) => (
+            $section->get('fields')->each(fn($field) => (
+                $field->set('value', $this->value($field))
+            ))
+        ));
 
         return $this;
     }
@@ -101,12 +101,10 @@ class Builder
     private function computeMetas()
     {
         $this->template->get('sections')
-            ->each(function ($section) {
+            ->each(fn($section) => (
                 $section->get('fields')
-                    ->each(function ($field) {
-                        $this->computeMeta($field);
-                    });
-            });
+                    ->each(fn($field) => $this->computeMeta($field))
+            ));
     }
 
     private function computeMeta($field)
@@ -172,11 +170,9 @@ class Builder
     private function computeActions()
     {
         $actions = $this->template->get('actions')
-            ->reduce(function ($collector, $action) {
-                return $collector->set(
-                    $action, $this->actionConfig($action)
-                );
-            }, new Obj());
+            ->reduce(fn($collector, $action) => (
+                $collector->set($action, $this->actionConfig($action))
+            ), new Obj());
 
         $this->template->set('actions', $actions);
 
