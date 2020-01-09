@@ -17,7 +17,7 @@ class Template extends EnsoException
     public static function unknownRootAttributes($attrs)
     {
         return new static(__(
-            'Unknown attribute(s) found: ":attr"',
+            'Unknown attribute(s) found: ":attrs"',
             ['attrs' => $attrs]
         ));
     }
