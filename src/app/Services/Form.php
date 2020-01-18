@@ -90,6 +90,13 @@ class Form
         return $this;
     }
 
+    public function label(string $name, string $value): self
+    {
+        $this->field($name)->set('label', $value);
+
+        return $this;
+    }
+
     public function options(string $name, $value): self
     {
         $this->field($name)->get('meta')->set('options', $value);
