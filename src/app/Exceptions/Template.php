@@ -33,7 +33,8 @@ class Template extends EnsoException
     public static function missingRoute($route)
     {
         return new static(__(
-            'Route does not exist: :route', ['route' => $route]
+            'Route does not exist: :route',
+            ['route' => $route]
         ));
     }
 
@@ -124,7 +125,7 @@ class Template extends EnsoException
     public static function missingFieldAttributes($attrs)
     {
         return new static(__(
-            'Mandatory Field Attribute(s) Missing: ":attr"',
+            'Mandatory Field Attribute(s) Missing: ":attrs"',
             ['attrs' => $attrs]
         ));
     }
@@ -140,7 +141,7 @@ class Template extends EnsoException
     public static function missingMetaAttributes($field, $attrs)
     {
         return new static(__(
-            'Mandatory Meta Attribute(s) Missing: ":attr" from field: :field',
+            'Mandatory Meta Attribute(s) Missing: ":attrs" from field: :field',
             ['attrs' => $attrs, 'field' => $field]
         ));
     }
