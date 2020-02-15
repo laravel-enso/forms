@@ -4,7 +4,8 @@
     "keywords": [
         "laravel-enso",
         "forms",
-        "form-builder"
+        "form-builder",
+        "json-templates"
     ],
     "homepage": "https://github.com/laravel-enso/forms",
     "type": "library",
