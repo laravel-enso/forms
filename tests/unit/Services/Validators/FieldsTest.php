@@ -46,9 +46,7 @@ class FieldsTest extends TestCase
         $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            Template::missingFieldAttributes(
-                $this->field()->get('name'), 'label'
-            )->getMessage()
+            Template::missingFieldAttributes('label')->getMessage()
         );
 
         $fields->validate();
@@ -128,8 +126,8 @@ class FieldsTest extends TestCase
 
         return [
             'sections' => [
-                ['fields' => [$field]]
-            ]
+                ['fields' => [$field]],
+            ],
         ];
     }
 
