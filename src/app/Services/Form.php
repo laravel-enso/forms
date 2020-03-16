@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use LaravelEnso\Forms\App\Attributes\Actions;
 use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Helpers\App\Classes\JsonParser;
+use LaravelEnso\Helpers\App\Classes\JsonReader;
 use LaravelEnso\Helpers\App\Classes\Obj;
 
 class Form
@@ -20,7 +20,7 @@ class Form
 
     public function __construct(string $filename)
     {
-        $this->template = new Obj((new JsonParser($filename))->array());
+        $this->template = new Obj((new JsonReader($filename))->array());
         $this->dirty = new Collection();
     }
 
