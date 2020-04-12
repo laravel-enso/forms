@@ -5,6 +5,7 @@ namespace LaravelEnso\Forms\App\Services;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use LaravelEnso\Helpers\App\Classes\Obj;
@@ -124,7 +125,7 @@ class Builder
     private function computeSelect($meta): void
     {
         if ($meta->has('options') && is_string($meta->get('options'))) {
-            $enum = $meta->get('options');
+            $enum = App::make($meta->get('options'));
             $meta->set('options', $enum::select());
         }
 
@@ -167,7 +168,8 @@ class Builder
     {
         $actions = $this->template->get('actions')
             ->reduce(fn ($collector, $action) => $collector->set(
-                $action, $this->actionConfig($action)
+                $action,
+                $this->actionConfig($action)
             ), new Obj());
 
         $this->template->set('actions', $actions);
