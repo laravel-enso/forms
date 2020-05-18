@@ -220,13 +220,11 @@ class Form
         return $this;
     }
 
-    public function tabVisibility($tabs, $hidden): self
+    public function tabVisibility($tabs, bool $hidden): self
     {
-        $this->template->get('sections')
-            ->filter(fn ($section) => (new Collection($tabs))
-                ->contains($section->get('tab'))
-            )->each(fn ($section) => $section->get('fields')
-                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
+        (new Collection($tabs))->each(fn ($tab) => $this->template->get('sections')
+            ->first(fn ($section) => $section->get('tab') === $tab)
+            ->get('fields')->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
 
         return $this;
     }
@@ -237,9 +235,7 @@ class Form
             (new Validator($this->template))->run();
         }
 
-        (new Builder(
-            $this->template, $this->dirty, $this->model
-        ))->run();
+        (new Builder($this->template, $this->dirty, $this->model))->run();
     }
 
     private function method(string $method): self
@@ -282,8 +278,8 @@ class Form
     {
         $field = $this->template->get('sections')
             ->reduce(fn ($fields, $section) => $fields
-                ->merge($section->get('fields')), new Collection()
-            )->first(fn ($field) => $field->get('name') === $fieldName);
+                ->merge($section->get('fields')), new Collection())
+            ->first(fn ($field) => $field->get('name') === $fieldName);
 
         if (! $field) {
             $this->throwMissingFieldException($fieldName);
