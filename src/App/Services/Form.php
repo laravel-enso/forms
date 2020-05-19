@@ -221,7 +221,7 @@ class Form
         return $this;
     }
 
-    public function tabVisibility($tabs, $hidden): self
+    public function tabVisibility($tabs, bool $hidden): self
     {
         $tabs = (new Collection($tabs));
 
