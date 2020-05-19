@@ -5,6 +5,7 @@ namespace LaravelEnso\Forms\App\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use LaravelEnso\Forms\App\Attributes\Actions;
@@ -179,13 +180,13 @@ class Form
         return $this;
     }
 
-    public function append($prop, $value): self
+    public function append(string $param, $value): self
     {
         if (! $this->template->has('params')) {
             $this->template->set('params', new Obj());
         }
 
-        $this->template->get('params')->set($prop, $value);
+        $this->template->get('params')->set($param, $value);
 
         return $this;
     }
@@ -213,18 +214,22 @@ class Form
 
     public function sectionVisibility($fields, bool $hidden): self
     {
-        (new Collection($fields))->each(fn ($field) => $this->section($field)
-            ->get('fields')->each(fn ($field) => $field->get('meta')
-                ->set('hidden', $hidden)));
+        (new Collection($fields))
+            ->each(fn ($field) => $this->section($field)->get('fields')
+                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
 
         return $this;
     }
 
-    public function tabVisibility($tabs, bool $hidden): self
+    public function tabVisibility($tabs, $hidden): self
     {
-        (new Collection($tabs))->each(fn ($tab) => $this->template->get('sections')
-            ->first(fn ($section) => $section->get('tab') === $tab)
-            ->get('fields')->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
+        $tabs = (new Collection($tabs));
+
+        $this->template->get('sections')->each(fn ($section) => $tabs->when(
+            $tabs->contains($section->get('tab')),
+            fn () => $section->get('fields')
+                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden))
+        ));
 
         return $this;
     }
@@ -255,10 +260,9 @@ class Form
             ? Actions::Create
             : Actions::Update;
 
-        return (new Obj($actions))
-            ->filter(fn ($action) => Route::has(
-                "{$this->template->get('routePrefix')}.{$action}"
-            ) || $action === 'back');
+        return (new Obj($actions))->filter(fn ($action) => Route::has(
+            "{$this->template->get('routePrefix')}.{$action}"
+        ) || $action === 'back');
     }
 
     private function section($field): Obj
@@ -290,9 +294,8 @@ class Form
 
     private function needsValidation(): bool
     {
-        return in_array(
-            config('enso.forms.validations'),
-            [App::environment(), 'always']
+        return (new Collection([App::environment(), 'always']))->contains(
+            Config::get('enso.forms.validations')
         );
     }
 
