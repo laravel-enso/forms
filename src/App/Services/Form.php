@@ -91,16 +91,16 @@ class Form
         return $this;
     }
 
-    public function label(string $name, string $value): self
+    public function label(string $field, string $value): self
     {
-        $this->field($name)->set('label', $value);
+        $this->field($field)->set('label', $value);
 
         return $this;
     }
 
-    public function options(string $name, $value): self
+    public function options(string $field, $value): self
     {
-        $this->field($name)->get('meta')->set('options', $value);
+        $this->field($field)->get('meta')->set('options', $value);
 
         return $this;
     }
@@ -109,6 +109,13 @@ class Form
     {
         $this->field($field)->set('value', $value);
         $this->dirty->push($field);
+
+        return $this;
+    }
+
+    public function columns(string $field, int $value): self
+    {
+        $this->section($field)->set('columns', $value);
 
         return $this;
     }
@@ -265,7 +272,7 @@ class Form
         ) || $action === 'back');
     }
 
-    private function section($field): Obj
+    private function section(string $field): Obj
     {
         $section = $this->template->get('sections')
             ->first(fn ($section) => $section->get('fields')
