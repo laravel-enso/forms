@@ -2,9 +2,9 @@
 
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Forms\App\Services\Validators\Meta;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Forms\Services\Validators\Meta;
+use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
 
 class MetaTest extends TestCase

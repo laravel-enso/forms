@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelEnso\Forms\App\Services\Validators;
+namespace LaravelEnso\Forms\Services\Validators;
 
 use Illuminate\Support\Collection;
-use LaravelEnso\Forms\App\Attributes\Fields as Attributes;
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\Attributes\Fields as Attributes;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Helpers\Services\Obj;
 
 class Fields
 {

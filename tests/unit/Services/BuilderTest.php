@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use LaravelEnso\Enums\App\Services\Enum;
-use LaravelEnso\Forms\App\Services\Builder;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Enums\Services\Enum;
+use LaravelEnso\Forms\Services\Builder;
+use LaravelEnso\Helpers\Services\Obj;
 use Mockery;
 use Tests\TestCase;
 

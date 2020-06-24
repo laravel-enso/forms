@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\Forms\App\Services;
+namespace LaravelEnso\Forms\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use LaravelEnso\Forms\App\Attributes\Actions;
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Helpers\App\Classes\JsonReader;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\Attributes\Actions;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Helpers\Services\JsonReader;
+use LaravelEnso\Helpers\Services\Obj;
 
 class Form
 {

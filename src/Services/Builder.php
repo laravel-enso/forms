@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\Forms\App\Services;
+namespace LaravelEnso\Forms\Services;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Helpers\Services\Obj;
 
 class Builder
 {

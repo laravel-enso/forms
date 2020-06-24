@@ -4,10 +4,10 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Illuminate\Support\Collection;
 use Tests\TestCase;
-use LaravelEnso\Helpers\App\Classes\Obj;
-use LaravelEnso\Forms\App\Services\Validators\Actions;
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Forms\App\Attributes\Actions as Attributes;
+use LaravelEnso\Helpers\Services\Obj;
+use LaravelEnso\Forms\Services\Validators\Actions;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Forms\Attributes\Actions as Attributes;
 
 class ActionTest extends TestCase
 {

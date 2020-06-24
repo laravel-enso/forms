@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\Forms\App\TestTraits;
+namespace LaravelEnso\Forms\TestTraits;
 
 trait CreateForm
 {

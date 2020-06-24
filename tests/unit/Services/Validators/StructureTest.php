@@ -3,10 +3,10 @@
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
 use Illuminate\Support\Collection;
-use LaravelEnso\Forms\App\Attributes\Structure as Attributes;
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Forms\App\Services\Validators\Structure;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Forms\Attributes\Structure as Attributes;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Forms\Services\Validators\Structure;
+use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
 
 class StructureTest extends TestCase

@@ -9,10 +9,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/forms.php', 'enso.forms');
+        $this->mergeConfigFrom(__DIR__.'/../config/forms.php', 'enso.forms');
 
         $this->publishes([
-            __DIR__.'/config' => config_path('enso'),
+            __DIR__.'/../config' => config_path('enso'),
         ], ['forms-config', 'enso-config']);
 
         (new Collection(['Forms/Builders/ModelForm', 'Forms/Templates/template']))

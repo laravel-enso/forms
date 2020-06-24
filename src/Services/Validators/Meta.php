@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelEnso\Forms\App\Services\Validators;
+namespace LaravelEnso\Forms\Services\Validators;
 
 use Illuminate\Support\Collection;
-use LaravelEnso\Enums\App\Services\Enum;
-use LaravelEnso\Forms\App\Attributes\Meta as Attributes;
-use LaravelEnso\Forms\App\Exceptions\Template;
-use LaravelEnso\Helpers\App\Classes\Obj;
+use LaravelEnso\Enums\Services\Enum;
+use LaravelEnso\Forms\Attributes\Meta as Attributes;
+use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Helpers\Services\Obj;
 
 class Meta
 {
