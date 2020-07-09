@@ -1,6 +1,6 @@
 # Forms
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3cf79a9ca584f08b3be0246cb488788)](https://www.codacy.com/app/laravel-enso/forms?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/forms&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7723a64372e146bdaecfb50dd919161d)](https://www.codacy.com/gh/laravel-enso/forms?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/forms&amp;utm_campaign=Badge_Grade) 
 [![StyleCI](https://github.styleci.io/repos/99695155/shield?branch=master)](https://github.styleci.io/repos/99695155)
 [![License](https://poser.pugx.org/laravel-enso/forms/license)](https://packagist.org/packages/laravel-enso/forms)
 [![Total Downloads](https://poser.pugx.org/laravel-enso/forms/downloads)](https://packagist.org/packages/laravel-enso/forms)
