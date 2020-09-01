@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use LaravelEnso\Forms\Attributes\Fields;
 use LaravelEnso\Helpers\Services\Obj;
 
 class Builder
@@ -69,9 +70,14 @@ class Builder
 
     private function inputValue($value, $meta)
     {
-        return $meta->get('content') === 'text'
-            ? ($value ?? '')
-            : $value;
+        switch ($meta->get('content')) {
+            case 'text':
+                return $value ?? '';
+            case 'encrypt':
+                return isset($value) ? Fields::EncryptValue : null;
+            default:
+                return $value;
+        }
     }
 
     private function dateValue($value, $meta)
@@ -113,12 +119,22 @@ class Builder
             case 'select':
                 $this->computeSelect($meta);
                 break;
+            case 'input':
+                $this->computeInput($field);
+                break;
             case 'datepicker':
                 $this->computeDate($meta);
                 break;
             case 'wysiwyg':
                 $this->computeWysiwyg($meta);
                 break;
+        }
+    }
+
+    private function computeInput($field): void
+    {
+        if ($field->get('meta')->get('content') === 'encrypt') {
+            $field->get('meta')->set('initialValue', $field->get('value'));
         }
     }
 
