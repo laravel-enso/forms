@@ -11,7 +11,7 @@ class Meta
         'hidden', 'source', 'format', 'altFormat', 'time', 'rows', 'placeholder', 'trackBy',
         'label', 'tooltip', 'symbol', 'precision', 'thousand', 'decimal', 'positive', 'negative',
         'zero', 'resize', 'translated', 'time12hr', 'disable-clear', 'objects', 'toolbar',
-        'plugins', 'taggable',
+        'plugins', 'taggable', 'searchMode',
     ];
 
     public const Types = [
