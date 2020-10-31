@@ -12,9 +12,12 @@ use LaravelEnso\Forms\Attributes\Actions;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Helpers\Services\JsonReader;
 use LaravelEnso\Helpers\Services\Obj;
+use LaravelEnso\Helpers\Traits\When;
 
 class Form
 {
+    use When;
+
     private ?Model $model;
     private Obj $template;
     private Collection $dirty;
