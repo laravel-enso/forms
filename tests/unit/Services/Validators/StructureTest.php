@@ -217,7 +217,7 @@ class StructureTest extends TestCase
             'sections' => [
                 [
                     'fields' => [],
-                    'columns' => 0,
+                    'columns' => 1,
                 ]
             ],
             'method' => '',
