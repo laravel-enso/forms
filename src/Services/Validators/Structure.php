@@ -119,11 +119,10 @@ class Structure
 
     private function sectionColumnsFormat(Obj $section): void
     {
-        $attributes = (new Collection(Attributes::Columns));
-
-        if (! $attributes->contains($section->get('columns'))) {
+        if ($this->isNotValidColumn($section)) {
             throw Template::invalidColumnsAttributes(
-                $section->get('columns'), $attributes->implode(', ')
+                $section->get('columns'),
+                (new Collection(Attributes::Columns))->implode(', ')
             );
         }
 
@@ -158,5 +157,11 @@ class Structure
         if ($diff->isNotEmpty()) {
             throw Template::missingTabAttribute($diff->keys()->implode('", "'));
         }
+    }
+
+    private function isNotValidColumn(Obj $section): bool
+    {
+        return (! is_numeric($section->get('columns')) || $section->get('columns') <= 0)
+            && ! in_array($section->get('columns'), Attributes::Columns);
     }
 }

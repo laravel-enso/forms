@@ -15,5 +15,5 @@ class Structure
 
     public const SectionOptional = ['divider', 'title', 'column', 'tab', 'slot', 'hidden'];
 
-    public const Columns = [1, 2, 3, 4, 6, 12, 'custom', 'slot'];
+    public const Columns = ['custom', 'slot'];
 }

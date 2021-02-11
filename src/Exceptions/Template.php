@@ -80,7 +80,7 @@ class Template extends EnsoException
     public static function invalidColumnsAttributes($columns, $allowed)
     {
         return new static(__(
-            'Invalid "columns" attribute in section object: :columns. Allowed values: :allowed',
+            'Invalid "columns" attribute in section object: :columns. Allowed values: :allowed or positive number',
             ['columns' => $columns, 'allowed' => $allowed]
         ));
     }
