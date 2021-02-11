@@ -162,6 +162,6 @@ class Structure
     private function isNotValidColumn(Obj $section): bool
     {
         return (! is_numeric($section->get('columns')) || $section->get('columns') <= 0)
-            && ! (new Collection(Attributes::Columns))->contains($section->get('columns'));
+            && ! in_array($section->get('columns'), Attributes::Columns);
     }
 }
