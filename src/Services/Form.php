@@ -236,7 +236,7 @@ class Form
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
-            fn () => $section->put('visiblity', $hidden)));
+            fn () => $section->put('hidden', $hidden)));
 
         return $this;
     }
