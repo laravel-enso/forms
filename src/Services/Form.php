@@ -225,8 +225,7 @@ class Form
     public function sectionVisibility($fields, bool $hidden): self
     {
         (new Collection($fields))
-            ->each(fn ($field) => $this->section($field)->get('fields')
-                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden)));
+            ->each(fn ($field) => $this->section($field)->put('visiblity', false));
 
         return $this;
     }
@@ -237,9 +236,7 @@ class Form
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
-            fn () => $section->get('fields')
-                ->each(fn ($field) => $field->get('meta')->set('hidden', $hidden))
-        ));
+            fn () => $section->put('hidden', $hidden)));
 
         return $this;
     }
