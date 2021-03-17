@@ -38,7 +38,8 @@ class Meta
 
         if ($diff->isNotEmpty()) {
             throw Template::missingMetaAttributes(
-                $this->field->get('name'), $diff->implode('", "')
+                $this->field->get('name'),
+                $diff->implode('", "')
             );
         }
 
@@ -55,7 +56,8 @@ class Meta
 
         if ($diff->isNotEmpty()) {
             throw Template::unknownMetaAttributes(
-                $this->field->get('name'), $diff->implode('", "')
+                $this->field->get('name'),
+                $diff->implode('", "')
             );
         }
 
@@ -65,8 +67,8 @@ class Meta
     private function format(): self
     {
         if ($this->meta->get('type') === 'input') {
-            if ($this->inputMetaParameterMissing($this->field)) {
-                throw Template::missingInputAttribute($this->field->geT('name'));
+            if (! $this->meta->has('content')) {
+                throw Template::missingInputContent($this->field->get('name'));
             }
 
             return $this;
@@ -90,11 +92,6 @@ class Meta
         if (! (new Collection(Attributes::Types))->contains($this->meta->get('type'))) {
             throw Template::invalidFieldType($this->meta->get('type'));
         }
-    }
-
-    private function inputMetaParameterMissing(): bool
-    {
-        return $this->meta === null || ! $this->meta->has('content');
     }
 
     private function selectMetaParameterMissing(): bool

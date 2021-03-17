@@ -162,10 +162,10 @@ class Template extends EnsoException
         ));
     }
 
-    public static function missingInputAttribute($field)
+    public static function missingInputContent($field)
     {
         return new static(__(
-            'Mandatory "type" meta parameter is missing for the :field input field',
+            'Mandatory "content" meta parameter is missing for the :field input field',
             ['field' => $field]
         ));
     }
