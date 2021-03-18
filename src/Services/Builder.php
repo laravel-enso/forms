@@ -26,7 +26,7 @@ class Builder
 
     public function run(): void
     {
-        $this->appendConfigParams()
+        $this->appendParams()
             ->values()
             ->computeActions()
             ->computeMetas();
@@ -212,7 +212,7 @@ class Builder
         ];
     }
 
-    private function appendConfigParams(): self
+    private function appendParams(): self
     {
         if (! $this->template->has('authorize')) {
             $this->template->set('authorize', config('enso.forms.authorize'));
@@ -225,6 +225,10 @@ class Builder
 
         if (! $this->template->has('labels')) {
             $this->template->set('labels', config('enso.forms.labels'));
+        }
+
+        if (! $this->template->has('clearErrorsControl')) {
+            $this->template->set('clearErrorsControl', true);
         }
 
         return $this;

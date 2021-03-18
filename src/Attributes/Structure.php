@@ -7,8 +7,9 @@ class Structure
     public const Mandatory = ['method', 'sections', 'routeParams'];
 
     public const Optional = [
-        'title', 'icon', 'routePrefix', 'routes', 'actions', 'autosave', 'debounce',
-        'authorize', 'params', 'dividerTitlePlacement', 'tabs', 'labels',
+        'actions', 'authorize', 'autosave', 'clearErrorsControl',  'debounce',
+        'dividerTitlePlacement', 'icon', 'labels', 'params', 'routePrefix',
+        'routes', 'tabs', 'title',
     ];
 
     public const SectionMandatory = ['columns', 'fields'];
