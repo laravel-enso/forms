@@ -29,7 +29,8 @@ class MetaTest extends TestCase
 
         $this->expectExceptionMessage(
             Template::missingMetaAttributes(
-                $this->mockedField()['name'], 'type'
+                $this->mockedField()['name'],
+                'type'
             )->getMessage()
         );
 
@@ -47,7 +48,8 @@ class MetaTest extends TestCase
 
         $this->expectExceptionMessage(
             Template::unknownMetaAttributes(
-                $this->mockedField()['name'], 'unknown'
+                $this->mockedField()['name'],
+                'unknown'
             )->getMessage()
         );
 
@@ -82,7 +84,7 @@ class MetaTest extends TestCase
         $this->expectException(Template::class);
 
         $this->expectExceptionMessage(
-            Template::missingInputAttribute(
+            Template::missingInputContent(
                 $this->mockedField()['name']
             )->getMessage()
         );
@@ -151,8 +153,8 @@ class MetaTest extends TestCase
         return [
             'name' => 'mocked_field',
             'meta' => [
-                'type' => 'textarea'
-            ]
+                'type' => 'textarea',
+            ],
         ];
     }
 }
