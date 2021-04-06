@@ -218,10 +218,10 @@ class StructureTest extends TestCase
                 [
                     'fields' => [],
                     'columns' => 1,
-                ]
+                ],
             ],
             'method' => '',
-            'routeParams' => []
+            'routeParams' => [],
         ];
     }
 

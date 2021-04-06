@@ -152,11 +152,11 @@ class BuilderTest extends TestCase
                         [
                             'name' => 'test_field',
                             'value' => 'test_value',
-                            'meta' => []
-                        ]
-                    ]
-                ]
-            ]
+                            'meta' => [],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

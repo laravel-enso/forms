@@ -2,11 +2,11 @@
 
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
-use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
-use LaravelEnso\Helpers\Services\Obj;
-use LaravelEnso\Forms\Services\Validators\Routes;
 use LaravelEnso\Forms\Exceptions\Template;
+use LaravelEnso\Forms\Services\Validators\Routes;
+use LaravelEnso\Helpers\Services\Obj;
+use Tests\TestCase;
 
 class RoutesTest extends TestCase
 {
