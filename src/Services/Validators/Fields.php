@@ -9,11 +9,8 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Fields
 {
-    private Obj $template;
-
-    public function __construct(Obj $template)
+    public function __construct(private Obj $template)
     {
-        $this->template = $template;
     }
 
     public function validate(): void
@@ -41,8 +38,8 @@ class Fields
     {
         $valid = $section->get('fields') instanceof Obj
             && $section->get('fields')
-                ->filter(fn ($field) => ! $field instanceof Obj)
-                ->isEmpty();
+            ->filter(fn ($field) => ! $field instanceof Obj)
+            ->isEmpty();
 
         if (! $valid) {
             throw Template::invalidFieldsFormat();
@@ -51,8 +48,7 @@ class Fields
 
     private function attributes($field): self
     {
-        $diff = (new Collection(Attributes::List))
-            ->diff($field->keys());
+        $diff = Collection::wrap(Attributes::List)->diff($field->keys());
 
         if ($diff->isNotEmpty()) {
             throw Template::missingFieldAttributes($diff->implode('", "'));
@@ -77,8 +73,10 @@ class Fields
             return;
         }
 
-        if ($meta->get('type') === 'select' && $meta->get('multiple')
-            && ! is_array($field->get('value')) && ! is_object($field->get('value'))) {
+        $invalidSelectValue = $meta->get('type') === 'select' && $meta->get('multiple')
+            && ! is_array($field->get('value')) && ! is_object($field->get('value'));
+
+        if ($invalidSelectValue) {
             throw Template::invalidSelectValue($field->get('name'));
         }
     }

@@ -82,7 +82,8 @@ class BuilderTest extends TestCase
 
         $this->runBuilder();
 
-        $this->assertEmpty((new Collection($this->field()->get('value')))->diff([1, 2]));
+        $diff = Collection::wrap($this->field()->get('value'))->diff([1, 2]);
+        $this->assertEmpty($diff);
     }
 
     /** @test */

@@ -8,11 +8,8 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Routes
 {
-    private Obj $template;
-
-    public function __construct(Obj $template)
+    public function __construct(private Obj $template)
     {
-        $this->template = $template;
     }
 
     public function validate()

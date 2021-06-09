@@ -31,7 +31,7 @@ class ActionTest extends TestCase
 
         $this->expectException(Template::class);
 
-        $actions = (new Collection(Attributes::Create))
+        $actions = Collection::wrap(Attributes::Create)
             ->merge(Attributes::Update)->unique()->implode(', ');
 
         $this->expectExceptionMessage(
@@ -53,7 +53,7 @@ class ActionTest extends TestCase
 
     private function mockedActions()
     {
-        return (new Collection(Attributes::Create))
+        return Collection::wrap(Attributes::Create)
             ->merge(Attributes::Update)
             ->unique()
             ->values();

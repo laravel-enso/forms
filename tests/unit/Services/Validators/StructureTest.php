@@ -2,7 +2,6 @@
 
 namespace LaravelEnso\Forms\tests\Services\Validators;
 
-use Illuminate\Support\Collection;
 use LaravelEnso\Forms\Attributes\Structure as Attributes;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Structure;
@@ -144,7 +143,7 @@ class StructureTest extends TestCase
         $this->expectExceptionMessage(
             Template::invalidColumnsAttributes(
                 $this->section()->get('columns'),
-                (new Collection(Attributes::Columns))->implode(', ')
+                implode(', ', Attributes::Columns)
             )->getMessage()
         );
 

@@ -2,13 +2,15 @@
 
 namespace LaravelEnso\Forms\TestTraits;
 
+use Exception;
+
 trait CreateForm
 {
     /** @test */
     public function can_view_create_form()
     {
         if (! isset($this->permissionGroup)) {
-            throw new \Exception('"permissionGroup" property is missing from your test');
+            throw new Exception('"permissionGroup" property is missing from your test');
         }
 
         $this->get(route($this->permissionGroup.'.create', [], false))

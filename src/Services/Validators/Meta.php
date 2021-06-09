@@ -10,12 +10,10 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Meta
 {
-    private Obj $field;
     private ?Obj $meta;
 
-    public function __construct(Obj $field)
+    public function __construct(private Obj $field)
     {
-        $this->field = $field;
         $this->meta = $field->get('meta');
     }
 
@@ -33,7 +31,7 @@ class Meta
 
     private function mandatoryAttributes(): self
     {
-        $diff = (new Collection(Attributes::Mandatory))
+        $diff = Collection::wrap(Attributes::Mandatory)
             ->diff($this->meta->keys());
 
         if ($diff->isNotEmpty()) {
@@ -48,7 +46,7 @@ class Meta
 
     private function optionalAttributes(): self
     {
-        $attributes = (new Collection(Attributes::Mandatory))
+        $attributes = Collection::wrap(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
         $diff = $this->meta->keys()
@@ -89,7 +87,7 @@ class Meta
 
     private function type(): void
     {
-        if (! (new Collection(Attributes::Types))->contains($this->meta->get('type'))) {
+        if (! in_array($this->meta->get('type'), Attributes::Types)) {
             throw Template::invalidFieldType($this->meta->get('type'));
         }
     }

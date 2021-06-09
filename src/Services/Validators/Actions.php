@@ -9,16 +9,13 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Actions
 {
-    private Obj $template;
-
-    public function __construct(Obj $template)
+    public function __construct(private Obj $template)
     {
-        $this->template = $template;
     }
 
     public function validate(): void
     {
-        $attributes = (new Collection(Attributes::Create))
+        $attributes = Collection::wrap(Attributes::Create)
             ->merge(Attributes::Update)
             ->unique()
             ->values();
@@ -28,7 +25,8 @@ class Actions
 
         if ($diff->isNotEmpty()) {
             throw Template::unknownActions(
-                $diff->implode(', '), $attributes->implode(', ')
+                $diff->implode(', '),
+                $attributes->implode(', ')
             );
         }
     }

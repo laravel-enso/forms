@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
             __DIR__.'/../config' => config_path('enso'),
         ], ['forms-config', 'enso-config']);
 
-        (new Collection(['Forms/Builders/ModelForm', 'Forms/Templates/template']))
+        Collection::wrap(['Forms/Builders/ModelForm', 'Forms/Templates/template'])
             ->each(fn ($stub) => $this->publishes([
                 __DIR__."/../stubs/{$stub}.stub" => app_path("{$stub}.php"),
             ], 'forms-resources'));

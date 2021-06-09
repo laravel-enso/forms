@@ -18,9 +18,9 @@ class Form
 {
     use When;
 
-    private ?Model $model;
     private Obj $template;
     private Collection $dirty;
+    private ?Model $model;
 
     public function __construct(string $filename)
     {
@@ -125,8 +125,9 @@ class Form
 
     public function hide($fields): self
     {
-        (new Collection($fields))->each(fn ($field) => $this->field($field)
-            ->get('meta')->set('hidden', true));
+        Collection::wrap($fields)
+            ->each(fn ($field) => $this->field($field)
+                ->get('meta')->set('hidden', true));
 
         return $this;
     }
@@ -161,24 +162,27 @@ class Form
 
     public function show($fields): self
     {
-        (new Collection($fields))->each(fn ($field) => $this->field($field)
-            ->get('meta')->set('hidden', false));
+        Collection::wrap($fields)
+            ->each(fn ($field) => $this->field($field)
+                ->get('meta')->set('hidden', false));
 
         return $this;
     }
 
     public function disable($fields): self
     {
-        (new Collection($fields))->each(fn ($field) => $this->field($field)
-            ->get('meta')->set('disabled', true));
+        Collection::wrap($fields)
+            ->each(fn ($field) => $this->field($field)
+                ->get('meta')->set('disabled', true));
 
         return $this;
     }
 
     public function readonly($fields): self
     {
-        (new Collection($fields))->each(fn ($field) => $this->field($field)
-            ->get('meta')->set('readonly', true));
+        Collection::wrap($fields)
+            ->each(fn ($field) => $this->field($field)
+                ->get('meta')->set('readonly', true));
 
         return $this;
     }
@@ -224,7 +228,7 @@ class Form
 
     public function sectionVisibility($fields, bool $hidden): self
     {
-        (new Collection($fields))
+        Collection::wrap($fields)
             ->each(fn ($field) => $this->section($field)->put('hidden', $hidden));
 
         return $this;
@@ -232,7 +236,7 @@ class Form
 
     public function tabVisibility($tabs, bool $hidden): self
     {
-        $tabs = (new Collection($tabs));
+        $tabs = new Collection($tabs);
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
@@ -280,7 +284,7 @@ class Form
                 ->contains(fn ($sectionField) => $sectionField->get('name') === $field));
 
         if (! $section) {
-            $this->throwMissingFieldException($field);
+            Template::fieldMissing($field);
         }
 
         return $section;
@@ -294,7 +298,7 @@ class Form
             ->first(fn ($field) => $field->get('name') === $fieldName);
 
         if (! $field) {
-            $this->throwMissingFieldException($fieldName);
+            Template::fieldMissing($fieldName);
         }
 
         return $field;
@@ -302,13 +306,8 @@ class Form
 
     private function needsValidation(): bool
     {
-        return (new Collection([App::environment(), 'always']))->contains(
-            Config::get('enso.forms.validations')
-        );
-    }
+        $validations = Config::get('enso.forms.validations');
 
-    private function throwMissingFieldException($fieldName): void
-    {
-        throw Template::fieldMissing($fieldName);
+        return in_array($validations, [App::environment(), 'always']);
     }
 }

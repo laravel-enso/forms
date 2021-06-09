@@ -13,15 +13,11 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Builder
 {
-    private Obj $template;
-    private Collection $dirty;
-    private ?Model $model;
-
-    public function __construct(Obj $template, Collection $dirty, ?Model $model = null)
-    {
-        $this->template = $template;
-        $this->model = $model;
-        $this->dirty = $dirty;
+    public function __construct(
+        private Obj $template,
+        private Collection $dirty,
+        private ?Model $model = null
+    ) {
     }
 
     public function run(): void
@@ -56,28 +52,21 @@ class Builder
 
         $meta = $field->get('meta');
 
-        switch ($meta->get('type')) {
-            case 'input':
-                return $this->inputValue($value, $meta);
-            case 'datepicker':
-                return $this->dateValue($value, $meta);
-            case 'select':
-                return $this->selectValue($value, $meta);
-            default:
-                return $value;
-        }
+        return match ($meta->get('type')) {
+            'input' => $this->inputValue($value, $meta),
+            'datepicker' => $this->dateValue($value, $meta),
+            'select' => $this->selectValue($value, $meta),
+            default => $value
+        };
     }
 
     private function inputValue($value, $meta)
     {
-        switch ($meta->get('content')) {
-            case 'text':
-                return $value ?? '';
-            case 'encrypt':
-                return isset($value) ? Fields::EncryptValue : null;
-            default:
-                return $value;
-        }
+        return match ($meta->get('content')) {
+            'text' => $value ?? '',
+            'encrypt' => isset($value) ? Fields::EncryptValue : null,
+            default => $value,
+        };
     }
 
     private function dateValue($value, $meta)
@@ -115,20 +104,13 @@ class Builder
     {
         $meta = $field->get('meta');
 
-        switch ($meta->get('type')) {
-            case 'select':
-                $this->computeSelect($meta);
-                break;
-            case 'input':
-                $this->computeInput($field);
-                break;
-            case 'datepicker':
-                $this->computeDate($meta);
-                break;
-            case 'wysiwyg':
-                $this->computeWysiwyg($meta);
-                break;
-        }
+        match ($meta->get('type')) {
+            'select' => $this->computeSelect($meta),
+            'input' => $this->computeInput($field),
+            'datepicker' => $this->computeDate($meta),
+            'wysiwyg' => $this->computeWysiwyg($meta),
+            default => null,
+        };
     }
 
     private function computeInput($field): void
@@ -183,10 +165,8 @@ class Builder
     private function computeActions(): self
     {
         $actions = $this->template->get('actions')
-            ->reduce(fn ($collector, $action) => $collector->set(
-                $action,
-                $this->actionConfig($action)
-            ), new Obj());
+            ->reduce(fn ($collector, $action) => $collector
+                ->set($action, $this->actionConfig($action)), new Obj());
 
         $this->template->set('actions', $actions);
 
@@ -200,8 +180,7 @@ class Builder
             ? $this->template->get('routes')->get($action)
             : $this->template->get('routePrefix').'.'.$action;
 
-        [$routeOrPath, $value] = (new Collection(['create', 'show', 'back']))
-            ->contains($action)
+        [$routeOrPath, $value] = in_array($action, ['create', 'show', 'back'])
             ? ['route', $route]
             : ['path', route($route, $this->template->get('routeParams'), false)];
 

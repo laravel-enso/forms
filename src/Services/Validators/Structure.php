@@ -9,11 +9,8 @@ use LaravelEnso\Helpers\Services\Obj;
 
 class Structure
 {
-    private Obj $template;
-
-    public function __construct(Obj $template)
+    public function __construct(private Obj $template)
     {
-        $this->template = $template;
     }
 
     public function validate()
@@ -27,7 +24,7 @@ class Structure
 
     private function rootMandatoryAttributes(): self
     {
-        $diff = (new Collection(Attributes::Mandatory))
+        $diff = Collection::wrap(Attributes::Mandatory)
             ->diff($this->template->keys());
 
         if ($diff->isNotEmpty()) {
@@ -39,7 +36,7 @@ class Structure
 
     private function rootOptionalAttributes(): self
     {
-        $attributes = (new Collection(Attributes::Mandatory))
+        $attributes = Collection::wrap(Attributes::Mandatory)
             ->merge(Attributes::Optional);
 
         $diff = $this->template->keys()
@@ -54,13 +51,17 @@ class Structure
 
     private function rootAttributesFormat(): self
     {
-        if ($this->template->has('actions')
-            && ! $this->template->get('actions') instanceof Obj) {
+        $invalidActions = $this->template->has('actions')
+            && ! $this->template->get('actions') instanceof Obj;
+
+        if ($invalidActions) {
             throw Template::invalidActionsFormat();
         }
 
-        if ($this->template->has('params')
-            && ! $this->template->get('params') instanceof Obj) {
+        $invalidParams = $this->template->has('params')
+            && ! $this->template->get('params') instanceof Obj;
+
+        if ($invalidParams) {
             throw Template::invalidParamsFormat();
         }
 
@@ -75,8 +76,8 @@ class Structure
     {
         $attributes = $this->template->get('sections')
             ->reduce(fn ($attributes, $section) => $attributes
-                ->merge($section->keys()), new Collection()
-            )->unique()->values();
+                ->merge($section->keys()), new Collection())
+            ->unique()->values();
 
         $this->sectionsMandatory($attributes)
             ->sectionsOptional($attributes)
@@ -87,7 +88,7 @@ class Structure
 
     private function sectionsMandatory(Collection $attributes): self
     {
-        $diff = (new Collection(Attributes::SectionMandatory))
+        $diff = Collection::wrap(Attributes::SectionMandatory)
             ->diff($attributes);
 
         if ($diff->isNotEmpty()) {
@@ -99,10 +100,9 @@ class Structure
 
     private function sectionsOptional(Collection $attributes): self
     {
-        $diff = $attributes->diff(
-            (new Collection(Attributes::SectionMandatory))
-                ->merge(Attributes::SectionOptional)
-        );
+        $diff = $attributes
+            ->diff(Collection::wrap(Attributes::SectionMandatory)
+                ->merge(Attributes::SectionOptional));
 
         if ($diff->isNotEmpty()) {
             throw Template::unknownSectionAttributes($diff->implode('", "'));
@@ -119,10 +119,10 @@ class Structure
 
     private function sectionColumnsFormat(Obj $section): void
     {
-        if ($this->isNotValidColumn($section)) {
+        if ($this->invalidColumn($section)) {
             throw Template::invalidColumnsAttributes(
                 $section->get('columns'),
-                (new Collection(Attributes::Columns))->implode(', ')
+                implode(', ', Attributes::Columns)
             );
         }
 
@@ -138,9 +138,11 @@ class Structure
             throw Template::missingFieldColumn($field->get('name'));
         }
 
-        if (! is_int($field->get('column'))
+        $invalidColumn = ! is_int($field->get('column'))
             || $field->get('column') <= 0
-            || $field->get('column') > 12) {
+            || $field->get('column') > 12;
+
+        if ($invalidColumn) {
             throw Template::invalidFieldColumn($field->get('name'));
         }
     }
@@ -159,7 +161,7 @@ class Structure
         }
     }
 
-    private function isNotValidColumn(Obj $section): bool
+    private function invalidColumn(Obj $section): bool
     {
         return (! is_numeric($section->get('columns')) || $section->get('columns') <= 0)
             && ! in_array($section->get('columns'), Attributes::Columns);

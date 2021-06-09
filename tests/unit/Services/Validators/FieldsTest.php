@@ -119,7 +119,7 @@ class FieldsTest extends TestCase
 
     protected function mockedForm(): array
     {
-        $field = (new Collection(Attributes::List))
+        $field = Collection::wrap(Attributes::List)
             ->reduce(fn ($field, $attribute) => $field->put($attribute, new Obj()), new Obj());
 
         $field->get('meta')->set('type', 'textarea');

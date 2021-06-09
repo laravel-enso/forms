@@ -2,17 +2,19 @@
 
 namespace LaravelEnso\Forms\TestTraits;
 
+use Exception;
+
 trait DestroyForm
 {
     /** @test */
     public function can_destroy_model()
     {
         if (! isset($this->testModel)) {
-            throw new \Exception('"testModel" property is missing from your test');
+            throw new Exception('"testModel" property is missing from your test');
         }
 
         if (! isset($this->permissionGroup)) {
-            throw new \Exception('"permissionGroup" property is missing from your test');
+            throw new Exception('"permissionGroup" property is missing from your test');
         }
 
         $this->testModel->save();
