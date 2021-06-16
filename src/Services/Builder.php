@@ -37,8 +37,8 @@ class Builder
         }
 
         $this->template->get('sections')
-            ->each(fn ($section) => $section->get('fields')
-                ->each(fn ($field) => $field
+            ->each(fn ($section) => $section->set('hidden', false)
+                ->get('fields')->each(fn ($field) => $field
                     ->set('value', $this->value($field))));
 
         return $this;
