@@ -298,7 +298,7 @@ class Form
             ->first(fn ($field) => $field->get('name') === $fieldName);
 
         if (! $field) {
-            Template::fieldMissing($fieldName);
+            throw Template::fieldMissing($fieldName);
         }
 
         return $field;
