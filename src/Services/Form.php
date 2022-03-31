@@ -146,6 +146,13 @@ class Form
         return $this;
     }
 
+    public function hiddenActions(string|array $actions): self
+    {
+        $this->template->set('hiddenActions', new Obj($actions));
+
+        return $this;
+    }
+
     public function hideTab($tabs): self
     {
         $this->tabVisibility($tabs, $hidden = true);

@@ -187,6 +187,8 @@ class Builder
         return [
             'button' => config('enso.forms.buttons.'.$action),
             'forbidden' => $this->isForbidden($route),
+            'hidden' => $this->template->has('hiddenActions') &&
+                $this->template->get('hiddenActions')->contains($action),
             $routeOrPath => $value,
         ];
     }
