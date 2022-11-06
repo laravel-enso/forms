@@ -63,7 +63,7 @@ return [
             'event' => 'destroy',
             'action' => 'ajax',
             'method' => 'DELETE',
-            'message' => 'The selected record is about to be deleted. Are you sure?',
+            'message' => 'This record is about to be deleted. Are you sure?',
             'confirmation' => true,
             'label' => 'Delete',
         ],
