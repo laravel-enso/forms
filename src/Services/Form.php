@@ -55,9 +55,9 @@ class Form
         return $this->template;
     }
 
-    public function actions($actions): self
+    public function actions(string | array $actions): self
     {
-        $this->template->set('actions', new Obj($actions));
+        $this->template->set('actions', new Obj($this->args($actions)));
 
         return $this;
     }
@@ -123,23 +123,23 @@ class Form
         return $this;
     }
 
-    public function hide($fields): self
+    public function hide(string | array $fields): self
     {
-        Collection::wrap($fields)
+        $this->collection($fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('hidden', true));
 
         return $this;
     }
 
-    public function hideSection($fields): self
+    public function hideSection(string | array $fields): self
     {
         $this->sectionVisibility($fields, $hidden = true);
 
         return $this;
     }
 
-    public function showSection($fields): self
+    public function showSection(string | array $fields): self
     {
         $this->sectionVisibility($fields, $hidden = false);
 
@@ -160,27 +160,27 @@ class Form
         return $this;
     }
 
-    public function show($fields): self
+    public function show(string | array $fields): self
     {
-        Collection::wrap($fields)
+        $this->collection($fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('hidden', false));
 
         return $this;
     }
 
-    public function disable($fields): self
+    public function disable(string | array $fields): self
     {
-        Collection::wrap($fields)
+        $this->collection($fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('disabled', true));
 
         return $this;
     }
 
-    public function readonly($fields): self
+    public function readonly(string | array $fields): self
     {
-        Collection::wrap($fields)
+        $this->collection($fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('readonly', true));
 
@@ -226,17 +226,17 @@ class Form
         return $this;
     }
 
-    public function sectionVisibility($fields, bool $hidden): self
+    public function sectionVisibility(string | array $fields, bool $hidden): self
     {
-        Collection::wrap($fields)
+        $this->collection($fields)
             ->each(fn ($field) => $this->section($field)->put('hidden', $hidden));
 
         return $this;
     }
 
-    public function tabVisibility($tabs, bool $hidden): self
+    public function tabVisibility(string | array $tabs, bool $hidden): self
     {
-        $tabs = new Collection($tabs);
+        $tabs = $this->collection($tabs);
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
@@ -309,5 +309,15 @@ class Form
         $validations = Config::get('enso.forms.validations');
 
         return in_array($validations, [App::environment(), 'always']);
+    }
+
+    private function collection(string | array $fields): Collection
+    {
+        return new Collection($this->args($fields));
+    }
+
+    private function args(string | array $args): array
+    {
+        return is_string($args) ? func_get_args() : $args;
     }
 }
