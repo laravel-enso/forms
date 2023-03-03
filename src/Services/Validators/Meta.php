@@ -3,10 +3,11 @@
 namespace LaravelEnso\Forms\Services\Validators;
 
 use Illuminate\Support\Collection;
-use LaravelEnso\Enums\Services\Enum;
+use LaravelEnso\Enums\Traits\Select;
 use LaravelEnso\Forms\Attributes\Meta as Attributes;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Helpers\Services\Obj;
+use ReflectionEnum;
 
 class Meta
 {
@@ -100,9 +101,13 @@ class Meta
 
     private function invalidOptions($options)
     {
+        $validEnum = in_array(
+            Select::class,
+            array_keys((new ReflectionEnum($options))->getTraits())
+        );
+
         return $options && ! is_array($options)
-            && ! (is_string($options) && class_exists($options)
-                && new $options() instanceof Enum)
+            && ! (is_string($options) && $validEnum)
             && ! method_exists($options, 'toArray');
     }
 }

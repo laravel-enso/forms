@@ -123,7 +123,8 @@ class Builder
     private function computeSelect($meta): void
     {
         if ($meta->has('options') && is_string($meta->get('options'))) {
-            $enum = App::make($meta->get('options'));
+            // $enum = App::make($meta->get('options'));
+            $enum = $meta->get('options');
             $meta->set('options', $enum::select());
         }
 
