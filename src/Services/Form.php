@@ -57,7 +57,9 @@ class Form
 
     public function actions($actions): self
     {
-        $this->template->set('actions', new Obj($actions));
+        $args = Obj::wrap(is_string($actions) ? func_get_args() : $actions);
+
+        $this->template->set('actions', new Obj($args));
 
         return $this;
     }
@@ -125,7 +127,7 @@ class Form
 
     public function hide($fields): self
     {
-        Collection::wrap($fields)
+        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('hidden', true));
 
@@ -162,7 +164,7 @@ class Form
 
     public function show($fields): self
     {
-        Collection::wrap($fields)
+        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('hidden', false));
 
@@ -171,7 +173,7 @@ class Form
 
     public function disable($fields): self
     {
-        Collection::wrap($fields)
+        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('disabled', true));
 
@@ -180,7 +182,7 @@ class Form
 
     public function readonly($fields): self
     {
-        Collection::wrap($fields)
+        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('readonly', true));
 
@@ -228,7 +230,7 @@ class Form
 
     public function sectionVisibility($fields, bool $hidden): self
     {
-        Collection::wrap($fields)
+        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->section($field)->put('hidden', $hidden));
 
         return $this;
@@ -236,7 +238,7 @@ class Form
 
     public function tabVisibility($tabs, bool $hidden): self
     {
-        $tabs = new Collection($tabs);
+        $tabs = Collection::wrap(is_string($tabs) ? func_get_args() : $tabs);
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
