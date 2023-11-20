@@ -3,7 +3,7 @@
 namespace LaravelEnso\Forms\Services\Validators;
 
 use Illuminate\Support\Collection;
-use LaravelEnso\Enums\Services\LegacyEnums;
+use LaravelEnso\Enums\Services\Enum;
 use LaravelEnso\Enums\Traits\Select;
 use LaravelEnso\Forms\Attributes\Meta as Attributes;
 use LaravelEnso\Forms\Exceptions\Template;
@@ -102,15 +102,20 @@ class Meta
 
     private function invalidOptions($options)
     {
+        if (! $options) {
+            return false;
+        }
+
         $isLegacyEnum = (class_exists($options)
-            && new $options() instanceof LegacyEnums);
+            && ! enum_exists($options)
+            && new $options() instanceof Enum);
 
         $validEnum = $isLegacyEnum || in_array(
             Select::class,
             array_keys((new ReflectionEnum($options))->getTraits())
         );
 
-        return $options && ! is_array($options)
+        return ! is_array($options)
             && ! (is_string($options) && $validEnum)
             && ! method_exists($options, 'toArray');
     }
