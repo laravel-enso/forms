@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use LaravelEnso\Enums\Services\Enum;
+use LaravelEnso\Enums\Traits\Select;
 use LaravelEnso\Forms\Services\Builder;
 use LaravelEnso\Helpers\Services\Obj;
 use Mockery;
@@ -138,6 +139,20 @@ class BuilderTest extends TestCase
         );
     }
 
+    /** @test */
+    public function set_legacy_meta()
+    {
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('options', FormTestLegacyEnum::class);
+
+        $this->runBuilder();
+
+        $this->assertEquals(
+            $this->field()->get('meta')->get('options'),
+            FormTestLegacyEnum::select()
+        );
+    }
+
     protected function field()
     {
         return $this->template->get('sections')->first()->get('fields')->first();
@@ -176,7 +191,15 @@ class FormTestModel extends Model
     public $test_field;
 }
 
-class FormTestEnum extends Enum
+enum FormTestEnum: int
+{
+    use Select;
+
+    public const Active = 1;
+    public const InActive = 0;
+}
+
+class FormTestLegacyEnum extends Enum
 {
     public const Active = 1;
     public const InActive = 0;
