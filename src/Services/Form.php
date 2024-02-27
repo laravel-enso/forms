@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use LaravelEnso\Forms\Attributes\Actions;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Helpers\Services\JsonReader;
 use LaravelEnso\Helpers\Services\Obj;
-use LaravelEnso\Helpers\Traits\When;
 
 class Form
 {
-    use When;
+    use Conditionable;
 
     private Obj $template;
     private Collection $dirty;
