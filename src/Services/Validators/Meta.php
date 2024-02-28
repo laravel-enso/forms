@@ -106,9 +106,12 @@ class Meta
             return false;
         }
 
-        $isLegacyEnum = (class_exists($options)
-            && ! enum_exists($options)
-            && new $options() instanceof Enum);
+        if (! class_exists($options) && ! enum_exists($options)) {
+            return true;
+        }
+
+        $isLegacyEnum = ! enum_exists($options)
+            && new $options() instanceof Enum;
 
         $validEnum = $isLegacyEnum || in_array(
             Select::class,
