@@ -102,7 +102,7 @@ class Meta
 
     private function invalidOptions($options)
     {
-        if (! $options) {
+        if (! $options || (! is_string($options) && $options->count() === 0)) {
             return false;
         }
 
