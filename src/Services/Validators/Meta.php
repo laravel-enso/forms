@@ -102,24 +102,23 @@ class Meta
 
     private function invalidOptions($options)
     {
-        if (! $options || (! is_string($options) && $options->count() === 0)) {
+        if (! $options) {
             return false;
         }
 
-        if (! class_exists($options) && ! enum_exists($options)) {
-            return true;
+        if (is_string($options) && (class_exists($options) || enum_exists($options))) {
+            $isLegacyEnum = ! enum_exists($options)
+                && new $options() instanceof Enum;
+
+            $validEnum = $isLegacyEnum || in_array(
+                Select::class,
+                array_keys((new ReflectionEnum($options))->getTraits())
+            );
+
+            return ! $validEnum;
         }
 
-        $isLegacyEnum = ! enum_exists($options)
-            && new $options() instanceof Enum;
-
-        $validEnum = $isLegacyEnum || in_array(
-            Select::class,
-            array_keys((new ReflectionEnum($options))->getTraits())
-        );
-
         return ! is_array($options)
-            && ! (is_string($options) && $validEnum)
             && ! method_exists($options, 'toArray');
     }
 }
