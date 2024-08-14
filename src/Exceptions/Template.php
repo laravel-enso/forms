@@ -173,7 +173,8 @@ class Template extends EnsoException
     public static function invalidSelectOptions($field)
     {
         return new static(__(
-            '"options" meta parameter for field ":field" must be an array a collection or an Enum',
+            '"options" meta parameter for field ":field" must be an array a '
+                .'collection or an Enum that implements the Select Contract ',
             ['field' => $field]
         ));
     }
