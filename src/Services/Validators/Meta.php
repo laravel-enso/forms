@@ -101,9 +101,11 @@ class Meta
 
     private function invalidOptions($options): bool
     {
-        return  ! $options
-            || enum_exists($options) && ! (new ReflectionEnum($options))
+        return $options
+            && (
+                enum_exists($options) && ! (new ReflectionEnum($options))
                 ->implementsInterface(Select::class)
-            || ! is_array($options) && ! method_exists($options, 'toArray');
+                || ! class_exists($options) && ! is_array($options) && ! method_exists($options, 'toArray')
+            );
     }
 }
