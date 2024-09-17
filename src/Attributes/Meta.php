@@ -10,8 +10,8 @@ class Meta
         'options', 'multiple', 'custom', 'content', 'step', 'min', 'max', 'disabled', 'readonly',
         'hidden', 'source', 'format', 'altFormat', 'time', 'rows', 'placeholder', 'trackBy',
         'label', 'tooltip', 'symbol', 'precision', 'thousand', 'decimal', 'positive', 'negative',
-        'zero', 'resize', 'translated', 'time12hr', 'disable-clear', 'objects', 'toolbar',
-        'plugins', 'taggable', 'searchMode', 'params', 'pivotParams', 'customParams',
+        'zero', 'resize', 'translated', 'time12hr', 'disable-clear', 'objects', 'taggable',
+        'searchMode', 'params', 'pivotParams', 'customParams',
     ];
 
     public const Types = [

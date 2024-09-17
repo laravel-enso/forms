@@ -107,7 +107,6 @@ class Builder
             'select' => $this->computeSelect($meta),
             'input' => $this->computeInput($field),
             'datepicker' => $this->computeDate($meta),
-            'wysiwyg' => $this->computeWysiwyg($meta),
             default => null,
         };
     }
@@ -147,11 +146,6 @@ class Builder
     {
         $altFormat = $meta->get('altFormat', config('enso.forms.altDateFormat'));
         $meta->set('altFormat', $altFormat);
-    }
-
-    private function computeWysiwyg($meta): void
-    {
-        $meta->set('apiKey', config('enso.forms.tinyMCEApiKey'));
     }
 
     private function attributeValue($field)
