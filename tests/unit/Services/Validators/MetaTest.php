@@ -6,6 +6,7 @@ use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Meta;
 use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class MetaTest extends TestCase
 {
@@ -18,7 +19,7 @@ class MetaTest extends TestCase
         $this->template = new Obj($this->mockedField());
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_without_mandatory_attributes()
     {
         $this->template->get('meta')->forget('type');
@@ -37,7 +38,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_unknown_attributes()
     {
         $this->template->get('meta')->set('unknown', []);
@@ -56,7 +57,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_missing_select_meta_attribute()
     {
         $this->template->get('meta')->set('type', 'select');
@@ -74,7 +75,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_missing_input_attribute()
     {
         $this->template->get('meta')->set('type', 'input');
@@ -92,7 +93,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_options_format()
     {
         $this->template->get('meta')->set('type', 'select');
@@ -111,7 +112,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_type()
     {
         $invalidType = 'INVALID_TYPE';
@@ -128,7 +129,7 @@ class MetaTest extends TestCase
         $meta->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate_custom_meta_without_any_other_attributes()
     {
         $meta = new Meta(new Obj(['meta' => ['custom' => true]]));
@@ -138,7 +139,7 @@ class MetaTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function can_validate()
     {
         $meta = new Meta($this->template);

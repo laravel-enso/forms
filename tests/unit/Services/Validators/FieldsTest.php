@@ -8,6 +8,7 @@ use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Fields;
 use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class FieldsTest extends TestCase
 {
@@ -20,7 +21,7 @@ class FieldsTest extends TestCase
         $this->template = new Obj($this->mockedForm());
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_field_format()
     {
         $this->template->get('sections')->first()->get('fields')->push('');
@@ -36,7 +37,7 @@ class FieldsTest extends TestCase
         $fields->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_without_mandatory_attribute()
     {
         $this->field()->forget('label');
@@ -52,7 +53,7 @@ class FieldsTest extends TestCase
         $fields->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_checkbox_value()
     {
         $this->field()->set('value', 'NOT_BOOL');
@@ -72,7 +73,7 @@ class FieldsTest extends TestCase
         $fields->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate_custom_meta_and_invalid_values()
     {
         $this->field()->set('value', 'NOT_BOOL');
@@ -87,7 +88,7 @@ class FieldsTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_multiple_select_value()
     {
         $this->field()->set('value', 'NOT_ARRAY');
@@ -107,7 +108,7 @@ class FieldsTest extends TestCase
         $fields->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate()
     {
         $fields = new Fields($this->template);

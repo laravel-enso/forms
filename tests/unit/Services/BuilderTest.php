@@ -13,6 +13,7 @@ use LaravelEnso\Forms\Services\Builder;
 use LaravelEnso\Helpers\Services\Obj;
 use Mockery;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class BuilderTest extends TestCase
 {
@@ -29,7 +30,7 @@ class BuilderTest extends TestCase
         $this->dirty = [];
     }
 
-    /** @test */
+    #[Test]
     public function set_default_on_template()
     {
         $this->runBuilder();
@@ -42,7 +43,7 @@ class BuilderTest extends TestCase
         $this->assertEquals($this->template->get('labels'), config('enso.forms.labels'));
     }
 
-    /** @test */
+    #[Test]
     public function set_values_from_dirty()
     {
         $this->dirty = ['test_field'];
@@ -52,7 +53,7 @@ class BuilderTest extends TestCase
         $this->assertEquals($this->field()->get('value'), 'test_value');
     }
 
-    /** @test */
+    #[Test]
     public function set_values_from_model()
     {
         $this->field()->set('value', 'test_value');
@@ -63,7 +64,7 @@ class BuilderTest extends TestCase
         $this->assertEquals($this->field()->get('value'), 'value_from_model');
     }
 
-    /** @test */
+    #[Test]
     public function set_values_for_datepicker()
     {
         $this->field()->get('meta')->set('type', 'datepicker');
@@ -75,7 +76,7 @@ class BuilderTest extends TestCase
         $this->assertEquals($this->field()->get('value'), $this->testModel->test_field->format('Y-m-d'));
     }
 
-    /** @test */
+    #[Test]
     public function set_values_for_multiple_select()
     {
         $this->field()->get('meta')->set('type', 'select');
@@ -88,7 +89,7 @@ class BuilderTest extends TestCase
         $this->assertEmpty($diff);
     }
 
-    /** @test */
+    #[Test]
     public function set_actions()
     {
         Route::post('route')->name('test.post');
@@ -107,7 +108,7 @@ class BuilderTest extends TestCase
         $this->assertEquals($action['path'], '/route');
     }
 
-    /** @test */
+    #[Test]
     public function set_actions_with_authorize()
     {
         Route::post('route')->name('test.post');
@@ -126,7 +127,7 @@ class BuilderTest extends TestCase
         $this->assertTrue($this->template->get('actions')->get('post')['forbidden']);
     }
 
-    /** @test */
+    #[Test]
     public function set_meta()
     {
         $this->field()->get('meta')->set('type', 'select');
@@ -140,7 +141,7 @@ class BuilderTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function set_legacy_meta()
     {
         $this->field()->get('meta')->set('type', 'select');

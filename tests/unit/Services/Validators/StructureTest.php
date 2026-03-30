@@ -7,6 +7,7 @@ use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Structure;
 use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class StructureTest extends TestCase
 {
@@ -19,7 +20,7 @@ class StructureTest extends TestCase
         $this->template = new Obj($this->mockedForm());
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_without_mandatory_attributes()
     {
         $this->template->forget('method');
@@ -35,7 +36,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_unknown_attribute()
     {
         $this->template->set('unknown_attribute', 'unknown_value');
@@ -51,7 +52,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_actions_format()
     {
         $this->template->set('actions', 'not Obj');
@@ -67,7 +68,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_params_format()
     {
         $this->template->set('params', 'not Obj');
@@ -83,7 +84,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_sections_format()
     {
         $this->template->set('sections', 'not Obj');
@@ -99,7 +100,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_sections_without_mandatory_attributes()
     {
         $this->section()->forget('columns');
@@ -115,7 +116,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_sections_with_unknown_attribute()
     {
         $this->section()->set('unknown_attr', 'unknown_value');
@@ -131,7 +132,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_sections_with_invalid_column_value()
     {
         $this->section()->set('columns', -1);
@@ -150,7 +151,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_custom_column_sections_with_invalid_field_column_value()
     {
         $this->section()->set('columns', 'custom');
@@ -167,7 +168,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_custom_column_sections_when_field_does_not_have_column()
     {
         $this->section()->set('columns', 'custom');
@@ -184,7 +185,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function failes_validation_when_tabbed_form_section_misses_tab()
     {
         $this->template->set('tabs', true);
@@ -200,7 +201,7 @@ class StructureTest extends TestCase
         $structure->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate()
     {
         $structure = new Structure($this->template);

@@ -3,10 +3,11 @@
 namespace LaravelEnso\Forms\TestTraits;
 
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 
 trait EditForm
 {
-    /** @test */
+    #[Test]
     public function can_view_edit_form()
     {
         if (! isset($this->testModel)) {

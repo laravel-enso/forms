@@ -3,10 +3,11 @@
 namespace LaravelEnso\Forms\TestTraits;
 
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 
 trait DestroyForm
 {
-    /** @test */
+    #[Test]
     public function can_destroy_model()
     {
         if (! isset($this->testModel)) {

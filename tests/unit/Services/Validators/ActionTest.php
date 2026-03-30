@@ -8,6 +8,7 @@ use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Actions;
 use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ActionTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ActionTest extends TestCase
         $this->template = new Obj(['actions' => $this->mockedActions()]);
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_action()
     {
         $unknownAction = 'UNKNOWN_ACTION';
@@ -41,7 +42,7 @@ class ActionTest extends TestCase
         $action->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate()
     {
         $action = new Actions($this->template);
