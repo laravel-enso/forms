@@ -3,10 +3,11 @@
 namespace LaravelEnso\Forms\TestTraits;
 
 use Exception;
+use PHPUnit\Framework\Attributes\Test;
 
 trait CreateForm
 {
-    /** @test */
+    #[Test]
     public function can_view_create_form()
     {
         if (! isset($this->permissionGroup)) {

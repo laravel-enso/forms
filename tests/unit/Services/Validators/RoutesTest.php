@@ -7,6 +7,7 @@ use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Routes;
 use LaravelEnso\Helpers\Services\Obj;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class RoutesTest extends TestCase
 {
@@ -19,7 +20,7 @@ class RoutesTest extends TestCase
         $this->template = new Obj($this->mockedRoute());
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_incomplete_route_actions()
     {
         $this->template->get('actions')->push('post');
@@ -37,7 +38,7 @@ class RoutesTest extends TestCase
         $route->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_prefix_route()
     {
         $this->template->get('actions')->push('post');
@@ -54,7 +55,7 @@ class RoutesTest extends TestCase
         $route->validate();
     }
 
-    /** @test */
+    #[Test]
     public function cannot_validate_with_invalid_custom_routes()
     {
         $this->template->get('actions')->push('post');
@@ -72,7 +73,7 @@ class RoutesTest extends TestCase
         $route->validate();
     }
 
-    /** @test */
+    #[Test]
     public function can_validate_back_action_without_route()
     {
         $this->template->set('actions', new Obj(['back']));
@@ -85,7 +86,7 @@ class RoutesTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function can_validate()
     {
         $route = new Routes($this->template);
