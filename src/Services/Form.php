@@ -230,7 +230,7 @@ class Form
 
     public function sectionVisibility($fields, bool $hidden): self
     {
-        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
+        Collection::wrap(is_string($fields) ? [$fields] : $fields)
             ->each(fn ($field) => $this->section($field)->put('hidden', $hidden));
 
         return $this;
@@ -238,7 +238,7 @@ class Form
 
     public function tabVisibility($tabs, bool $hidden): self
     {
-        $tabs = Collection::wrap(is_string($tabs) ? func_get_args() : $tabs);
+        $tabs = Collection::wrap(is_string($tabs) ? [$tabs] : $tabs);
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
