@@ -5,8 +5,8 @@ namespace LaravelEnso\Forms\tests\Services\Validators;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Meta;
 use LaravelEnso\Helpers\Services\Obj;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class MetaTest extends TestCase
 {

@@ -38,10 +38,10 @@ class Fields
     {
         $valid = $section->get('fields') instanceof Obj
             && $section->get('fields')
-            ->filter(fn ($field) => ! $field instanceof Obj)
+            ->filter(fn ($field) => !$field instanceof Obj)
             ->isEmpty();
 
-        if (! $valid) {
+        if (!$valid) {
             throw Template::invalidFieldsFormat();
         }
     }
@@ -66,7 +66,7 @@ class Fields
         }
 
         if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
-            if (! is_bool($field->get('value'))) {
+            if (!is_bool($field->get('value'))) {
                 throw Template::invalidCheckboxValue($field->get('name'));
             }
 
@@ -74,7 +74,7 @@ class Fields
         }
 
         $invalidSelectValue = $meta->get('type') === 'select' && $meta->get('multiple')
-            && ! is_array($field->get('value')) && ! is_object($field->get('value'));
+            && !is_array($field->get('value')) && !is_object($field->get('value'));
 
         if ($invalidSelectValue) {
             throw Template::invalidSelectValue($field->get('name'));

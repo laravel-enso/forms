@@ -66,7 +66,7 @@ class Meta
     private function format(): self
     {
         if ($this->meta->get('type') === 'input') {
-            if (! $this->meta->has('content')) {
+            if (!$this->meta->has('content')) {
                 throw Template::missingInputContent($this->field->get('name'));
             }
 
@@ -88,7 +88,7 @@ class Meta
 
     private function type(): void
     {
-        if (! in_array($this->meta->get('type'), Attributes::Types)) {
+        if (!in_array($this->meta->get('type'), Attributes::Types)) {
             throw Template::invalidFieldType($this->meta->get('type'));
         }
     }
@@ -96,17 +96,17 @@ class Meta
     private function selectMetaParameterMissing(): bool
     {
         return $this->meta === null
-            || (! $this->meta->has('options') && ! $this->meta->has('source'));
+            || (!$this->meta->has('options') && !$this->meta->has('source'));
     }
 
     private function invalidOptions($options): bool
     {
         return $options
-            && ! is_array($options)
+            && !is_array($options)
             && (
-                enum_exists($options) && ! (new ReflectionEnum($options))
+                enum_exists($options) && !(new ReflectionEnum($options))
                     ->implementsInterface(Select::class)
-                || ! class_exists($options) && ! method_exists($options, 'toArray')
+                || !class_exists($options) && !method_exists($options, 'toArray')
             );
     }
 }

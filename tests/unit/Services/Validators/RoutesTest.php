@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Routes;
 use LaravelEnso\Helpers\Services\Obj;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class RoutesTest extends TestCase
 {
@@ -102,7 +102,7 @@ class RoutesTest extends TestCase
         Route::getRoutes()->refreshNameLookups();
 
         return [
-            'actions' => ['post'],
+            'actions'     => ['post'],
             'routePrefix' => 'route',
         ];
     }

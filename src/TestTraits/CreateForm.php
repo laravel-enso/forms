@@ -10,7 +10,7 @@ trait CreateForm
     #[Test]
     public function can_view_create_form()
     {
-        if (! isset($this->permissionGroup)) {
+        if (!isset($this->permissionGroup)) {
             throw new Exception('"permissionGroup" property is missing from your test');
         }
 

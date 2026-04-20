@@ -6,8 +6,8 @@ use LaravelEnso\Forms\Attributes\Structure as Attributes;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Structure;
 use LaravelEnso\Helpers\Services\Obj;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class StructureTest extends TestCase
 {
@@ -216,11 +216,11 @@ class StructureTest extends TestCase
         return [
             'sections' => [
                 [
-                    'fields' => [],
+                    'fields'  => [],
                     'columns' => 1,
                 ],
             ],
-            'method' => '',
+            'method'      => '',
             'routeParams' => [],
         ];
     }

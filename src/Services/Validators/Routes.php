@@ -32,7 +32,7 @@ class Routes
 
     private function actionRouteMapping(string $action): void
     {
-        if (! $this->exists($action)) {
+        if (!$this->exists($action)) {
             throw Template::missingRoutePrefix($action);
         }
     }
@@ -49,7 +49,7 @@ class Routes
             ? $this->template->get('routes')->get($action)
             : $this->template->get('routePrefix').'.'.$action;
 
-        if (! Route::has($route)) {
+        if (!Route::has($route)) {
             throw Template::missingRoute($route);
         }
     }

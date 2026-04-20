@@ -32,7 +32,7 @@ class Form
     {
         $this->model = $model;
 
-        if (! $this->template->has('routeParams')) {
+        if (!$this->template->has('routeParams')) {
             $this->routeParams([]);
         }
 
@@ -45,7 +45,7 @@ class Form
     {
         $this->model = $model;
 
-        if (! $this->template->has('routeParams')) {
+        if (!$this->template->has('routeParams')) {
             $param = Str::camel(class_basename($model));
             $this->routeParams([$param => $model->getKey()]);
         }
@@ -87,7 +87,7 @@ class Form
 
     public function route(string $action, string $route): self
     {
-        if (! $this->template->has('routes')) {
+        if (!$this->template->has('routes')) {
             $this->template->set('routes', new Obj());
         }
 
@@ -198,7 +198,7 @@ class Form
 
     public function append(string $param, $value): self
     {
-        if (! $this->template->has('params')) {
+        if (!$this->template->has('params')) {
             $this->template->set('params', new Obj());
         }
 
@@ -261,7 +261,7 @@ class Form
     {
         $this->template->set('method', $method);
 
-        if (! $this->template->has('actions')) {
+        if (!$this->template->has('actions')) {
             $this->template->set('actions', $this->defaultActions());
         }
 
@@ -285,7 +285,7 @@ class Form
             ->first(fn ($section) => $section->get('fields')
                 ->contains(fn ($sectionField) => $sectionField->get('name') === $field));
 
-        if (! $section) {
+        if (!$section) {
             Template::fieldMissing($field);
         }
 
@@ -299,7 +299,7 @@ class Form
                 ->merge($section->get('fields')), new Collection())
             ->first(fn ($field) => $field->get('name') === $fieldName);
 
-        if (! $field) {
+        if (!$field) {
             throw Template::fieldMissing($fieldName);
         }
 

@@ -12,8 +12,8 @@ use LaravelEnso\Enums\Traits\Select as Options;
 use LaravelEnso\Forms\Services\Builder;
 use LaravelEnso\Helpers\Services\Obj;
 use Mockery;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class BuilderTest extends TestCase
 {
@@ -163,14 +163,14 @@ class BuilderTest extends TestCase
     protected function mockedForm()
     {
         return [
-            'actions' => [],
+            'actions'  => [],
             'sections' => [
                 [
                     'fields' => [
                         [
-                            'name' => 'test_field',
+                            'name'  => 'test_field',
                             'value' => 'test_value',
-                            'meta' => [],
+                            'meta'  => [],
                         ],
                     ],
                 ],

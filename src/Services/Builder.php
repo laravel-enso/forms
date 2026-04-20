@@ -31,7 +31,7 @@ class Builder
 
     private function values(): self
     {
-        if (! $this->model) {
+        if (!$this->model) {
             return $this;
         }
 
@@ -52,19 +52,19 @@ class Builder
         $meta = $field->get('meta');
 
         return match ($meta->get('type')) {
-            'input' => $this->inputValue($value, $meta),
+            'input'      => $this->inputValue($value, $meta),
             'datepicker' => $this->dateValue($value, $meta),
-            'select' => $this->selectValue($value, $meta),
-            default => $value
+            'select'     => $this->selectValue($value, $meta),
+            default      => $value
         };
     }
 
     private function inputValue($value, $meta)
     {
         return match ($meta->get('content')) {
-            'text' => $value ?? '',
+            'text'    => $value ?? '',
             'encrypt' => isset($value) ? Fields::EncryptValue : null,
-            default => $value,
+            default   => $value,
         };
     }
 
@@ -104,11 +104,11 @@ class Builder
         $meta = $field->get('meta');
 
         match ($meta->get('type')) {
-            'select' => $this->computeSelect($meta),
-            'input' => $this->computeInput($field),
+            'select'     => $this->computeSelect($meta),
+            'input'      => $this->computeInput($field),
             'datepicker' => $this->computeDate($meta),
-            'wysiwyg' => $this->computeWysiwyg($meta),
-            default => null,
+            'wysiwyg'    => $this->computeWysiwyg($meta),
+            default      => null,
         };
     }
 
@@ -126,15 +126,15 @@ class Builder
             $meta->set('options', $enum::select());
         }
 
-        if (! $meta->has('placeholder')) {
+        if (!$meta->has('placeholder')) {
             $meta->set('placeholder', config('enso.forms.selectPlaceholder'));
         }
 
-        if (! $meta->has('trackBy')) {
+        if (!$meta->has('trackBy')) {
             $meta->set('trackBy', 'id');
         }
 
-        if (! $meta->has('label')) {
+        if (!$meta->has('label')) {
             $meta->set('label', 'name');
         }
 
@@ -184,28 +184,28 @@ class Builder
             : ['path', route($route, $this->template->get('routeParams'), false)];
 
         return [
-            'button' => config('enso.forms.buttons.'.$action),
-            'forbidden' => $this->isForbidden($route),
+            'button'     => config('enso.forms.buttons.'.$action),
+            'forbidden'  => $this->isForbidden($route),
             $routeOrPath => $value,
         ];
     }
 
     private function appendParams(): self
     {
-        if (! $this->template->has('authorize')) {
+        if (!$this->template->has('authorize')) {
             $this->template->set('authorize', config('enso.forms.authorize'));
         }
 
-        if (! $this->template->has('dividerTitlePlacement')) {
+        if (!$this->template->has('dividerTitlePlacement')) {
             $placement = config('enso.forms.dividerTitlePlacement');
             $this->template->set('dividerTitlePlacement', $placement);
         }
 
-        if (! $this->template->has('labels')) {
+        if (!$this->template->has('labels')) {
             $this->template->set('labels', config('enso.forms.labels'));
         }
 
-        if (! $this->template->has('clearErrorsControl')) {
+        if (!$this->template->has('clearErrorsControl')) {
             $this->template->set('clearErrorsControl', true);
         }
 

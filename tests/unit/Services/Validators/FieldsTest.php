@@ -7,8 +7,8 @@ use LaravelEnso\Forms\Attributes\Fields as Attributes;
 use LaravelEnso\Forms\Exceptions\Template;
 use LaravelEnso\Forms\Services\Validators\Fields;
 use LaravelEnso\Helpers\Services\Obj;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class FieldsTest extends TestCase
 {

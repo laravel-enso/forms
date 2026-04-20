@@ -52,20 +52,20 @@ class Structure
     private function rootAttributesFormat(): self
     {
         $invalidActions = $this->template->has('actions')
-            && ! $this->template->get('actions') instanceof Obj;
+            && !$this->template->get('actions') instanceof Obj;
 
         if ($invalidActions) {
             throw Template::invalidActionsFormat();
         }
 
         $invalidParams = $this->template->has('params')
-            && ! $this->template->get('params') instanceof Obj;
+            && !$this->template->get('params') instanceof Obj;
 
         if ($invalidParams) {
             throw Template::invalidParamsFormat();
         }
 
-        if (! $this->template->get('sections') instanceof Obj) {
+        if (!$this->template->get('sections') instanceof Obj) {
             throw Template::invalidSectionFormat();
         }
 
@@ -134,11 +134,11 @@ class Structure
 
     private function checkCustomColumns(Obj $field): void
     {
-        if (! $field->has('column')) {
+        if (!$field->has('column')) {
             throw Template::missingFieldColumn($field->get('name'));
         }
 
-        $invalidColumn = ! is_int($field->get('column'))
+        $invalidColumn = !is_int($field->get('column'))
             || $field->get('column') <= 0
             || $field->get('column') > 12;
 
@@ -149,12 +149,12 @@ class Structure
 
     private function tabs(): void
     {
-        if (! $this->template->get('tabs')) {
+        if (!$this->template->get('tabs')) {
             return;
         }
 
         $diff = $this->template->get('sections')
-            ->filter(fn ($section) => ! $section->has('tab'));
+            ->filter(fn ($section) => !$section->has('tab'));
 
         if ($diff->isNotEmpty()) {
             throw Template::missingTabAttribute($diff->keys()->implode('", "'));
@@ -163,7 +163,7 @@ class Structure
 
     private function invalidColumn(Obj $section): bool
     {
-        return (! is_numeric($section->get('columns')) || $section->get('columns') <= 0)
-            && ! in_array($section->get('columns'), Attributes::Columns);
+        return (!is_numeric($section->get('columns')) || $section->get('columns') <= 0)
+            && !in_array($section->get('columns'), Attributes::Columns);
     }
 }
