@@ -1,6 +1,6 @@
 {
     "name": "laravel-enso/forms",
-    "description": "Form builder for Laravel Enso",
+    "description": "JSON-based form builder for Laravel Enso",
     "keywords": [
         "laravel-enso",
         "forms",
