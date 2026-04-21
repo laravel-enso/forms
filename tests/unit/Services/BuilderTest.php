@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use LaravelEnso\Enums\Contracts\Select;
 use LaravelEnso\Enums\Services\Enum;
 use LaravelEnso\Enums\Traits\Select as Options;
+use LaravelEnso\Forms\Attributes\Fields;
 use LaravelEnso\Forms\Services\Builder;
 use LaravelEnso\Helpers\Services\Obj;
 use Mockery;
@@ -153,6 +154,33 @@ class BuilderTest extends TestCase
             $this->field()->get('meta')->get('options'),
             FormTestLegacyEnum::select()
         );
+    }
+
+    #[Test]
+    public function computes_source_route_for_select_fields()
+    {
+        Route::get('select-source')->name('route.source');
+        Route::getRoutes()->refreshNameLookups();
+
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('source', 'route.source');
+
+        $this->runBuilder();
+
+        $this->assertEquals('/select-source', $this->field()->get('meta')->get('source'));
+    }
+
+    #[Test]
+    public function stores_initial_value_for_encrypted_inputs()
+    {
+        $this->field()->get('meta')->set('type', 'input');
+        $this->field()->get('meta')->set('content', 'encrypt');
+        $this->field()->set('value', 'secret-value');
+        $this->dirty = ['test_field'];
+
+        $this->runBuilder();
+
+        $this->assertEquals(Fields::EncryptValue, $this->field()->get('meta')->get('initialValue'));
     }
 
     protected function field()
