@@ -129,6 +129,20 @@ class BuilderTest extends TestCase
     }
 
     #[Test]
+    public function uses_the_configured_back_button_contract()
+    {
+        $this->template->set('actions', new Collection(['back']));
+        $this->template->set('authorize', false);
+
+        $this->runBuilder();
+
+        $action = $this->template->get('actions')->get('back');
+
+        $this->assertSame('', config('enso.forms.buttons.back.class'));
+        $this->assertSame(config('enso.forms.buttons.back'), $action['button']);
+    }
+
+    #[Test]
     public function set_meta()
     {
         $this->field()->get('meta')->set('type', 'select');
