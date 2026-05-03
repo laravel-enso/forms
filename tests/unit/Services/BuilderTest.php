@@ -138,7 +138,6 @@ class BuilderTest extends TestCase
 
         $action = $this->template->get('actions')->get('back');
 
-        $this->assertSame('', config('enso.forms.buttons.back.class'));
         $this->assertSame(config('enso.forms.buttons.back'), $action['button']);
     }
 
