@@ -211,6 +211,18 @@ class StructureTest extends TestCase
         $this->assertTrue(true);
     }
 
+    #[Test]
+    public function can_validate_readonly_root_attribute()
+    {
+        $this->template->set('readonly', true);
+
+        $structure = new Structure($this->template);
+
+        $structure->validate();
+
+        $this->assertTrue($this->template->get('readonly'));
+    }
+
     protected function mockedForm()
     {
         return [

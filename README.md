@@ -71,6 +71,7 @@ The root template may also include:
 - `dividerTitlePlacement`
 - `labels`
 - `params`
+- `readonly`
 - `routePrefix`
 - `routes`
 - `tabs`
@@ -166,6 +167,7 @@ Field and section mutators:
 - `hide(...$fields)` / `show(...$fields)`
 - `disable(...$fields)`
 - `readonly(...$fields)`
+- `readonly()` / `readonly(bool $readonly)`
 - `hideSection(...$sections)` / `showSection(...$sections)`
 - `hideTab(...$tabs)` / `showTab(...$tabs)`
 
@@ -183,6 +185,7 @@ $form = (new Form(app_path('Forms/Templates/users.json')))
     ->options('role_id', $roles)
     ->value('is_active', true)
     ->readonly('email')
+    ->readonly()
     ->hide('password')
     ->meta('phone', 'placeholder', '+40 700 000 000');
 
@@ -219,6 +222,8 @@ The frontend companion `@enso-ui/forms` currently renders these combinations:
 Important behavior:
 
 - encrypted inputs are returned as `************************` when the model already has a value
+- root `readonly` is preserved in the payload so the frontend can render the whole form without mutating actions
+- field-level `meta.readonly` remains available for locking individual fields
 - multi-select values are normalized to arrays of tracked keys
 - datepicker values are formatted with the configured or field-specific format
 - select `source` routes are converted to relative application paths

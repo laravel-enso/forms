@@ -9,7 +9,7 @@ class Structure
     public const Optional = [
         'actions', 'authorize', 'autosave', 'clearErrorsControl',  'debounce',
         'dividerTitlePlacement', 'icon', 'labels', 'params', 'routePrefix',
-        'routes', 'tabs', 'title',
+        'readonly', 'routes', 'tabs', 'title',
     ];
 
     public const SectionMandatory = ['columns', 'fields'];

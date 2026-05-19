@@ -180,8 +180,14 @@ class Form
         return $this;
     }
 
-    public function readonly($fields): self
+    public function readonly($fields = null): self
     {
+        if ($fields === null || is_bool($fields)) {
+            $this->template->set('readonly', $fields ?? true);
+
+            return $this;
+        }
+
         Collection::wrap(is_string($fields) ? func_get_args() : $fields)
             ->each(fn ($field) => $this->field($field)
                 ->get('meta')->set('readonly', true));
