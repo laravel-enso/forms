@@ -227,6 +227,7 @@ Important behavior:
 - multi-select values are normalized to arrays of tracked keys
 - datepicker values are formatted with the configured or field-specific format
 - select `source` routes are converted to relative application paths
+- select fields that define enum class `options` are expanded through `::select()` and default to translated labels
 - `wysiwyg` fields receive the configured TinyMCE API key automatically
 
 ### Supported meta keys
@@ -263,6 +264,9 @@ Notable enforced rules:
 - checkbox fields must have boolean values
 - multi-select fields must receive array or object values
 - `columns: custom` requires an integer `column` per field
+
+Enum-backed select fields may opt out of frontend label translation by setting
+`"translated": false` explicitly in the template.
 
 ### Frontend companion
 

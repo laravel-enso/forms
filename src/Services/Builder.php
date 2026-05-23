@@ -124,6 +124,7 @@ class Builder
         if ($meta->has('options') && is_string($meta->get('options'))) {
             $enum = $meta->get('options');
             $meta->set('options', $enum::select());
+            $meta->set('translated', $meta->get('translated', true));
         }
 
         if (!$meta->has('placeholder')) {

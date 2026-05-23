@@ -153,6 +153,8 @@ class BuilderTest extends TestCase
             $this->field()->get('meta')->get('options'),
             FormTestEnum::select()
         );
+
+        $this->assertTrue($this->field()->get('meta')->get('translated'));
     }
 
     #[Test]
@@ -167,6 +169,20 @@ class BuilderTest extends TestCase
             $this->field()->get('meta')->get('options'),
             FormTestLegacyEnum::select()
         );
+
+        $this->assertTrue($this->field()->get('meta')->get('translated'));
+    }
+
+    #[Test]
+    public function respects_explicit_untranslated_enum_meta()
+    {
+        $this->field()->get('meta')->set('type', 'select');
+        $this->field()->get('meta')->set('options', FormTestEnum::class);
+        $this->field()->get('meta')->set('translated', false);
+
+        $this->runBuilder();
+
+        $this->assertFalse($this->field()->get('meta')->get('translated'));
     }
 
     #[Test]
