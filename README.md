@@ -228,7 +228,8 @@ Important behavior:
 - datepicker values are formatted with the configured or field-specific format
 - select `source` routes are converted to relative application paths
 - select fields that define enum class `options` are expanded through `::select()` and default to translated labels
-- `wysiwyg` fields receive the configured TinyMCE API key automatically
+- `wysiwyg` fields use TinyMCE by default and receive the configured TinyMCE API key automatically
+- `wysiwyg` fields may set `editor: trix` to use the Trix frontend editor instead
 
 ### Supported meta keys
 
@@ -244,7 +245,7 @@ The validator accepts the following optional `meta` keys:
 - `positive`, `negative`, `zero`
 - `resize`, `translated`
 - `time12hr`, `disable-clear`
-- `objects`, `toolbar`, `plugins`, `taggable`
+- `objects`, `toolbar`, `plugins`, `editor`, `taggable`
 - `searchMode`, `params`, `pivotParams`, `customParams`
 
 ### Template validation rules
