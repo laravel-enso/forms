@@ -136,28 +136,40 @@ class Form
 
     public function hideSection($fields): self
     {
-        $this->sectionVisibility($fields, $hidden = true);
+        $this->sectionVisibility(
+            is_string($fields) ? func_get_args() : $fields,
+            $hidden = true
+        );
 
         return $this;
     }
 
     public function showSection($fields): self
     {
-        $this->sectionVisibility($fields, $hidden = false);
+        $this->sectionVisibility(
+            is_string($fields) ? func_get_args() : $fields,
+            $hidden = false
+        );
 
         return $this;
     }
 
     public function hideTab($tabs): self
     {
-        $this->tabVisibility($tabs, $hidden = true);
+        $this->tabVisibility(
+            is_string($tabs) ? func_get_args() : $tabs,
+            $hidden = true
+        );
 
         return $this;
     }
 
     public function showTab($tabs): self
     {
-        $this->tabVisibility($tabs, $hidden = false);
+        $this->tabVisibility(
+            is_string($tabs) ? func_get_args() : $tabs,
+            $hidden = false
+        );
 
         return $this;
     }
@@ -236,7 +248,7 @@ class Form
 
     public function sectionVisibility($fields, bool $hidden): self
     {
-        Collection::wrap(is_string($fields) ? func_get_args() : $fields)
+        Collection::wrap($fields)
             ->each(fn ($field) => $this->section($field)->put('hidden', $hidden));
 
         return $this;
@@ -244,7 +256,7 @@ class Form
 
     public function tabVisibility($tabs, bool $hidden): self
     {
-        $tabs = Collection::wrap(is_string($tabs) ? func_get_args() : $tabs);
+        $tabs = Collection::wrap($tabs);
 
         $this->template->get('sections')->each(fn ($section) => $tabs->when(
             $tabs->contains($section->get('tab')),
