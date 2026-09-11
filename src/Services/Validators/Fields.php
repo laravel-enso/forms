@@ -65,12 +65,14 @@ class Fields
             return;
         }
 
-        if ($meta->get('type') === 'input' && $meta->get('content') === 'checkbox') {
-            if (!is_bool($field->get('value'))) {
-                throw Template::invalidCheckboxValue($field->get('name'));
-            }
+        $invalidBooleanValue = $meta->get('type') === 'input'
+            && in_array($meta->get('content'), ['checkbox', 'switch'], true)
+            && !is_bool($field->get('value'));
 
-            return;
+        if ($invalidBooleanValue) {
+            throw $meta->get('content') === 'checkbox'
+                ? Template::invalidCheckboxValue($field->get('name'))
+                : Template::invalidSwitchValue($field->get('name'));
         }
 
         $invalidSelectValue = $meta->get('type') === 'select' && $meta->get('multiple')

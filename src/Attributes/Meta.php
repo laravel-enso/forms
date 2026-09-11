@@ -14,7 +14,11 @@ class Meta
         'plugins', 'editor', 'taggable', 'searchMode', 'params', 'pivotParams', 'customParams',
     ];
 
+    public const InputContent = [
+        'text', 'number', 'email', 'password', 'encrypt', 'checkbox', 'switch', 'money',
+    ];
+
     public const Types = [
-        'input', 'select', 'datepicker', 'timepicker', 'textarea', 'password', 'wysiwyg',
+        'input', 'select', 'datepicker', 'timepicker', 'textarea', 'wysiwyg',
     ];
 }

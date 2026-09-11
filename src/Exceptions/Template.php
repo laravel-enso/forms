@@ -162,6 +162,14 @@ class Template extends EnsoException
         ));
     }
 
+    public static function invalidInputContent(string $field): self
+    {
+        return new static(__(
+            'Invalid "content" meta parameter for the :field input field',
+            ['field' => $field]
+        ));
+    }
+
     public static function missingInputContent($field)
     {
         return new static(__(
@@ -175,6 +183,14 @@ class Template extends EnsoException
         return new static(__(
             '"options" meta parameter for field ":field" must be an array a '
                 .'collection or an Enum that implements the Select Contract ',
+            ['field' => $field]
+        ));
+    }
+
+    public static function invalidSwitchValue(string $field): self
+    {
+        return new static(__(
+            'Switches must have a boolean default value: ":field"',
             ['field' => $field]
         ));
     }

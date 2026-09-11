@@ -70,6 +70,10 @@ class Meta
                 throw Template::missingInputContent($this->field->get('name'));
             }
 
+            if (!in_array($this->meta->get('content'), Attributes::InputContent, true)) {
+                throw Template::invalidInputContent($this->field->get('name'));
+            }
+
             return $this;
         }
 

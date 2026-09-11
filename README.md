@@ -192,6 +192,15 @@ $form = (new Form(app_path('Forms/Templates/users.json')))
 $payload = $form->edit($user);
 ```
 
+### Upgrading to 10.0.0
+
+Use `@enso-ui/forms` 5.0.0 or newer for the separate checkbox and switch renderers.
+Existing `input` fields with `content: checkbox` now render native checkboxes without template changes.
+Use `content: switch` explicitly when a toggle switch is intended.
+Input content is now validated against `Attributes\Meta::InputContent`; unsupported values are rejected.
+Replace top-level `type: password` with `type: input` and `content: password`.
+Custom fields retain their metadata validation bypass.
+
 ### Supported field types
 
 The backend validator accepts these `meta.type` values:
@@ -201,7 +210,6 @@ The backend validator accepts these `meta.type` values:
 - `datepicker`
 - `timepicker`
 - `textarea`
-- `password`
 - `wysiwyg`
 
 The frontend companion `@enso-ui/forms` currently renders these combinations:
@@ -212,7 +220,8 @@ The frontend companion `@enso-ui/forms` currently renders these combinations:
 - `input` with `content: password`
 - `input` with `content: encrypt`
 - `input` with `content: money`
-- `input` with `content: checkbox`
+- `input` with `content: checkbox` (native checkbox)
+- `input` with `content: switch` (VueSwitch)
 - `select`
 - `textarea`
 - `datepicker`
@@ -262,7 +271,9 @@ Notable enforced rules:
 - create forms can use only `back` and `store`
 - update forms can use only `back`, `create`, `show`, `update`, and `destroy`
 - `select` fields must define `options` or `source`
-- checkbox fields must have boolean values
+- checkbox and switch fields must have boolean values
+- input content must be one of `text`, `number`, `email`, `password`, `encrypt`, `checkbox`, `switch`, or `money`
+- `password` is input content, not a top-level field type
 - multi-select fields must receive array or object values
 - `columns: custom` requires an integer `column` per field
 
